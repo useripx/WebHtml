@@ -20,6 +20,6 @@ Koleksi ini didesain khusus bagi pemula yang butuh struktur bersih, ringan, dan 
 | **Personal Portfolio** | CV Online sederhana & modern | [Preview](#) | Coming Soon |
 | **Landing Page** | Halaman promosi produk minimalis | [Preview](#) | Coming Soon |
 | **Simple Blog** | Layout artikel bersih dengan sidebar | [Preview](#) | Coming Soon |
-| *Coming Soon...* | *Stay tuned untuk update selanjutnya!* | - |
+| *Coming Soon...* | *Stay tuned untuk update selanjutnya!* | - | Coming Soon |
 
 ---
