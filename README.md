@@ -15,11 +15,11 @@ Koleksi ini didesain khusus bagi pemula yang butuh struktur bersih, ringan, dan 
 ---
 
 ## 📂 Daftar Template (Akan Terus Bertambah)
-| Nama Template | Deskripsi | Link Preview |
-| :--- | :--- | :--- |
-| **Personal Portfolio** | CV Online sederhana & modern | [Preview](#) |
-| **Landing Page** | Halaman promosi produk minimalis | [Preview](#) |
-| **Simple Blog** | Layout artikel bersih dengan sidebar | [Preview](#) |
+| Nama Template | Deskripsi | Link Preview | Status |
+| :--- | :--- | :--- | :--- |
+| **Personal Portfolio** | CV Online sederhana & modern | [Preview](#) | Coming Soon |
+| **Landing Page** | Halaman promosi produk minimalis | [Preview](#) | Coming Soon |
+| **Simple Blog** | Layout artikel bersih dengan sidebar | [Preview](#) | Coming Soon |
 | *Coming Soon...* | *Stay tuned untuk update selanjutnya!* | - |
 
 ---
