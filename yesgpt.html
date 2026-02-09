@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Penyaliban Yesus: Alkitab & Al-Qur'an</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            background: #f4f6f8;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #1f2971;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin-bottom: 5px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 3px solid #1f2971;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            background: #e0e3f0;
+            border: none;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .tab-button.active {
+            background: #1f2971;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 25px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.08);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        h2 {
+            color: #1f2971;
+        }
+
+        h3 {
+            margin-top: 25px;
+            color: #444;
+        }
+
+        .verse {
+            background: #f1f3f9;
+            padding: 10px 15px;
+            border-left: 4px solid #1f2971;
+            margin: 10px 0;
+            font-style: italic;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: #1f2971;
+            color: white;
+            margin-top: 40px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .tab-button {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Penyaliban Yesus (Isa Al-Masih)</h1>
+    <p>Perbandingan Pandangan Alkitab dan Al-Qur’an</p>
+</header>
+
+<div class="container">
+
+    <div class="tabs">
+        <button class="tab-button active" onclick="openTab('alkitab')">Versi Alkitab</button>
+        <button class="tab-button" onclick="openTab('alquran')">Versi Al-Qur'an</button>
+    </div>
+
+    <!-- TAB ALKITAB -->
+    <div id="alkitab" class="tab-content active">
+        <h2>Penyaliban Yesus Menurut Alkitab</h2>
+
+        <p>
+            Dalam iman Kristen, Yesus Kristus disalibkan sebagai bagian dari rencana keselamatan Allah
+            untuk menebus dosa manusia. Penyaliban ini merupakan peristiwa sejarah dan teologis
+            yang sangat penting.
+        </p>
+
+        <h3>Penangkapan dan Pengadilan</h3>
+        <p>
+            Yesus ditangkap di Taman Getsemani, diadili oleh Mahkamah Agama Yahudi, lalu diserahkan
+            kepada Pontius Pilatus.
+        </p>
+        <div class="verse">
+            “Lalu mereka membawa Yesus kepada Pilatus...”<br>
+            (Matius 27:2)
+        </div>
+
+        <h3>Penyaliban</h3>
+        <p>
+            Yesus disalibkan di Golgota bersama dua penjahat. Ia menderita, namun tetap mengampuni
+            orang-orang yang menyalibkan-Nya.
+        </p>
+        <div class="verse">
+            “Yesus berkata: Ya Bapa, ampunilah mereka...”<br>
+            (Lukas 23:34)
+        </div>
+
+        <h3>Kematian Yesus</h3>
+        <p>
+            Yesus mati di kayu salib dan menyerahkan nyawa-Nya kepada Allah.
+        </p>
+        <div class="verse">
+            “Sesudah itu Yesus berkata: Sudah selesai.”<br>
+            (Yohanes 19:30)
+        </div>
+
+        <h3>Makna Penyaliban</h3>
+        <p>
+            Dalam teologi Kristen, penyaliban adalah pengorbanan Yesus untuk menebus dosa manusia.
+        </p>
+        <div class="verse">
+            “Karena begitu besar kasih Allah akan dunia ini...”<br>
+            (Yohanes 3:16)
+        </div>
+    </div>
+
+    <!-- TAB ALQURAN -->
+    <div id="alquran" class="tab-content">
+        <h2>Penyaliban Isa Menurut Al-Qur’an</h2>
+
+        <p>
+            Dalam Islam, Isa bin Maryam adalah Nabi dan Rasul Allah. Al-Qur’an menegaskan bahwa
+            Isa tidak disalib dan tidak dibunuh.
+        </p>
+
+        <h3>Penolakan Penyaliban</h3>
+        <p>
+            Al-Qur’an secara tegas membantah klaim bahwa Isa dibunuh atau disalib.
+        </p>
+        <div class="verse">
+            “Padahal mereka tidak membunuhnya dan tidak pula menyalibnya...”<br>
+            (QS. An-Nisa: 157)
+        </div>
+
+        <h3>Diserupakan</h3>
+        <p>
+            Yang disalib adalah orang lain yang diserupakan dengan Isa, sehingga manusia mengira
+            Isa telah wafat.
+        </p>
+
+        <h3>Diangkat oleh Allah</h3>
+        <p>
+            Isa diselamatkan dan diangkat langsung oleh Allah.
+        </p>
+        <div class="verse">
+            “Tetapi Allah telah mengangkat Isa kepada-Nya.”<br>
+            (QS. An-Nisa: 158)
+        </div>
+
+        <h3>Tidak Ada Penebusan Dosa</h3>
+        <p>
+            Islam menolak konsep penebusan dosa melalui kematian seseorang.
+        </p>
+        <div class="verse">
+            “Seseorang tidak memikul dosa orang lain.”<br>
+            (QS. Al-An‘am: 164)
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 – Website Edukasi Perbandingan Alkitab & Al-Qur’an
+</footer>
+
+<script>
+    function openTab(tabId) {
+        const contents = document.querySelectorAll('.tab-content');
+        const buttons = document.querySelectorAll('.tab-button');
+
+        contents.forEach(content => content.classList.remove('active'));
+        buttons.forEach(button => button.classList.remove('active'));
+
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+
+</body>
+</html>

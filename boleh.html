@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yogi Ario Blog - Infinite Scroll</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .fade-in { animation: fadeIn 0.5s ease-in forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Mencegah scroll saat modal buka */
+        .modal-open { overflow: hidden; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <header class="bg-white border-b sticky top-0 z-40">
+        <div class="max-w-4xl mx-auto px-4 py-4">
+            <a href="/" class="text-2xl font-black text-indigo-600 tracking-tighter">YOGI BLOG.</a>
+        </div>
+    </header>
+
+    <main class="max-w-2xl mx-auto py-10 px-4 flex-grow" id="article-container">
+        </main>
+
+    <div id="loader" class="flex justify-center p-10 hidden">
+        <div class="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
+    <footer class="bg-white border-t py-8 mt-10">
+        <div class="text-center">
+            <p class="text-gray-500 text-sm">
+                &copy; 2026 <a href="/" class="text-indigo-600 font-bold hover:underline">Yogi Ario</a>. All Rights Reserved.
+            </p>
+        </div>
+    </footer>
+
+    <div id="articleModal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-3xl max-h-[90vh] rounded-2xl overflow-y-auto relative shadow-2xl">
+            <button onclick="closeModal()" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <div id="modalContent" class="p-8 mt-4">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('article-container');
+        const loader = document.getElementById('loader');
+        const modal = document.getElementById('articleModal');
+        const modalContent = document.getElementById('modalContent');
+        let articleCount = 0;
+
+        // Fungsi Template Artikel
+        function createArticle() {
+            articleCount++;
+            const id = articleCount;
+            const imgUrl = `https://picsum.photos/seed/${id + 50}/800/450`;
+            const title = `Membangun Masa Depan Digital #${id}`;
+            
+            const article = document.createElement('article');
+            article.className = "mb-16 cursor-pointer group fade-in";
+            
+            // Kita tambahkan event click di sini
+            article.onclick = () => openModal(title, imgUrl);
+
+            article.innerHTML = `
+                <div class="overflow-hidden rounded-2xl shadow-lg mb-6">
+                    <img src="${imgUrl}" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500" alt="Cover">
+                </div>
+                <div class="space-y-3">
+                    <span class="text-indigo-600 font-bold text-xs uppercase tracking-widest">Kategori Bisnis</span>
+                    <h2 class="text-3xl font-extrabold leading-tight group-hover:text-indigo-600 transition">
+                        ${title}
+                    </h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        Klik untuk membaca selengkapnya tentang bagaimana teknologi lorem ipsum dapat merubah cara kita bekerja...
+                    </p>
+                </div>
+            `;
+            return article;
+        }
+
+        // Fungsi Buka Modal
+        function openModal(title, img) {
+            document.body.classList.add('modal-open');
+            modal.classList.remove('hidden');
+            
+            modalContent.innerHTML = `
+                <img src="${img}" class="w-full h-80 object-cover rounded-xl mb-6 shadow-md">
+                <h1 class="text-4xl font-black mb-4 text-gray-900">${title}</h1>
+                <div class="flex items-center mb-6 space-x-2 text-sm text-gray-500">
+                    <span class="font-bold text-indigo-600">Yogi Ario</span>
+                    <span>•</span>
+                    <span>Februari 2, 2026</span>
+                </div>
+                <div class="prose prose-indigo max-w-none text-gray-700 leading-loose text-lg space-y-4">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel hendrerit libero, a efficitur mauris. Etiam a ex sed sem solutaion. Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.</p>
+                    <p>Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi.</p>
+                    <p>Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Pellentesque in ipsum id orci porta dapibus.</p>
+                </div>
+            `;
+        }
+
+        // Fungsi Tutup Modal
+        function closeModal() {
+            document.body.classList.remove('modal-open');
+            modal.classList.add('hidden');
+        }
+
+        // Klik di luar modal untuk menutup
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Infinite Scroll Logic
+        function loadMore() {
+            loader.classList.remove('hidden');
+            setTimeout(() => {
+                for (let i = 0; i < 3; i++) {
+                    container.appendChild(createArticle());
+                }
+                loader.classList.add('hidden');
+            }, 700);
+        }
+
+        window.addEventListener('scroll', () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+                loadMore();
+            }
+        });
+
+        // Start
+        loadMore();
+    </script>
+</body>
+</html>

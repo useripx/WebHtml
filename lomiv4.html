@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yogik.us - WiFi Hotspot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 50px 40px;
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .logo svg {
+            width: 45px;
+            height: 45px;
+            fill: white;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 16px;
+            margin-bottom: 35px;
+        }
+
+        .wifi-animation {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 60px;
+        }
+
+        .wifi-bar {
+            width: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0 3px;
+            border-radius: 4px;
+            animation: wifiPulse 1.5s ease-in-out infinite;
+        }
+
+        .wifi-bar:nth-child(1) {
+            height: 20px;
+            animation-delay: 0s;
+        }
+
+        .wifi-bar:nth-child(2) {
+            height: 35px;
+            animation-delay: 0.2s;
+        }
+
+        .wifi-bar:nth-child(3) {
+            height: 50px;
+            animation-delay: 0.4s;
+        }
+
+        .wifi-bar:nth-child(4) {
+            height: 60px;
+            animation-delay: 0.6s;
+        }
+
+        @keyframes wifiPulse {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scaleY(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scaleY(1);
+            }
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.5s ease;
+        }
+
+        .login-btn:hover:before {
+            left: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .info-box {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .info-box p {
+            color: #4a5568;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .info-box strong {
+            color: #2d3748;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #a0aec0;
+            font-size: 13px;
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .login-btn.loading .btn-text {
+            display: none;
+        }
+
+        .login-btn.loading .spinner {
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 25px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 21l-8-9h16l-8 9zm-8.001-9C4.224 9.112 7.816 7 12 7s7.776 2.112 7.999 5H4zM12 3C6.486 3 2 6.264 2 10.5c0 .333.033.663.096.99C2.265 12.859 3.982 14 6 14h12c2.018 0 3.735-1.141 3.904-2.51.063-.327.096-.657.096-.99C22 6.264 17.514 3 12 3z"/>
+            </svg>
+        </div>
+        
+        <h1>Yogik.us</h1>
+        <p class="subtitle">Selamat Datang di Hotspot WiFi Kami</p>
+        
+        <div class="wifi-animation">
+            <div class="wifi-bar"></div>
+            <div class="wifi-bar"></div>
+            <div class="wifi-bar"></div>
+            <div class="wifi-bar"></div>
+        </div>
+        
+        <button class="login-btn" onclick="handleLogin()">
+            <span class="btn-text">Masuk ke Internet</span>
+            <div class="spinner"></div>
+        </button>
+        
+        <div class="info-box">
+            <p><strong>📶 Koneksi Cepat & Stabil</strong></p>
+            <p>Nikmati akses internet berkecepatan tinggi untuk browsing, streaming, dan produktivitas Anda.</p>
+        </div>
+        
+        <div class="footer">
+            <p>Powered by Yogik.us © 2025</p>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin() {
+            const btn = document.querySelector('.login-btn');
+            btn.classList.add('loading');
+            
+            // Simulasi proses login
+            setTimeout(() => {
+                // Redirect ke halaman sukses
+                window.location.href = 'lomiv5.html';
+            }, 1500);
+        }
+
+        // Auto-login untuk Mikrotik (uncomment jika diperlukan)
+        // window.onload = function() {
+        //     document.querySelector('.login-btn').click();
+        // };
+    </script>
+</body>
+</html>

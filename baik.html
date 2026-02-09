@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gambar Pixel Custom by Yogi Ario</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; background: #1a1a1a; color: white; padding: 20px; }
+        
+        #grid { 
+            display: grid; 
+            grid-template-columns: repeat(16, 25px); 
+            gap: 1px; 
+            background: #333; 
+            padding: 5px;
+            border: 2px solid #444;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .pixel { 
+            width: 25px; height: 25px; 
+            background: #262626; cursor: pointer; 
+            transition: background 0.1s;
+        }
+        .pixel:hover { filter: brightness(1.5); }
+        
+        .controls { margin-top: 25px; display: flex; flex-direction: column; gap: 15px; align-items: center; background: #333; padding: 20px; border-radius: 10px; }
+        
+        .color-section { display: flex; align-items: center; gap: 10px; }
+        input[type="color"] { border: none; width: 40px; height: 40px; cursor: pointer; background: none; }
+        
+        .button-group { display: flex; gap: 10px; }
+        button { padding: 10px 15px; cursor: pointer; background: #4a4a4a; color: white; border: none; border-radius: 5px; font-weight: bold; transition: 0.2s; }
+        button:hover { background: #666; }
+        .btn-reset { background: #b33939; }
+        .btn-reset:hover { background: #ff5252; }
+        .btn-log { background: #218c74; }
+        .btn-log:hover { background: #33d9b2; }
+    </style>
+</head>
+<body>
+
+    <h2>Canvas Pixel Custom by Ario</h2>
+    
+    <div id="grid"></div>
+
+    <div class="controls">
+        <div class="color-section">
+            <label>Pilih Warna:</label>
+            <input type="color" id="colorPicker" value="#00ff00">
+            <span id="colorHex">#00ff00</span>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-log" onclick="consoleLogArray()">Log Array ke Console</button>
+            <button class="btn-reset" onclick="resetGrid()">Reset Gambar</button>
+        </div>
+        <p style="font-size: 12px; color: #aaa;">Klik kotak untuk mewarnai. Gunakan F12 untuk melihat hasil array.</p>
+    </div>
+
+    <script>
+        const size = 16;
+        let currentColor = "#00ff00";
+        
+        // Inisialisasi array 16x16 dengan angka 0
+        let pixelArt = Array.from({ length: size }, () => Array(size).fill(0));
+
+        const gridElement = document.getElementById('grid');
+        const colorPicker = document.getElementById('colorPicker');
+        const colorHex = document.getElementById('colorHex');
+
+        // Update warna aktif
+        colorPicker.oninput = (e) => {
+            currentColor = e.target.value;
+            colorHex.innerText = currentColor.toUpperCase();
+        };
+
+        function renderGrid() {
+            gridElement.innerHTML = '';
+            for (let r = 0; r < size; r++) {
+                for (let c = 0; c < size; c++) {
+                    const div = document.createElement('div');
+                    div.className = 'pixel';
+                    
+                    // Jika isi array bukan 0, beri warna sesuai isi array
+                    if (pixelArt[r][c] !== 0) {
+                        div.style.backgroundColor = pixelArt[r][c];
+                    }
+                    
+                    div.onclick = () => {
+                        // Jika kotak sudah berwarna sama, hapus (set ke 0)
+                        if (pixelArt[r][c] === currentColor) {
+                            pixelArt[r][c] = 0;
+                        } else {
+                            pixelArt[r][c] = currentColor;
+                        }
+                        renderGrid(); 
+                    };
+                    
+                    gridElement.appendChild(div);
+                }
+            }
+        }
+
+        function resetGrid() {
+            if(confirm("Hapus semua gambar?")) {
+                pixelArt = Array.from({ length: size }, () => Array(size).fill(0));
+                renderGrid();
+            }
+        }
+
+        function consoleLogArray() {
+            console.log("--- HASIL ARRAY PIXEL ART ---");
+            // Menampilkan format yang rapi di console
+            const formatted = pixelArt.map(row => 
+                "[" + row.map(cell => typeof cell === 'string' ? `'${cell}'` : cell).join(",") + "]"
+            ).join(",\n");
+            
+            console.log("[\n" + formatted + "\n]");
+            alert("Array warna telah dicetak di Console (Tekan F12)");
+        }
+
+        // Jalankan saat pertama kali load
+        renderGrid();
+    </script>
+</body>
+</html>

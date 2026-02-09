@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gak Guna Loop</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: white; 
+            color: black;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        /* Container utama untuk animasi */
+        .scroll-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: infiniteScroll 8s linear infinite; /* Kecepatan jalan teks */
+        }
+
+        .text {
+            /* Ukuran teks lebih proporsional */
+            font-size: 2rem; 
+            /* Membuat teks sangat tebal */
+            font-weight: 900; 
+            line-height: 1.5;
+            text-transform: uppercase;
+            padding: 10px 0;
+            white-space: nowrap;
+        }
+
+        /* Animasi looping sempurna */
+        @keyframes infiniteScroll {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                /* Bergerak tepat setengah tinggi container agar menyambung */
+                transform: translateY(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scroll-wrapper">
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+        <div class="text">Gak Guna</div>
+    </div>
+
+</body>
+</html>

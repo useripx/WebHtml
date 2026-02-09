@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error 404: System Download Corrupt</title>
+    <style>
+        /* --- GAYA CSS DASAR TERMINAL --- */
+        body {
+            background-color: #000000;
+            color: #00FF00; /* Neon Hijau */
+            font-family: 'Consolas', 'Courier New', monospace;
+            padding: 20px;
+            margin: 0;
+            font-size: 14px;
+        }
+        pre, ul {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        /* Style untuk Baris Input */
+        #input-line {
+            display: flex;
+            align-items: center;
+        }
+        #prompt {
+            color: #00FF00;
+            margin-right: 5px;
+            white-space: pre; 
+        }
+        #command-input {
+            background: transparent;
+            border: none;
+            color: #FFFFFF; 
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            caret-color: #00FF00; 
+            outline: none; 
+            width: 100%;
+        }
+        /* Progress Bar Style */
+        #download-progress-container {
+            border: 1px solid #00FF00;
+            height: 18px;
+            width: 90%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        #download-progress-bar {
+            height: 100%;
+            background-color: #008800; /* Hijau lebih gelap */
+            width: 0%;
+            transition: width 0.5s linear; /* Animasi halus */
+        }
+        #progress-text {
+            text-align: center;
+            color: #FFFFFF;
+            position: relative;
+            top: -18px;
+        }
+    </style>
+</head>
+<body>
+
+    <pre id="typing-area"></pre>
+
+    <div id="download-section" style="display: none;">
+        <pre id="download-status"></pre>
+        <div id="download-progress-container">
+            <div id="download-progress-bar"></div>
+            <div id="progress-text">0% (Time remaining: Calculating...)</div>
+        </div>
+    </div>
+    
+    <div id="interactive-section" style="display: none;">
+        <pre id="response-output"></pre>
+        <div id="input-line">
+            <span id="prompt">C:\></span>
+            <input type="text" id="command-input">
+        </div>
+    </div>
+
+    <script>
+        // --- JAVASCRIPT ---
+
+        const terminalOutput = document.getElementById('typing-area');
+        const interactiveSection = document.getElementById('interactive-section');
+        const commandInput = document.getElementById('command-input');
+        const responseOutput = document.getElementById('response-output');
+        const downloadSection = document.getElementById('download-section');
+        const progressBar = document.getElementById('download-progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const downloadStatus = document.getElementById('download-status');
+
+        // --- Variabel Waktu dan Kecepatan ---
+
+        // Menentukan waktu penyelesaian acak
+        // MIN: 5 detik (5000 ms)
+        // MAX: 10 menit (600000 ms) - Maks 5 jam terlalu lama untuk simulasi browser
+        const minDuration = 5000; 
+        const maxDuration = 600000; 
+        const randomDuration = Math.floor(Math.random() * (maxDuration - minDuration + 1)) + minDuration;
+        
+        const startTime = Date.now();
+        let downloadInterval;
+        let isDownloadComplete = false;
+
+        // --- Teks Otomatis Awal ---
+        const textToType = [
+            "C:\\> System file check initiated...",
+            "WARNING: Required asset (WIN_CORE.DAT) not found locally.",
+            "ERROR 404: Redirecting to Backup Repository.",
+            "",
+            "*** INITIATING CRITICAL SYSTEM FILE DOWNLOAD ***"
+        ];
+        
+        let lineIndex = 0;
+        let charIndex = 0;
+        const typingSpeed = 40; 
+
+        function typeLine() {
+            if (lineIndex < textToType.length) {
+                const currentLine = textToType[lineIndex];
+                
+                if (charIndex < currentLine.length) {
+                    terminalOutput.innerHTML += currentLine.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeLine, typingSpeed);
+                } 
+                else {
+                    terminalOutput.innerHTML += '\n';
+                    lineIndex++;
+                    charIndex = 0;
+                    setTimeout(typeLine, typingSpeed * 10); 
+                }
+            } else {
+                // Teks awal selesai, mulai download dan tampilkan input
+                startDownloadSimulation();
+                interactiveSection.style.display = 'block';
+                commandInput.focus();
+            }
+        }
+
+        // --- Simulasi Download ---
+
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            
+            if (hours > 0) {
+                 // Menampilkan jam jika lebih dari nol
+                return `${hours}h ${minutes}m ${seconds}s`;
+            } else if (minutes > 0) {
+                // Menampilkan menit jika lebih dari nol
+                return `${minutes}m ${seconds}s`;
+            } else {
+                // Menampilkan detik
+                return `${seconds}s`;
+            }
+        }
+
+        function updateDownload() {
+            const elapsedTime = Date.now() - startTime;
+            let progress = Math.min(100, (elapsedTime / randomDuration) * 100);
+            
+            progressBar.style.width = progress + '%';
+            
+            let timeRemaining = randomDuration - elapsedTime;
+
+            if (timeRemaining < 0) {
+                timeRemaining = 0;
+                progress = 100;
+                isDownloadComplete = true;
+                clearInterval(downloadInterval);
+                downloadStatus.innerHTML = `DOWNLOAD STATUS: COMPLETED (Time: ${formatTime(randomDuration)}s)\nFILE STATUS: **CORRUPT** - FAILED INTEGRITY CHECK.`;
+                progressText.innerHTML = `100% (FAILURE)`;
+            } else {
+                downloadStatus.innerHTML = `DOWNLOAD STATUS: IN PROGRESS... (${formatTime(elapsedTime)} elapsed)`;
+                progressText.innerHTML = `${progress.toFixed(2)}% (Time remaining: ${formatTime(timeRemaining)})`;
+            }
+
+            if (isDownloadComplete && commandInput.value.trim() === '') {
+                 // Fokuskan kembali input jika download selesai dan input kosong
+                commandInput.focus();
+            }
+        }
+
+        function startDownloadSimulation() {
+            downloadSection.style.display = 'block';
+            downloadStatus.innerHTML = `DOWNLOAD STATUS: Initializing... (Estimated time: ${formatTime(randomDuration)})`;
+            
+            // Interval update setiap 500ms
+            downloadInterval = setInterval(updateDownload, 500);
+            updateDownload(); // Panggil sekali untuk inisialisasi
+        }
+
+
+        // --- Penanganan Perintah Pengguna ---
+
+        function executeCommand() {
+            let command = commandInput.value.trim().toUpperCase();
+            let result = '';
+
+            // Tampilkan perintah yang diketik pengguna ke output sebelum respons
+            responseOutput.innerHTML += 'C:\\>' + commandInput.value + '\n';
+            
+            switch (command) {
+                case 'EXIT':
+                case 'HOME':
+                    result = 'Shutting down terminal. Redirecting to Homepage...';
+                    setTimeout(() => { window.location.href = '/'; }, 1000);
+                    break;
+                case 'RETRY':
+                    result = 'Restarting download simulation...';
+                    // Reset dan mulai ulang simulasi
+                    clearInterval(downloadInterval);
+                    lineIndex = 0; charIndex = 0;
+                    isDownloadComplete = false;
+                    terminalOutput.innerHTML = '';
+                    responseOutput.innerHTML = '';
+                    downloadSection.style.display = 'none';
+                    window.location.reload(); 
+                    break;
+                case 'HELP':
+                    result = 'PERINTAH YANG TERSEDIA:\n' +
+                             '  EXIT / HOME: Kembali ke halaman utama.\n' +
+                             '  RETRY: Mengulang proses download (waktu acak baru).\n' +
+                             '  CLEAR: Membersihkan layar terminal.';
+                    break;
+                case 'CLEAR':
+                    // Bersihkan semua output
+                    terminalOutput.innerHTML = '';
+                    responseOutput.innerHTML = '';
+                    break;
+                default:
+                    result = 'ERROR: Perintah "' + commandInput.value + '" tidak dikenal. Ketik HELP.';
+            }
+
+            // Tampilkan hasil perintah ke output
+            responseOutput.innerHTML += result + '\n';
+            
+            // Bersihkan input dan fokuskan kembali
+            commandInput.value = '';
+            commandInput.focus();
+        }
+
+        // Event listener untuk tombol 'Enter'
+        commandInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // Mencegah form submit default
+                executeCommand();
+            }
+        });
+
+        // Mulai proses pengetikan saat halaman dimuat
+        window.onload = typeLine;
+    </script>
+
+</body>
+</html>

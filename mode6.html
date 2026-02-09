@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cognitive Rain — Hujan yang Mengingat</title>  <!-- Tailwind CSS -->  <script src="https://cdn.tailwindcss.com"></script>  <!-- Vue 3 -->  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>  <style>
+    body {
+      background: linear-gradient(180deg, #020617, #020617);
+      overflow: hidden;
+    }
+
+    .rain-drop {
+      position: absolute;
+      font-size: 12px;
+      opacity: 0.7;
+      animation: fall linear infinite;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      from { transform: translateY(-10vh); }
+      to   { transform: translateY(110vh); }
+    }
+  </style></head>
+<body class="text-slate-200"><div id="app" class="relative min-h-screen">  <!-- Judul Sunyi -->  <header class="absolute top-0 w-full text-center p-6 z-10">
+    <h1 class="text-3xl tracking-[0.3em] font-light">
+      COGNITIVE RAIN
+    </h1>
+    <p class="text-xs opacity-50 mt-2">bukan air yang jatuh, tapi ingatan</p>
+  </header>  <!-- Narasi Tengah -->  <main class="flex items-center justify-center min-h-screen z-10">
+    <div class="text-center max-w-xl px-6">
+      <p class="text-lg mb-6 leading-relaxed opacity-80">
+        Hujan ini tidak membasahi tubuhmu.<br>
+        Ia membasahi perhatianmu.
+      </p><button @click="intensify"
+    class="px-6 py-3 rounded-full bg-white/10 backdrop-blur hover:bg-white/20 transition">
+    Diam Lebih Lama
+  </button>
+
+  <p class="mt-6 text-xs opacity-50">
+    Intensitas hujan: {{ intensity }}
+  </p>
+</div>
+
+  </main>  <!-- Hujan Kata --><span v-for="drop in drops" :key="drop.id"
+class="rain-drop"
+:style="drop.style"> {{ drop.text }} </span>
+
+</div><script>
+const { createApp } = Vue
+
+createApp({
+  data() {
+    return {
+      intensity: 1,
+      drops: [],
+      vocabulary: [
+        'diam', 'ingat', 'sunyi', 'jatuh', 'perlahan',
+        'pikiran', 'hujan', 'malam', 'menunggu', 'hening',
+        'waktu', 'rasa', 'bayangan', 'nafas'
+      ],
+      id: 0
+    }
+  },
+  mounted() {
+    this.startRain()
+  },
+  methods: {
+    startRain() {
+      setInterval(() => {
+        for (let i = 0; i < this.intensity; i++) {
+          this.createDrop()
+        }
+      }, 400)
+    },
+    createDrop() {
+      const word = this.vocabulary[Math.floor(Math.random() * this.vocabulary.length)]
+      const left = Math.random() * 100
+      const duration = 6 + Math.random() * 6
+      const size = 10 + Math.random() * 10
+
+      const drop = {
+        id: this.id++,
+        text: word,
+        style: {
+          left: left + '%',
+          animationDuration: duration + 's',
+          fontSize: size + 'px',
+          color: `hsla(${200 + Math.random() * 60}, 80%, 80%, 0.8)`
+        }
+      }
+
+      this.drops.push(drop)
+
+      // Hapus otomatis agar tidak berat
+      setTimeout(() => {
+        this.drops.shift()
+      }, duration * 1000)
+    },
+    intensify() {
+      if (this.intensity < 6) this.intensity++
+    }
+  }
+}).mount('#app')
+</script></body>
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jejak Pemimpin - Syarat Kepemimpinan Indonesia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f0f9ff;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .sky-gradient {
+            background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
+        }
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #bae6fd;
+            border-radius: 10px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #7dd3fc;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-md border-b border-sky-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 sky-gradient rounded-xl flex items-center justify-center text-white shadow-lg shadow-sky-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold text-sky-900 tracking-tight">JejakPemimpin</h1>
+                    <p class="text-[10px] uppercase tracking-widest text-sky-500 font-bold">Portal Syarat Jabatan</p>
+                </div>
+            </div>
+            
+            <div class="relative hidden md:block">
+                <input type="text" id="searchInput" onkeyup="filterCards()" placeholder="Cari jabatan (RT, Kades...)" 
+                       class="w-64 bg-sky-50 border border-sky-100 rounded-full py-2 px-4 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 absolute left-3 top-2.5 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <!-- Hero Section -->
+        <div id="mainSection">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-4">Mengenal Struktur <span class="text-sky-500">Pemimpin Kita</span></h2>
+                <p class="text-slate-500 max-w-2xl mx-auto text-lg">
+                    Dari pengabdian warga hingga pimpinan tertinggi negara. Klik pada kartu untuk melihat persyaratan lengkap setiap jabatan.
+                </p>
+            </div>
+
+            <!-- Grid Container -->
+            <div id="cardGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Cards will be injected by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Detail Section (Hidden by default) -->
+        <div id="detailSection" class="hidden animate-in fade-in slide-in-from-bottom-8 duration-500">
+            <button onclick="hideDetail()" class="flex items-center gap-2 text-sky-600 hover:text-sky-700 font-bold mb-8 transition-all group">
+                <div class="p-2 bg-sky-100 rounded-full group-hover:-translate-x-1 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </div>
+                Kembali ke Beranda
+            </button>
+
+            <div id="detailContent" class="bg-white rounded-[2.5rem] shadow-2xl shadow-sky-200/50 overflow-hidden border border-sky-50">
+                <!-- Detail Content will be injected by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-12 bg-white border-t border-sky-100">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex justify-center gap-4 mb-4">
+                <div class="w-8 h-1 bg-sky-200 rounded-full"></div>
+                <div class="w-12 h-1 bg-sky-400 rounded-full"></div>
+                <div class="w-8 h-1 bg-sky-200 rounded-full"></div>
+            </div>
+            <p class="text-slate-400 text-sm font-medium">© 2024 Jejak Pemimpin • Panduan Administrasi Publik Indonesia</p>
+        </div>
+    </footer>
+
+    <script>
+        const hierarchyData = [
+            {
+                id: 'rt',
+                title: 'Ketua RT',
+                subtitle: 'Rukun Tetangga',
+                icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />',
+                color: 'bg-sky-50',
+                text: 'text-sky-600',
+                requirements: [
+                    'WNI (Warga Negara Indonesia)',
+                    'Domisili tetap di wilayah RT setempat (Min. 6 bulan)',
+                    'Berusia minimal 18 tahun atau sudah pernah menikah',
+                    'Pendidikan minimal SMP (Sesuai Perda)',
+                    'Bukan anggota aktif partai politik'
+                ],
+                details: 'RT adalah garda terdepan pelayanan warga yang membantu administrasi kelurahan dan menjaga kerukunan antar tetangga.',
+                duration: '3 - 5 Tahun',
+                status: 'Lembaga Kemasyarakatan'
+            },
+            {
+                id: 'rw',
+                title: 'Ketua RW',
+                subtitle: 'Rukun Warga',
+                icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />',
+                color: 'bg-sky-100',
+                text: 'text-sky-700',
+                requirements: [
+                    'WNI dan berdomisili di wilayah RW tersebut',
+                    'Pendidikan minimal SMP/SMA (Tergantung Daerah)',
+                    'Berusia minimal 25 tahun',
+                    'Sehat jasmani dan rohani',
+                    'Mendapat dukungan dari para Ketua RT di wilayahnya'
+                ],
+                details: 'RW mengoordinasikan kerja beberapa RT dan menjadi penghubung komunikasi utama dengan pihak Kelurahan.',
+                duration: '3 - 5 Tahun',
+                status: 'Lembaga Kemasyarakatan'
+            },
+            {
+                id: 'kasun',
+                title: 'Kepala Dusun',
+                subtitle: 'Perangkat Desa',
+                icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />',
+                color: 'bg-sky-200',
+                text: 'text-sky-800',
+                requirements: [
+                    'Pendidikan minimal SMA atau sederajat',
+                    'Berusia 20 tahun sampai dengan 42 tahun',
+                    'Warga desa setempat',
+                    'Lolos ujian seleksi perangkat desa',
+                    'Bebas dari narkoba dan catatan kriminal'
+                ],
+                details: 'Kepala Dusun (Kasun) adalah perangkat desa yang memimpin kewilayahan dusun dan bertanggung jawab kepada Kepala Desa.',
+                duration: 'Hingga Usia 60 Tahun',
+                status: 'Perangkat Desa (ASN Desa)'
+            },
+            {
+                id: 'kades',
+                title: 'Kepala Desa',
+                subtitle: 'Pimpinan Desa',
+                icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />',
+                color: 'bg-sky-300',
+                text: 'text-sky-900',
+                requirements: [
+                    'WNI, minimal usia 25 tahun',
+                    'Pendidikan minimal SMP atau sederajat',
+                    'Belum pernah menjabat Kades 3 periode',
+                    'Wajib bertempat tinggal di desa tersebut saat menjabat',
+                    'Tidak merangkap jabatan di BPD atau Parpol'
+                ],
+                details: 'Kepala Desa dipilih langsung oleh warga untuk mengelola pemerintahan, pembangunan, dan pembinaan kemasyarakatan desa.',
+                duration: '8 Tahun per Periode',
+                status: 'Pejabat Publik Desa'
+            },
+            {
+                id: 'camat',
+                title: 'Camat',
+                subtitle: 'Kepala Kecamatan',
+                icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />',
+                color: 'bg-sky-400',
+                text: 'text-white',
+                requirements: [
+                    'Wajib berstatus PNS (ASN)',
+                    'Pangkat minimal Penata (III/c)',
+                    'Lulusan S1 Pemerintahan atau Sertifikat Profesi Kepamongprajaan',
+                    'Pengalaman kerja di wilayah (Desa/Kecamatan) min. 2 tahun',
+                    'Diusulkan oleh Sekda kepada Bupati/Walikota'
+                ],
+                details: 'Camat adalah pemimpin di wilayah kecamatan yang bertugas mengoordinasikan penyelenggaraan pemerintahan di tingkat kecamatan.',
+                duration: 'Sesuai Karier PNS',
+                status: 'Pejabat Karier (ASN)'
+            },
+            {
+                id: 'bupati',
+                title: 'Bupati',
+                subtitle: 'Kepala Kabupaten',
+                icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />',
+                color: 'bg-sky-500',
+                text: 'text-white',
+                requirements: [
+                    'WNI, minimal usia 25 tahun',
+                    'Pendidikan minimal SMA atau sederajat',
+                    'Diusung Parpol atau Jalur Independen',
+                    'Melaporkan harta kekayaan (LHKPN)',
+                    'Mampu secara jasmani, rohani, dan bebas narkoba'
+                ],
+                details: 'Bupati memimpin penyelenggaraan pemerintahan daerah berdasarkan kebijakan yang ditetapkan bersama DPRD Kabupaten.',
+                duration: '5 Tahun per Periode',
+                status: 'Pejabat Politik'
+            },
+            {
+                id: 'gubernur',
+                title: 'Gubernur',
+                subtitle: 'Kepala Provinsi',
+                icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />',
+                color: 'bg-sky-600',
+                text: 'text-white',
+                requirements: [
+                    'WNI, minimal usia 30 tahun',
+                    'Pendidikan minimal SMA atau sederajat',
+                    'Belum menjabat 2 kali di jabatan yang sama',
+                    'Mundur dari jabatan Legislatif/TNI/Polri/ASN',
+                    'Visi dan Misi selaras dengan NKRI'
+                ],
+                details: 'Gubernur adalah kepala daerah provinsi yang juga bertindak sebagai wakil Pemerintah Pusat di wilayah provinsi tersebut.',
+                duration: '5 Tahun per Periode',
+                status: 'Pejabat Politik'
+            },
+            {
+                id: 'presiden',
+                title: 'Presiden',
+                subtitle: 'Kepala Negara',
+                icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15l-2 5l9-9l-11 1l2-5l-9 9l11-1z" />',
+                color: 'bg-sky-700',
+                text: 'text-white',
+                requirements: [
+                    'WNI sejak lahir, tidak pernah punya kewarganegaraan lain',
+                    'Minimal usia 40 tahun (atau pernah jadi kepala daerah)',
+                    'Pendidikan minimal SMA atau sederajat',
+                    'Diusung Parpol/Gabungan Parpol (Ambang Batas 20%)',
+                    'Tidak pernah mengkhianati negara'
+                ],
+                details: 'Presiden RI memegang kekuasaan pemerintahan tertinggi dan merupakan simbol kedaulatan negara di mata dunia.',
+                duration: '5 Tahun (Maks 2 Periode)',
+                status: 'Kepala Pemerintahan'
+            }
+        ];
+
+        function renderCards() {
+            const grid = document.getElementById('cardGrid');
+            grid.innerHTML = '';
+            
+            hierarchyData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "group bg-white p-6 rounded-[2rem] border border-sky-100 shadow-sm hover:shadow-2xl hover:shadow-sky-100 transition-all duration-300 cursor-pointer overflow-hidden relative active:scale-95";
+                card.onclick = () => showDetail(item.id);
+                
+                card.innerHTML = `
+                    <div class="absolute -top-4 -right-4 w-20 h-20 ${item.color} rounded-full opacity-10 group-hover:scale-150 transition-transform duration-500"></div>
+                    <div class="w-14 h-14 ${item.color} ${item.text} rounded-2xl flex items-center justify-center mb-6 shadow-inner transition-transform group-hover:rotate-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            ${item.icon}
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-1 group-hover:text-sky-600 transition-colors">${item.title}</h3>
+                    <p class="text-sm text-slate-400 font-semibold mb-6">${item.subtitle}</p>
+                    <div class="flex items-center justify-between mt-auto">
+                        <span class="text-xs font-bold text-sky-400 uppercase tracking-widest">Syarat & Jabatan</span>
+                        <div class="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center text-sky-500 group-hover:bg-sky-500 group-hover:text-white transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCards() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const grid = document.getElementById('cardGrid');
+            const cards = grid.getElementsByClassName('group');
+
+            for (let i = 0; i < cards.length; i++) {
+                const title = cards[i].getElementsByTagName('h3')[0].innerText.toLowerCase();
+                const subtitle = cards[i].getElementsByTagName('p')[0].innerText.toLowerCase();
+                if (title.includes(input) || subtitle.includes(input)) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+
+        function showDetail(id) {
+            const item = hierarchyData.find(d => d.id === id);
+            const mainSection = document.getElementById('mainSection');
+            const detailSection = document.getElementById('detailSection');
+            const content = document.getElementById('detailContent');
+
+            content.innerHTML = `
+                <div class="h-48 ${item.color} relative overflow-hidden flex items-end px-10 pb-8">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-2xl"></div>
+                    <div class="relative z-10 flex items-center gap-6">
+                        <div class="p-5 bg-white rounded-3xl shadow-xl text-sky-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                ${item.icon}
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-4xl font-black text-slate-900">${item.title}</h2>
+                            <p class="text-lg font-bold ${item.text} opacity-80">${item.subtitle}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-10 grid md:grid-cols-3 gap-12">
+                    <div class="md:col-span-2">
+                        <h3 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Kriteria & Persyaratan
+                        </h3>
+                        <div class="space-y-4">
+                            ${item.requirements.map((req, i) => `
+                                <div class="flex items-start gap-4 p-5 bg-sky-50/50 rounded-2xl border border-sky-100 hover:border-sky-300 transition-colors">
+                                    <span class="flex-shrink-0 w-8 h-8 rounded-full bg-white flex items-center justify-center text-sky-600 font-bold text-sm border border-sky-200 shadow-sm">${i + 1}</span>
+                                    <p class="text-slate-700 font-medium leading-relaxed">${req}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="space-y-8">
+                        <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100">
+                            <h4 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Masa Jabatan</h4>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <p class="text-xl font-extrabold text-slate-900">${item.duration}</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-500 p-8 rounded-3xl text-white shadow-xl shadow-sky-200">
+                            <h4 class="text-xs font-bold opacity-70 uppercase tracking-widest mb-3">Tugas Pokok</h4>
+                            <p class="text-sm leading-relaxed font-medium">
+                                ${item.details}
+                            </p>
+                            <div class="mt-6 pt-6 border-t border-white/20">
+                                <p class="text-[10px] font-bold opacity-60">*Berlaku di wilayah Negara Kesatuan Republik Indonesia</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 px-2">
+                             <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Status: ${item.status}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            mainSection.classList.add('hidden');
+            detailSection.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function hideDetail() {
+            const mainSection = document.getElementById('mainSection');
+            const detailSection = document.getElementById('detailSection');
+            
+            detailSection.classList.add('hidden');
+            mainSection.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', renderCards);
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DreamScape - Ciptakan Dunia dari Impianmu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .dream-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .dream-input {
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .glow {
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <div id="app" class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-12 fade-in">
+            <div class="flex items-center mb-6 md:mb-0">
+                <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center mr-4 pulse">
+                    <i class="fas fa-moon text-purple-700 text-xl"></i>
+                </div>
+                <h1 class="text-3xl font-bold">Dream<span class="text-yellow-300">Scape</span></h1>
+            </div>
+            <p class="text-xl text-center md:text-right opacity-90">Ciptakan Dunia Virtual dari <span class="font-semibold text-yellow-300">Impianmu</span></p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-6xl mx-auto">
+            <!-- Introduction -->
+            <section class="text-center mb-16 fade-in">
+                <h2 class="text-4xl font-bold mb-6">Platform Unik Pertama di Dunia</h2>
+                <p class="text-xl max-w-3xl mx-auto mb-10 opacity-90">
+                    Ceritakan impian terliarmu, dan AI kami akan menciptakan dunia virtual interaktif yang dapat kamu jelajahi. 
+                    Setiap dunia memiliki karakteristik unik berdasarkan emosi dan elemen dalam mimpimu.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <div class="px-6 py-3 bg-white text-purple-700 rounded-full font-semibold">
+                        <i class="fas fa-brain mr-2"></i>AI Generatif
+                    </div>
+                    <div class="px-6 py-3 bg-white text-purple-700 rounded-full font-semibold">
+                        <i class="fas fa-vr-cardboard mr-2"></i>VR Siap
+                    </div>
+                    <div class="px-6 py-3 bg-white text-purple-700 rounded-full font-semibold">
+                        <i class="fas fa-share-alt mr-2"></i>Bagikan Dunia
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dream Input Section -->
+            <section class="dream-card rounded-2xl p-8 mb-16 fade-in">
+                <h3 class="text-2xl font-bold mb-6 text-center">Ceritakan Impianmu</h3>
+                
+                <div class="flex flex-col md:flex-row gap-6 mb-8">
+                    <!-- Dream Description -->
+                    <div class="flex-1">
+                        <label class="block mb-3 font-medium">Deskripsi Impian</label>
+                        <textarea 
+                            v-model="dreamDescription" 
+                            placeholder="Contoh: Saya bermimpi terbang di atas lautan kristal dengan matahari berwarna ungu, bertemu makhluk bersayap yang mengajak saya ke istana awan..."
+                            class="dream-input w-full h-48 rounded-2xl p-5 text-white placeholder-gray-300 focus:outline-none focus:border-yellow-400 transition"
+                            @input="analyzeDream"
+                        ></textarea>
+                        <div class="flex justify-between mt-3 text-sm">
+                            <span>{{ dreamDescription.length }}/500 karakter</span>
+                            <span v-if="dreamDescription.length > 0">
+                                <i class="fas fa-magic mr-1"></i>Menganalisis...
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Dream Characteristics -->
+                    <div class="md:w-1/3">
+                        <label class="block mb-3 font-medium">Karakteristik Impian</label>
+                        <div class="dream-input rounded-2xl p-5 h-48 overflow-y-auto">
+                            <div v-for="(char, index) in dreamCharacteristics" 
+                                 :key="index"
+                                 class="flex items-center mb-3 p-2 rounded-lg"
+                                 :class="char.active ? 'bg-purple-800' : 'bg-gray-800'"
+                                 @click="toggleCharacteristic(index)">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center mr-3"
+                                     :class="char.active ? 'bg-yellow-400 text-gray-800' : 'bg-gray-700'">
+                                    <i :class="char.icon"></i>
+                                </div>
+                                <span>{{ char.name }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate Button -->
+                <div class="text-center">
+                    <button 
+                        @click="generateWorld" 
+                        :disabled="!canGenerate"
+                        class="px-10 py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 font-bold text-xl rounded-2xl hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                        :class="canGenerate ? 'glow pulse' : ''"
+                    >
+                        <i class="fas fa-cube mr-3"></i>
+                        {{ generating ? 'Menciptakan Dunia...' : 'Ciptakan Dunia Virtual' }}
+                    </button>
+                    <p class="mt-4 text-sm opacity-80" v-if="!canGenerate">
+                        Masukkan deskripsi impian minimal 20 karakter untuk membuat dunia.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Generated World Preview -->
+            <section v-if="generatedWorld.name" class="mb-16 fade-in">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                    <h3 class="text-3xl font-bold">Dunia yang Diciptakan</h3>
+                    <div class="flex items-center mt-4 md:mt-0">
+                        <div class="mr-6">
+                            <span class="block text-center text-2xl font-bold">{{ generatedWorld.visitors }}</span>
+                            <span class="text-sm opacity-80">Pengunjung</span>
+                        </div>
+                        <button class="px-6 py-3 bg-white text-purple-700 rounded-full font-semibold hover:bg-gray-100 transition">
+                            <i class="fas fa-share mr-2"></i>Bagikan Dunia
+                        </button>
+                    </div>
+                </div>
+
+                <div class="dream-card rounded-2xl overflow-hidden">
+                    <!-- World Header -->
+                    <div class="p-8 pb-0">
+                        <div class="flex flex-col md:flex-row justify-between">
+                            <div>
+                                <h4 class="text-2xl font-bold mb-2">{{ generatedWorld.name }}</h4>
+                                <p class="opacity-90 mb-4">{{ generatedWorld.description }}</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span v-for="(tag, index) in generatedWorld.tags" :key="index"
+                                          class="px-3 py-1 bg-purple-800 rounded-full text-sm">
+                                        {{ tag }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mt-6 md:mt-0">
+                                <div class="text-right">
+                                    <div class="text-4xl font-bold mb-2">{{ generatedWorld.rating }}</div>
+                                    <div class="text-yellow-400">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                    <p class="text-sm mt-2 opacity-80">Tingkat Keunikan</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- World Visualization -->
+                    <div class="p-8">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div class="col-span-2">
+                                <div class="dream-input rounded-2xl h-64 flex items-center justify-center">
+                                    <div class="text-center">
+                                        <i class="fas fa-globe-americas text-6xl mb-4 opacity-50"></i>
+                                        <p class="text-xl">Visualisasi 3D Dunia</p>
+                                        <p class="opacity-80 mt-2">Dibuat berdasarkan analisis AI dari impianmu</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="dream-input rounded-2xl h-64 p-6">
+                                    <h5 class="font-bold text-lg mb-4">Karakteristik Dunia</h5>
+                                    <div v-for="(stat, index) in generatedWorld.stats" :key="index" class="mb-4">
+                                        <div class="flex justify-between mb-1">
+                                            <span>{{ stat.name }}</span>
+                                            <span>{{ stat.value }}%</span>
+                                        </div>
+                                        <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                            <div class="h-full rounded-full" 
+                                                 :class="stat.color"
+                                                 :style="{width: stat.value + '%'}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- World Actions -->
+                        <div class="flex flex-wrap justify-center gap-6">
+                            <button class="px-8 py-4 bg-gradient-to-r from-blue-500 to-teal-400 text-white font-bold rounded-2xl hover:opacity-90 transition">
+                                <i class="fas fa-door-open mr-2"></i>Masuk ke Dunia
+                            </button>
+                            <button class="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-400 text-white font-bold rounded-2xl hover:opacity-90 transition">
+                                <i class="fas fa-vr-cardboard mr-2"></i>Mode VR
+                            </button>
+                            <button class="px-8 py-4 bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold rounded-2xl hover:opacity-90 transition">
+                                <i class="fas fa-download mr-2"></i>Unduh Dunia
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Community Section -->
+            <section class="mb-16 fade-in">
+                <h3 class="text-3xl font-bold mb-8 text-center">Dunia dari Komunitas</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div v-for="world in communityWorlds" :key="world.id" class="dream-card rounded-2xl p-6 hover:glow transition cursor-pointer">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">{{ world.name }}</h4>
+                                <p class="text-sm opacity-80">oleh {{ world.creator }}</p>
+                            </div>
+                            <div class="text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <span class="text-white ml-1">{{ world.rating }}</span>
+                            </div>
+                        </div>
+                        <p class="text-sm mb-6">{{ world.description }}</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex">
+                                <i class="fas fa-users mr-2 opacity-80"></i>
+                                <span class="text-sm">{{ world.visitors }}</span>
+                            </div>
+                            <button class="px-4 py-2 bg-white text-purple-700 text-sm rounded-full font-semibold hover:bg-gray-100 transition">
+                                Jelajahi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center pt-8 mt-12 border-t border-white border-opacity-20">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold mb-2">Dream<span class="text-yellow-300">Scape</span></h2>
+                <p class="opacity-80">Mengubah impian menjadi realitas virtual sejak 2023</p>
+            </div>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="#" class="opacity-80 hover:opacity-100 hover:text-yellow-300 transition">
+                    <i class="fab fa-twitter text-xl"></i>
+                </a>
+                <a href="#" class="opacity-80 hover:opacity-100 hover:text-yellow-300 transition">
+                    <i class="fab fa-discord text-xl"></i>
+                </a>
+                <a href="#" class="opacity-80 hover:opacity-100 hover:text-yellow-300 transition">
+                    <i class="fab fa-instagram text-xl"></i>
+                </a>
+                <a href="#" class="opacity-80 hover:opacity-100 hover:text-yellow-300 transition">
+                    <i class="fab fa-youtube text-xl"></i>
+                </a>
+            </div>
+            <p class="text-sm opacity-70">&copy; 2023 DreamScape. Semua hak dilindungi. Konsep unik yang belum pernah ada sebelumnya.</p>
+        </footer>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    dreamDescription: "",
+                    dreamCharacteristics: [
+                        { name: "Fantasi", icon: "fas fa-dragon", active: false },
+                        { name: "Petualangan", icon: "fas fa-hiking", active: false },
+                        { name: "Misteri", icon: "fas fa-question-circle", active: false },
+                        { name: "Romantis", icon: "fas fa-heart", active: false },
+                        { name: "Menakutkan", icon: "fas fa-ghost", active: false },
+                        { name: "Lucu", icon: "fas fa-laugh-beam", active: false },
+                        { name: "Futuristik", icon: "fas fa-robot", active: false },
+                        { name: "Sejarah", icon: "fas fa-landmark", active: false }
+                    ],
+                    generating: false,
+                    generatedWorld: {},
+                    communityWorlds: [
+                        {
+                            id: 1,
+                            name: "Negeri Awan Berbicara",
+                            creator: "Alexandra",
+                            description: "Dunia dengan awan yang dapat berinteraksi dan bercerita tentang sejarah langit.",
+                            rating: 4.7,
+                            visitors: "1.2k"
+                        },
+                        {
+                            id: 2,
+                            name: "Hutan Melodi",
+                            creator: "Rio",
+                            description: "Setiap pohon dan hewan menciptakan simfoni alam yang unik.",
+                            rating: 4.9,
+                            visitors: "2.5k"
+                        },
+                        {
+                            id: 3,
+                            name: "Kota Cahaya Bawah Air",
+                            creator: "Maya",
+                            description: "Peradaban maju yang berkembang di kedalaman lautan dengan teknologi bioluminesens.",
+                            rating: 4.8,
+                            visitors: "3.1k"
+                        }
+                    ]
+                };
+            },
+            computed: {
+                canGenerate() {
+                    return this.dreamDescription.length >= 20 && !this.generating;
+                }
+            },
+            methods: {
+                toggleCharacteristic(index) {
+                    this.dreamCharacteristics[index].active = !this.dreamCharacteristics[index].active;
+                },
+                analyzeDream() {
+                    // Simulasi analisis AI berdasarkan deskripsi impian
+                    if (this.dreamDescription.length > 10) {
+                        const words = this.dreamDescription.toLowerCase();
+                        
+                        // Aktifkan karakteristik berdasarkan kata kunci
+                        this.dreamCharacteristics.forEach(char => {
+                            const keywords = {
+                                "Fantasi": ["terbang", "sihir", "naga", "peri", "istana"],
+                                "Petualangan": ["menjelajah", "petualangan", "tantangan", "perjalanan"],
+                                "Misteri": ["rahasia", "tersembunyi", "misteri", "aneh"],
+                                "Romantis": ["cinta", "romantis", "pasangan", "hati"],
+                                "Menakutkan": ["menakutkan", "seram", "hantu", "gelap"],
+                                "Lucu": ["lucu", "konyol", "humor", "tertawa"],
+                                "Futuristik": ["robot", "teknologi", "massa depan", "AI"],
+                                "Sejarah": ["zaman dulu", "sejarah", "kuno", "masa lalu"]
+                            };
+                            
+                            if (keywords[char.name]) {
+                                char.active 

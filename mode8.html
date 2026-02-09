@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krystallos - Hujan Kristal Dimensi Paralel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Exo 2', sans-serif;
+        }
+        .title-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #0c0c2e 0%, #1a1a3e 50%, #0f0f23 100%);
+            color: #e0e0ff;
+            overflow-x: hidden;
+        }
+        .crystal-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .crystal {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: rgba(180, 220, 255, 0.8);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            animation: fall linear infinite;
+            opacity: 0.7;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(180, 220, 255, 0.1);
+            border-radius: 20px;
+        }
+        .neon-border {
+            box-shadow: 0 0 15px rgba(100, 200, 255, 0.3);
+        }
+        .glow-text {
+            text-shadow: 0 0 10px rgba(180, 220, 255, 0.7);
+        }
+        .pulse {
+            animation: pulse 3s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .crystal-glow {
+            animation: crystalGlow 2s infinite alternate;
+        }
+        @keyframes crystalGlow {
+            from { box-shadow: 0 0 5px rgba(180, 220, 255, 0.5); }
+            to { box-shadow: 0 0 20px rgba(180, 220, 255, 0.8); }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Crystal Rain Animation -->
+    <div id="crystalRain" class="crystal-rain"></div>
+    
+    <div id="app" class="content-wrapper container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-16 fade-in">
+            <div class="flex items-center mb-8 md:mb-0">
+                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-blue-400 to-cyan-300 flex items-center justify-center mr-4 crystal-glow">
+                    <i class="fas fa-gem text-white text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="title-font text-4xl font-bold">KRYSTALLOS</h1>
+                    <p class="text-cyan-300">Fenomena Hujan Dimensi Paralel</p>
+                </div>
+            </div>
+            <div class="text-center md:text-right">
+                <div class="text-3xl font-bold mb-2 glow-text">{{ currentTime }}</div>
+                <div class="flex items-center justify-center md:justify-end">
+                    <div class="w-3 h-3 rounded-full bg-green-500 mr-2 pulse"></div>
+                    <span class="text-green-400">Mendeteksi Aktivitas Kristal</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-6xl mx-auto">
+            <!-- Hero Section -->
+            <section class="glass-card p-8 mb-16 fade-in">
+                <div class="flex flex-col lg:flex-row items-center">
+                    <div class="lg:w-2/3 mb-10 lg:mb-0 lg:pr-10">
+                        <h2 class="title-font text-4xl font-bold mb-6">
+                            Hujan <span class="text-cyan-300">Kristal Transparan</span> dari Dimensi Paralel
+                        </h2>
+                        <p class="text-lg mb-6">
+                            Fenomena unik di mana kristal-kristal energi murni jatuh dari celah dimensi paralel. 
+                            Setiap kristal mengandung memori visual dari realitas alternatif dan dapat berinteraksi 
+                            dengan kesadaran manusia.
+                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <button @click="showDiscoveryModal = true" class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-full hover:opacity-90 transition">
+                                <i class="fas fa-binoculars mr-2"></i>Lapor Penampakan
+                            </button>
+                            <button @click="toggleSoundscape" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-700 text-white font-bold rounded-full hover:opacity-90 transition">
+                                <i class="fas fa-music mr-2"></i>{{ soundscapeActive ? 'Matikan' : 'Nyalakan' }} Soundscape
+                            </button>
+                            <button @click="collectCrystal" class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold rounded-full hover:opacity-90 transition">
+                                <i class="fas fa-gem mr-2"></i>Koleksi Kristal ({{ collectedCrystals }})
+                            </button>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/3">
+                        <div class="relative">
+                            <div class="w-64 h-64 mx-auto rounded-full bg-gradient-to-br from-cyan-400 to-blue-800 flex items-center justify-center crystal-glow">
+                                <div class="w-48 h-48 rounded-full bg-gradient-to-tr from-transparent to-cyan-300 opacity-30"></div>
+                            </div>
+                            <div class="absolute -top-2 -right-2 w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center">
+                                <span class="text-white font-bold">100%</span>
+                            </div>
+                            <div class="absolute -bottom-2 -left-2 w-20 h-20 bg-cyan-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-atom text-white text-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Crystal Properties -->
+            <section class="mb-16 fade-in">
+                <h3 class="title-font text-3xl font-bold mb-10 text-center">Sifat Unik Kristal Dimensi Paralel</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div v-for="(property, index) in crystalProperties" :key="index" 
+                         class="glass-card p-6 text-center hover:neon-border transition cursor-pointer"
+                         @mouseenter="activeProperty = index">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center mb-4 crystal-glow">
+                            <i :class="property.icon" class="text-white text-2xl"></i>
+                        </div>
+                        <h4 class="font-bold text-xl mb-3">{{ property.title }}</h4>
+                        <p class="text-sm opacity-90">{{ property.description }}</p>
+                        <div v-if="activeProperty === index" class="mt-4 pt-4 border-t border-cyan-800">
+                            <p class="text-xs text-cyan-300">{{ property.detail }}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Crystal Scanner -->
+            <section class="glass-card p-8 mb-16 fade-in">
+                <h3 class="title-font text-3xl font-bold mb-8 text-center">Pemindai Kristal Real-time</h3>
+                
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Scanner Visualization -->
+                    <div class="lg:w-2/3">
+                        <div class="bg-gray-900 rounded-2xl p-6 border border-cyan-800">
+                            <div class="flex justify-between items-center mb-6">
+                                <div>
+                                    <h4 class="font-bold text-xl">Pemindai Dimensi</h4>
+                                    <p class="text-sm text-cyan-300">Memantau aktivitas kristal di wilayah Anda</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-2xl font-bold glow-text">{{ scannerActivity }}%</div>
+                                    <div class="text-xs">Aktivitas Kristal</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Scanner Display -->
+                            <div class="h-64 bg-black rounded-lg overflow-hidden relative">
+                                <!-- Scanner Lines -->
+                                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent scanner-line"></div>
+                                <div class="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent scanner-line" style="animation-delay: 0.5s;"></div>
+                                
+                                <!-- Crystal Dots -->
+                                <div v-for="(crystal, index) in scannerCrystals" :key="index" 
+                                     class="absolute w-3 h-3 rounded-full crystal-dot"
+                                     :style="{left: crystal.x + '%', top: crystal.y + '%', backgroundColor: crystal.color}"></div>
+                                
+                                <!-- Frequency Bars -->
+                                <div class="absolute bottom-0 left-0 w-full h-8 flex items-end justify-around">
+                                    <div v-for="n in 20" :key="n" 
+                                         class="w-2 bg-gradient-to-t from-cyan-500 to-blue-800 frequency-bar"
+                                         :style="{height: Math.random() * 100 + '%'}"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between mt-6">
+                                <button @click="startScanner" class="px-6 py-2 bg-gradient-to-r from-green-600 to-emerald-700 text-white rounded-full text-sm">
+                                    <i class="fas fa-play mr-2"></i>Mulai Pemindaian
+                                </button>
+                                <button @click="calibrateScanner" class="px-6 py-2 bg-gradient-to-r from-yellow-600 to-amber-700 text-white rounded-full text-sm">
+                                    <i class="fas fa-sync mr-2"></i>Kalibrasi
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Scanner Data -->
+                    <div class="lg:w-1/3">
+                        <h4 class="font-bold text-xl mb-6">Data Pemindaian</h4>
+                        
+                        <div class="space-y-6">
+                            <div v-for="(data, index) in scannerData" :key="index" class="flex items-center">
+                                <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center mr-4">
+                                    <i :class="data.icon" class="text-cyan-400"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between">
+                                        <span class="font-medium">{{ data.label }}</span>
+                                        <span class="font-bold glow-text">{{ data.value }}</span>
+                                    </div>
+                                    <div class="h-2 bg-gray-800 rounded-full mt-1 overflow-hidden">
+                                        <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full" 
+                                             :style="{width: data.percentage + '%'}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-10 p-4 bg-gray-900 rounded-xl border border-cyan-900">
+                            <h5 class="font-bold mb-2">Status Dimensi</h5>
+                            <p class="text-sm opacity-90 mb-3">Terdeteksi {{ dimensionalRifts }} celah dimensi dalam radius 10km</p>
+                            <div class="flex items-center">
+                                <i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>
+                                <span class="text-sm">Kemungkinan hujan kristal: <span class="font-bold text-cyan-300">{{ rainProbability }}%</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Crystal Collection -->
+            <section class="mb-16 fade-in">
+                <div class="flex justify-between items-center mb-8">
+                    <h3 class="title-font text-3xl font-bold">Koleksi Kristal Terkumpul</h3>
+                    <div class="text-right">
+                        <div class="text-2xl font-bold glow-text">{{ collectedCrystals }}/{{ totalCrystals }}</div>
+                        <div class="text-sm">Kristal Terkumpul</div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                    <div v-for="n in totalCrystals" :key="n" 
+                         class="aspect-square rounded-2xl flex items-center justify-center transition-all duration-300"
+                         :class="n <= collectedCrystals ? 'glass-card crystal-glow' : 'bg-gray-900 border border-gray-800'"
+                         @click="n <= collectedCrystals ? showCrystalDetail(n) : null">
+                        <div v-if="n <= collectedCrystals" class="text-center">
+                            <i class="fas fa-gem text-4xl mb-2" :style="{color: getCrystalColor(n)}"></i>
+                            <div class="text-xs font-bold">Kristal #{{ n }}</div>
+                        </div>
+                        <div v-else class="text-center opacity-50">
+                            <i class="fas fa-question-circle text-3xl mb-2"></i>
+                            <div class="text-xs">Terkunci</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dimensional Forecast -->
+            <section class="glass-card p-8 mb-16 fade-in">
+                <h3 class="title-font text-3xl font-bold mb-8 text-center">Ramalan Aktivitas Dimensi</h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-cyan-900">
+                                <th class="py-4 text-left">Tanggal</th>
+                                <th class="py-4 text-left">Aktivitas</th>
+                                <th class="py-4 text-left">Jenis Kristal</th>
+                                <th class="py-4 text-left">Intensitas</th>
+                                <th class="py-4 text-left">Rekomendasi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(forecast, index) in dimensionalForecast" :key="index" class="border-b border-gray-800 hover:bg-cyan-900/20">
+                                <td class="py-4">{{ forecast.date }}</td>
+                                <td class="py-4">
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 rounded-full mr-2" :class="forecast.activityColor"></div>
+                                        {{ forecast.activity }}
+                                    </div>
+                                </td>
+                                <td class="py-4">{{ forecast.crystalType }}</td>
+                                <td class="py-4">
+                                    <div class="flex items-center">
+                                        <div class="w-24 h-2 bg-gray-800 rounded-full mr-3 overflow-hidden">
+                                            <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-600" 
+                                                 :style="{width: forecast.intensity + '%'}"></div>
+                                        </div>
+                                        <span>{{ forecast.intensity }}%</span>
+                                    </div>
+                                </td>
+                                <td class="py-4">
+                                    <span class="px-3 py-1 rounded-full text-xs" :class="forecast.recommendationClass">
+                                        {{ forecast.recommendation }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="pt-8 mt-12 border-t border-cyan-900">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h2 class="title-font text-2xl font-bold mb-2">KRYSTALLOS</h2>
+                    <p class="text-sm opacity-80">Mendokumentasikan fenomena dimensi paralel sejak 2023</p>
+                </div>
+                <div class="text-center mb-6 md:mb-0">
+                    <div class="text-lg font-bold mb-2">Status Dimensi Saat Ini</div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 rounded-full bg-green-500 mr-2 pulse"></div>
+                        <span class="text-green-400">Stabil dengan aktivitas kristal rendah</span>
+                    </div>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="opacity-80 hover:opacity-100 hover:text-cyan-300 transition">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="opacity-80 hover:opacity-100 hover:text-cyan-300 transition">
+                        <i class="fas fa-satellite-dish text-xl"></i>
+                    </a>
+                    <a href="#" class="opacity-80 hover:opacity-100 hover:text-cyan-300 transition">
+                        <i class="fas fa-flask text-xl"></i>
+                    </a>
+                </div>
+            </div>
+           

@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Berhasil – Yogik.us Hotspot</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+    .card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      padding: 40px 32px;
+      border-radius: 18px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,.4);
+      animation: fadeUp .8s ease;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .logo {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .logo span { color: #4fc3f7; }
+    h1 {
+      font-size: 22px;
+      margin: 18px 0 10px;
+    }
+    p {
+      font-size: 14px;
+      opacity: .85;
+      margin-bottom: 30px;
+    }
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #4fc3f7, #0288d1);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: .3s ease;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(79,195,247,.4);
+    }
+    .footer {
+      margin-top: 25px;
+      font-size: 12px;
+      opacity: .6;
+    }
+  </style>
+</head>
+<body>  <div class="card">
+    <div class="logo">Yogik<span>.us</span></div>
+    <h1>Login Berhasil 🎉</h1>
+    <p>Selamat! Kamu telah terhubung ke hotspot <b>Yogik.us</b>.
+       Klik tombol di bawah untuk mulai menjelajah internet.</p><!-- redirect otomatis ke halaman sukses Mikrotik -->
+<a href="$(link-status)" class="btn">Mulai Browsing</a>
+
+<div class="footer">
+  © 2026 Yogik.us Hotspot • Secure Network
+</div>
+
+  </div></body>
+</html>

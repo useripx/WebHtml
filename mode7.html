@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reverse Rain Universe - Hujan Terbalik</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            overflow: hidden;
+            cursor: crosshair;
+        }
+        
+        .rain-item {
+            position: absolute;
+            pointer-events: none;
+            user-select: none;
+            animation: float-up linear infinite;
+        }
+        
+        @keyframes float-up {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-120vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .explosion {
+            position: absolute;
+            pointer-events: none;
+            animation: explode 0.6s ease-out forwards;
+        }
+        
+        @keyframes explode {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+        
+        .gravity-field {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            pointer-events: none;
+            animation: pulse-field 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-field {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+        }
+        
+        .portal {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #667eea, #764ba2, #f093fb, #667eea);
+            animation: rotate-portal 4s linear infinite;
+            filter: blur(2px);
+        }
+        
+        @keyframes rotate-portal {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+        }
+        
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        
+        .wiggle {
+            animation: wiggle 0.5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        const ReverseRainUniverse = () => {
+            const rainTypes = [
+                { 
+                    name: 'Emoji Bahagia', 
+                    icon: '😊', 
+                    emoji: ['😊', '😃', '😄', '🥰', '😍', '🤗', '😁', '😆'],
+                    color: '#FFD700',
+                    speed: 3,
+                    size: 40,
+                    description: 'Hujan senyuman dari bawah'
+                },
+                { 
+                    name: 'Uang & Emas', 
+                    icon: '💰', 
+                    emoji: ['💰', '💵', '💴', '💶', '💷', '🪙', '💎', '🏆'],
+                    color: '#FFD700',
+                    speed: 2.5,
+                    size: 35,
+                    description: 'Hujan kekayaan naik ke langit'
+                },
+                { 
+                    name: 'Makanan Lezat', 
+                    icon: '🍕', 
+                    emoji: ['🍕', '🍔', '🍟', '🌭', '🍿', '🧁', '🍩', '🍰', '🎂', '🍦'],
+                    color: '#FF6B9D',
+                    speed: 2,
+                    size: 45,
+                    description: 'Makanan berterbangan ke atas'
+                },
+                { 
+                    name: 'Hewan Lucu', 
+                    icon: '🐱', 
+                    emoji: ['🐱', '🐶', '🐰', '🦊', '🐻', '🐼', '🐨', '🦁', '🐯', '🦄'],
+                    color: '#98D8C8',
+                    speed: 3.5,
+                    size: 50,
+                    description: 'Hewan-hewan terbang bebas'
+                },
+                { 
+                    name: 'Bunga & Alam', 
+                    icon: '🌸', 
+                    emoji: ['🌸', '🌺', '🌻', '🌹', '🌷', '🌼', '🍀', '🌿', '🌱', '🪴'],
+                    color: '#F6A4C4',
+                    speed: 2.8,
+                    size: 38,
+                    description: 'Taman berterbangan ke langit'
+                },
+                { 
+                    name: 'Bintang & Galaksi', 
+                    icon: '⭐', 
+                    emoji: ['⭐', '✨', '🌟', '💫', '🌠', '🪐', '🌙', '☄️', '🌌'],
+                    color: '#B794F4',
+                    speed: 1.5,
+                    size: 42,
+                    description: 'Alam semesta jatuh ke atas'
+                },
+                { 
+                    name: 'Waktu Terbalik', 
+                    icon: '⏰', 
+                    emoji: ['⏰', '⏱️', '⌚', '🕐', '🕑', '🕒', '🕓', '🕔', '⏳', '⌛'],
+                    color: '#81D4FA',
+                    speed: 4,
+                    size: 36,
+                    description: 'Waktu berjalan mundur'
+                },
+                { 
+                    name: 'Aksara & Simbol', 
+                    icon: '✍️', 
+                    emoji: ['あ', 'か', 'さ', 'た', 'な', 'は', 'ま', 'や', 'ら', 'わ', 'ん', '字', '文', '書', '言', '語'],
+                    color: '#FFE082',
+                    speed: 3.2,
+                    size: 44,
+                    description: 'Kata-kata beterbangan'
+                },
+                { 
+                    name: 'Musik & Nada', 
+                    icon: '🎵', 
+                    emoji: ['🎵', '🎶', '🎼', '🎹', '🎸', '🎺', '🎷', '🥁', '🎻', '🎤'],
+                    color: '#FF8A65',
+                    speed: 2.6,
+                    size: 40,
+                    description: 'Melodi mengalir ke atas'
+                },
+                { 
+                    name: 'Dimensi Lain', 
+                    icon: '🌀', 
+                    emoji: ['🌀', '〰️', '♾️', '🔮', '🎭', '🎪', '🎨', '🖼️', '✨', '💠'],
+                    color: '#CE93D8',
+                    speed: 5,
+                    size: 48,
+                    description: 'Portal dimensi terbuka'
+                }
+            ];
+
+            const [currentRain, setCurrentRain] = useState(rainTypes[0]);
+            const [rainIntensity, setRainIntensity] = useState(30);
+            const [gravityMode, setGravityMode] = useState('reverse');
+            const [isRaining, setIsRaining] = useState(true);
+            const [explosions, setExplosions] = useState([]);
+            const [portals, setPortals] = useState([]);
+            const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+            const [showGravityField, setShowGravityField] = useState(false);
+            const containerRef = useRef(null);
+
+            const handleMouseMove = (e) => {
+                setMousePos({ x: e.clientX, y: e.clientY });
+            };
+
+            const handleClick = (e) => {
+                const newExplosion = {
+                    id: Date.now(),
+                    x: e.clientX,
+                    y: e.clientY,
+                    emoji: currentRain.emoji[Math.floor(Math.random() * currentRain.emoji.length)]
+                };
+                setExplosions(prev => [...prev, newExplosion]);
+                setTimeout(() => {
+                    setExplosions(prev => prev.filter(exp => exp.id !== newExplosion.id));
+                }, 600);
+            };
+
+            const createPortal = () => {
+                const newPortal = {
+                    id: Date.now(),
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight
+                };
+                setPortals(prev => [...prev, newPortal]);
+                setTimeout(() => {
+                    setPortals(prev => prev.filter(p => p.id !== newPortal.id));
+                }, 5000);
+            };
+
+            const toggleGravity = () => {
+                setGravityMode(prev => prev === 'reverse' ? 'normal' : prev === 'normal' ? 'chaos' : 'reverse');
+            };
+
+            useEffect(() => {
+                if (!isRaining) return;
+
+                const interval = setInterval(() => {
+                    const rainElements = document.querySelectorAll('.rain-item');
+                    if (rainElements.length < rainIntensity) {
+                        const newRain = document.createElement('div');
+                        newRain.className = 'rain-item';
+                        newRain.textContent = currentRain.emoji[Math.floor(Math.random() * currentRain.emoji.length)];
+                        newRain.style.left = Math.random() * window.innerWidth + 'px';
+                        newRain.style.fontSize = (currentRain.size + Math.random() * 20) + 'px';
+                        newRain.style.animationDuration = (5 - currentRain.speed + Math.random() * 2) + 's';
+                        
+                        if (gravityMode === 'reverse') {
+                            newRain.style.bottom = '-100px';
+                            newRain.style.animationName = 'float-up';
+                        } else if (gravityMode === 'normal') {
+                            newRain.style.top = '-100px';
+                            newRain.style.animationName = 'float-down';
+                        } else {
+                            newRain.style.left = Math.random() * window.innerWidth + 'px';
+                            newRain.style.top = Math.random() * window.innerHeight + 'px';
+                        }
+                        
+                        containerRef.current?.appendChild(newRain);
+                        
+                        setTimeout(() => {
+                            newRain.remove();
+                        }, (5 - currentRain.speed + 2) * 1000);
+                    }
+                }, 100);
+
+                return () => clearInterval(interval);
+            }, [isRaining, currentRain, rainIntensity, gravityMode]);
+
+            return (
+                <div 
+                    ref={containerRef}
+                    className="relative w-screen h-screen overflow-hidden"
+                    onMouseMove={handleMouseMove}
+                    onClick={handleClick}
+                >
+                    {/* Gravity Field */}
+                    {showGravityField && (
+                        <div 
+                            className="gravity-field"
+                            style={{
+                                left: mousePos.x - 100,
+                                top: mousePos.y - 100,
+                                width: '200px',
+                                height: '200px'
+                            }}
+                        />
+                    )}
+
+                    {/* Portals */}
+                    {portals.map(portal => (
+                        <div
+                            key={portal.id}
+                            className="portal"
+                            style={{
+                                left: portal.x - 75,
+                                top: portal.y - 75
+                            }}
+                        />
+                    ))}
+
+                    {/* Explosions */}
+                    {explosions.map(explosion => (
+                        <div
+                            key={explosion.id}
+                            className="explosion text-6xl"
+                            style={{
+                                left: explosion.x - 30,
+                                top: explosion.y - 30
+                            }}
+                        >
+                            {explosion.emoji}
+                        </div>
+                    ))}
+
+                    {/* Control Panel */}
+                    <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-6xl px-4">
+                        <div className="glass-panel rounded-3xl p-6">
+                            <h1 className="text-4xl font-bold text-white text-center mb-2 neon-text">
+                                🌧️ Reverse Rain Universe 🌧️
+                            </h1>
+                            <p className="text-center text-white text-opacity-80 mb-6">
+                                Hujan yang jatuh ke {gravityMode === 'reverse' ? 'ATAS' : gravityMode === 'normal' ? 'BAWAH' : 'SEMUA ARAH'}! Klik untuk ledakan 💥
+                            </p>
+
+                            {/* Rain Type Selector */}
+                            <div className="grid grid-cols-5 gap-3 mb-6">
+                                {rainTypes.map((rain, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => setCurrentRain(rain)}
+                                        className={`glass-panel rounded-xl p-4 transition-all transform hover:scale-105 ${
+                                            currentRain.name === rain.name
+                                                ? 'ring-4 ring-white scale-105'
+                                                : ''
+                                        }`}
+                                    >
+                                        <div className="text-4xl mb-2 wiggle">{rain.icon}</div>
+                                        <div className="text-white text-xs font-semibold">{rain.name}</div>
+                                    </button>
+                                ))}
+                            </div>
+
+                            {/* Controls */}
+                            <div className="grid grid-cols-3 gap-4 mb-4">
+                                <div>
+                                    <label className="text-white text-sm font-semibold block mb-2">
+                                        Intensitas: {rainIntensity}
+                                    </label>
+                                    <input
+                                        type="range"
+                                        min="10"
+                                        max="100"
+                                        value={rainIntensity}
+                                        onChange={(e) => setRainIntensity(Number(e.target.value))}
+                                        className="w-full"
+                                    />
+                                </div>
+
+                                <div className="flex items-end">
+                                    <button
+                                        onClick={() => setIsRaining(!isRaining)}
+                                        className={`w-full py-3 rounded-xl font-bold transition-all ${
+                                            isRaining
+                                                ? 'bg-red-500 hover:bg-red-600 text-white'
+                                                : 'bg-green-500 hover:bg-green-600 text-white'
+                                        }`}
+                                    >
+                                        {isRaining ? '⏸️ Pause' : '▶️ Mulai'}
+                                    </button>
+                                </div>
+
+                                <div className="flex items-end">
+                                    <button
+                                        onClick={toggleGravity}
+                                        className="w-full py-3 rounded-xl font-bold bg-purple-500 hover:bg-purple-600 text-white transition-all"
+                                    >
+                                        🌀 {gravityMode === 'reverse' ? 'Terbalik' : gravityMode === 'normal' ? 'Normal' : 'Chaos'}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={createPortal}
+                                    className="flex-1 py-3 rounded-xl font-bold bg-indigo-500 hover:bg-indigo-600 text-white transition-all"
+                                >
+                                    🌀 Buka Portal
+                                </button>
+                                <button
+                                    onClick={() => setShowGravityField(!showGravityField)}
+                                    className={`flex-1 py-3 rounded-xl font-bold transition-all ${
+                                        showGravityField
+                                            ? 'bg-yellow-500 hover:bg-yellow-600'
+                                            : 'bg-gray-500 hover:bg-gray-600'
+                                    } text-white`}
+                                >
+                                    ✨ Gravity Field
+                                </button>
+                            </div>
+
+                            <div className="mt-4 text-center text-white text-sm bg-white bg-opacity-10 rounded-xl p-3">
+                                {currentRain.description}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Info Corner */}
+                    <div className="absolute bottom-8 right-8 glass-panel rounded-2xl p-4 text-white max-w-xs">
+                        <div className="text-xs space-y-1">
+                            <div>🖱️ Klik untuk ledakan</div>
+                            <div>🌀 Mode: {gravityMode.toUpperCase()}</div>
+                            <div>📊 Intensitas: {rainIntensity}</div>
+                            <div>💫 Portal Aktif: {portals.length}</div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<ReverseRainUniverse />, document.getElementById('root'));
+    </script>
+</body>
+</html>

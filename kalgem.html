@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalender Indonesia Digital</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #e2c091; display: flex; justify-content: center; padding: 20px; }
+        .calendar-card { width: 350px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .header { background: #3498db; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 48px; margin: 0; }
+        .month-year { text-align: right; }
+        .controls { padding: 10px; background: #f8f9fa; display: flex; gap: 5px; }
+        table { width: 100%; border-collapse: collapse; text-align: center; }
+        th { padding: 10px; color: #333; }
+        td { padding: 10px; vertical-align: top; height: 50px; border: 1px solid #eee; position: relative; }
+        .sun { color: red; }
+        .sat { color: #3498db; }
+        .pasaran { font-size: 10px; display: block; margin-top: 4px; }
+        .today { border: 2px solid red !important; }
+        .info-box { padding: 15px; font-size: 14px; border-top: 2px solid #e2c091; }
+    </style>
+</head>
+<body>
+
+<div class="calendar-card">
+    <div class="controls">
+        <select id="monthSelect"></select>
+        <select id="yearSelect"></select>
+    </div>
+
+    <div class="header">
+        <h1 id="bigDay">01</h1>
+        <div class="month-year">
+            <div id="monthLabel">Januari</div>
+            <div id="yearLabel" style="font-size: 24px; opacity: 0.7;">2026</div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr id="daysHeader">
+                <th class="sun">Mgg</th><th>Sen</th><th>Sel</th><th>Rab</th><th>Kam</th><th>Jum</th><th class="sat">Sab</th>
+            </tr>
+        </thead>
+        <tbody id="calendarBody"></tbody>
+    </table>
+
+    <div class="info-box">
+        <strong>Info Hari:</strong>
+        <div id="holidayInfo">Memuat data...</div>
+    </div>
+</div>
+
+<script>
+    const monthSelect = document.getElementById('monthSelect');
+    const yearSelect = document.getElementById('yearSelect');
+    const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    const pasaran = ["Legi", "Pahing", "Pon", "Wage", "Kliwon"];
+
+    // Mengisi Dropdown
+    months.forEach((m, i) => monthSelect.innerHTML += `<option value="${i}">${m}</option>`);
+    for(let y=1900; y<=2500; y++) {
+        yearSelect.innerHTML += `<option value="${y}">${y}</option>`;
+    }
+
+    function generateCalendar(month, year) {
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const body = document.getElementById('calendarBody');
+        body.innerHTML = "";
+        
+        document.getElementById('monthLabel').innerText = months[month];
+        document.getElementById('yearLabel').innerText = year;
+
+        let date = 1;
+        for (let i = 0; i < 6; i++) {
+            let row = document.createElement("tr");
+            for (let j = 0; j < 7; j++) {
+                let cell = document.createElement("td");
+                if (i === 0 && j < firstDay) {
+                    cell.innerText = "";
+                } else if (date > daysInMonth) {
+                    break;
+                } else {
+                    // Logika Sederhana Pasaran (Hanya simulasi, butuh referensi epoch tepat)
+                    let refDate = new Date(2026, 0, 2); // 2 Jan 2026 adalah Wage
+                    let diffDays = Math.floor((new Date(year, month, date) - refDate) / (1000 * 60 * 60 * 24));
+                    let pIndex = (3 + (diffDays % 5 + 5)) % 5; 
+                    
+                    cell.innerHTML = `<span>${date}</span><span class="pasaran">${pasaran[pIndex]}</span>`;
+                    if (j === 0) cell.classList.add('sun');
+                    if (j === 6) cell.classList.add('sat');
+                    date++;
+                }
+                row.appendChild(cell);
+            }
+            body.appendChild(row);
+        }
+    }
+
+    [monthSelect, yearSelect].forEach(el => el.addEventListener('change', () => {
+        generateCalendar(parseInt(monthSelect.value), parseInt(yearSelect.value));
+    }));
+
+    // Inisialisasi ke Januari 2026
+    monthSelect.value = 0;
+    yearSelect.value = 2026;
+    generateCalendar(0, 2026);
+</script>
+</body>
+</html>

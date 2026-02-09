@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yogi Short - Powerful URL Shortener</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', system-ui, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 0 40px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 60px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #FF6B00, #FF0099);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-weight: 900;
+            font-size: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.2s;
+            font-weight: 400;
+        }
+
+        .nav-links a:hover {
+            color: #FF6B00;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 60px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: #000;
+            padding: 40px 20px;
+        }
+
+        .hero-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 107, 0, 0.15), transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(255, 0, 153, 0.15), transparent 50%);
+        }
+
+        .grid-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff, #FF6B00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 50px;
+            line-height: 1.5;
+        }
+
+        /* URL Shortener Form */
+        .shortener-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+        }
+
+        .url-input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .url-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .url-input:focus {
+            outline: none;
+            border-color: #FF6B00;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .url-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-shorten {
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #FF6B00, #FF0099);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-shorten:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-shorten:active {
+            transform: scale(0.98);
+        }
+
+        /* Result Section */
+        .result-container {
+            display: none;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 107, 0, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            animation: slideIn 0.4s ease;
+        }
+
+        .result-container.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .result-url {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .result-link {
+            flex: 1;
+            color: #FF6B00;
+            font-size: 18px;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .btn-copy {
+            padding: 10px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-copy:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #FF6B00;
+        }
+
+        .btn-copy.copied {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: #00ff00;
+        }
+
+        .original-url {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .original-url-text {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            word-break: break-all;
+        }
+
+        /* Features */
+        .features {
+            padding: 80px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 107, 0, 0.5);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* Stats */
+        .stats {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 40px auto 0;
+        }
+
+        .stat-item h3 {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FF6B00, #FF0099);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .stat-item p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 16px;
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            padding: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 14px;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            color: #000;
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+            animation: slideInUp 0.3s ease;
+            z-index: 2000;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 0 20px;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .shortener-container {
+                padding: 24px;
+            }
+
+            .url-input-group {
+                flex-direction: column;
+            }
+
+            .url-input {
+                min-width: 100%;
+            }
+
+            .btn-shorten {
+                width: 100%;
+            }
+
+            .result-url {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn-copy {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .features, .stats {
+                padding: 40px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <div class="logo-box">YS</div>
+                <span>Yogi Short</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#stats">Stats</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="grid-pattern"></div>
+        </div>
+        <div class="hero-content">
+            <h1>Shorten Your URLs Instantly</h1>
+            <p>Create short, memorable links in seconds. Fast, reliable, and completely free.</p>
+
+            <!-- URL Shortener -->
+            <div class="shortener-container">
+                <div class="url-input-group">
+                    <input 
+                        type="url" 
+                        class="url-input" 
+                        id="urlInput" 
+                        placeholder="Enter your long URL here..."
+                        required
+                    >
+                    <button class="btn-shorten" onclick="shortenURL()">
+                        🔗 Shorten URL
+                    </button>
+                </div>
+
+                <!-- Result -->
+                <div class="result-container" id="resultContainer">
+                    <div class="result-label">Your Shortened URL</div>
+                    <div class="result-url">
+                        <div class="result-link" id="shortUrl"></div>
+                        <button class="btn-copy" onclick="copyToClipboard()">
+                            📋 Copy Link
+                        </button>
+                    </div>
+                    <div class="original-url">
+                        <div class="result-label">Original URL</div>
+                        <div class="original-url-text" id="originalUrl"></div>
+                    </div>
+                </div>
+            </div>
+
+            <p style="font-size: 14px; color: rgba(255,255,255,0.5);">
+                ✨ No registration required • Free forever • Instant results
+            </p>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h2 style="font-size: 42px; font-weight: 800; margin-bottom: 16px;">Why Choose Yogi Short?</h2>
+            <p style="color: rgba(255,255,255,0.6); font-size: 18px;">Powerful features for modern link management</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Lightning Fast</h3>
+                <p>Generate shortened links in milliseconds with our optimized system</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Secure & Safe</h3>
+                <p>All links are encrypted and protected with enterprise-grade security</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Track Analytics</h3>
+                <p>Monitor your link performance with detailed analytics and insights</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Custom Links</h3>
+                <p>Create memorable branded short links for your business</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">♾️</div>
+                <h3>Unlimited Links</h3>
+                <p>Create as many short links as you need, completely free</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>Global CDN</h3>
+                <p>Fast redirects worldwide with our global content delivery network</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats" id="stats">
+        <h2 style="font-size: 42px; font-weight: 800; margin-bottom: 16px;">Trusted by Millions</h2>
+        <p style="color: rgba(255,255,255,0.6); font-size: 18px; margin-bottom: 20px;">Join thousands of users who trust Yogi Short</p>
+        
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3 id="linksCreated">0</h3>
+                <p>Links Created</p>
+            </div>
+            <div class="stat-item">
+                <h3>99.9%</h3>
+                <p>Uptime</p>
+            </div>
+            <div class="stat-item">
+                <h3>150+</h3>
+                <p>Countries</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="about">
+        <p>&copy; 2025 Yogi Short. All rights reserved. Built with ❤️ for the internet.</p>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">✓ Link copied to clipboard!</div>
+
+    <script>
+        let linksCreatedCount = 0;
+
+        // Generate random string
+        function generateRandomString(length = 6) {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        // Validate URL
+        function isValidURL(string) {
+            try {
+                const url = new URL(string);
+                return url.protocol === 'http:' || url.protocol === 'https:';
+            } catch (_) {
+                return false;
+            }
+        }
+
+        // Shorten URL
+        function shortenURL() {
+            const urlInput = document.getElementById('urlInput');
+            const originalUrl = urlInput.value.trim();
+
+            if (!originalUrl) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            if (!isValidURL(originalUrl)) {
+                alert('Please enter a valid URL (must start with http:// or https://)');
+                return;
+            }
+
+            const randomString = generateRandomString(6);
+            const shortUrl = `https://www.yogiario.my.id/${randomString}`;
+
+            document.getElementById('shortUrl').textContent = shortUrl;
+            document.getElementById('originalUrl').textContent = originalUrl;
+            document.getElementById('resultContainer').classList.add('show');
+
+            // Reset copy button
+            const copyBtn = document.querySelector('.btn-copy');
+            copyBtn.textContent = '📋 Copy Link';
+            copyBtn.classList.remove('copied');
+
+            // Update stats
+            linksCreatedCount++;
+            updateStats();
+
+            // Smooth scroll to result
+            setTimeout(() => {
+                document.getElementById('resultContainer').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest' 
+                });
+            }, 100);
+        }
+
+        // Copy to clipboard
+        async function copyToClipboard() {
+            const shortUrl = document.getElementById('shortUrl').textContent;
+            const copyBtn = document.querySelector('.btn-copy');
+
+            try {
+                await navigator.clipboard.writeText(shortUrl);
+                
+                // Update button
+                copyBtn.textContent = '✓ Copied!';
+                copyBtn.classList.add('copied');
+
+                // Show toast
+                showToast();
+
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 Copy Link';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = shortUrl;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeC

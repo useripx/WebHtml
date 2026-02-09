@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meow Translator - Enkripsi & Dekripsi</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #f1f1f1;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #ff7eee, #6b7aff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #a3b1cc;
+            margin-bottom: 30px;
+        }
+        
+        .app-description {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+            border-left: 4px solid #6b7aff;
+        }
+        
+        .input-section, .output-section {
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #6b7aff;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2 i {
+            margin-right: 10px;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(0, 0, 0, 0.3);
+            color: #f1f1f1;
+            font-size: 1.1rem;
+            resize: vertical;
+            min-height: 120px;
+            transition: all 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #6b7aff;
+            box-shadow: 0 0 0 2px rgba(107, 122, 255, 0.2);
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 14px 24px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .encrypt-btn {
+            background: linear-gradient(90deg, #6b7aff, #9c6bff);
+            color: white;
+        }
+        
+        .decrypt-btn {
+            background: linear-gradient(90deg, #ff7eee, #ff6b9d);
+            color: white;
+        }
+        
+        .clear-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #f1f1f1;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(-1px);
+        }
+        
+        .output-container {
+            position: relative;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #f1f1f1;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            min-width: auto;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .example {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 4px solid #ff7eee;
+        }
+        
+        .example h3 {
+            color: #ff7eee;
+            margin-bottom: 10px;
+        }
+        
+        .example p {
+            line-height: 1.5;
+        }
+        
+        .algorithm-info {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 4px solid #4dffea;
+        }
+        
+        .algorithm-info h3 {
+            color: #4dffea;
+            margin-bottom: 10px;
+        }
+        
+        .algorithm-info ul {
+            padding-left: 20px;
+            line-height: 1.5;
+        }
+        
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #a3b1cc;
+            font-size: 0.9rem;
+            padding: 20px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            button {
+                min-width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-paw"></i> Meow Translator</h1>
+            <p class="subtitle">Enkripsi dan dekripsi teks ke dalam bahasa "meow" yang sulit dinalar manusia</p>
+        </header>
+        
+        <div class="app-description">
+            <p>Aplikasi ini mengubah teks biasa (seperti "hello world") menjadi kode "meow" yang kompleks dan sulit ditebak, dan sebaliknya dapat mengubah kode "meow" kembali ke teks aslinya. Cobalah dengan mengetik teks di bawah!</p>
+        </div>
+        
+        <div class="input-section">
+            <h2><i class="fas fa-keyboard"></i> Masukkan Teks</h2>
+            <textarea id="inputText" placeholder="Ketik teks yang ingin dienkripsi atau didekripsi di sini...">hello world</textarea>
+            
+            <div class="buttons">
+                <button class="encrypt-btn" id="encryptBtn">
+                    <i class="fas fa-lock"></i> Enkripsi ke Bahasa Meow
+                </button>
+                <button class="decrypt-btn" id="decryptBtn">
+                    <i class="fas fa-lock-open"></i> Dekripsi ke Teks Asli
+                </button>
+                <button class="clear-btn" id="clearBtn">
+                    <i class="fas fa-broom"></i> Bersihkan
+                </button>
+            </div>
+        </div>
+        
+        <div class="output-section">
+            <h2><i class="fas fa-code"></i> Hasil</h2>
+            <div class="output-container">
+                <textarea id="outputText" placeholder="Hasil enkripsi/dekripsi akan muncul di sini..." readonly></textarea>
+                <button class="copy-btn" id="copyBtn">
+                    <i class="far fa-copy"></i> Salin
+                </button>
+            </div>
+        </div>
+        
+        <div class="example">
+            <h3><i class="fas fa-lightbulb"></i> Contoh Penggunaan</h3>
+            <p><strong>Enkripsi:</strong> "hello world" → "meow:ME0W:m30w:Me0W:mEoW:mE0w:meOW:MEOw:mEOw:MEoW:mEOW:me0w"</p>
+            <p><strong>Dekripsi:</strong> "meow:ME0W:m30w:Me0W:mEoW:mE0w:meOW:MEOw:mEOw:MEoW:mEOW:me0w" → "hello world"</p>
+        </div>
+        
+        <div class="algorithm-info">
+            <h3><i class="fas fa-cogs"></i> Algoritma Enkripsi Meow</h3>
+            <ul>
+                <li>Setiap karakter diubah menjadi kode biner 8-bit</li>
+                <li>Kode biner dikonversi ke dalam pola "meow" dengan variasi huruf besar/kecil dan penggantian karakter</li>
+                <li>Penggantian pola: 0 = "meow", 1 = "MEOW", dengan variasi penggantian angka untuk meningkatkan kompleksitas</li>
+                <li>Hasilnya digabung dengan pemisah ":" untuk membentuk kode akhir</li>
+                <li>Algoritma ini menghasilkan pola yang tampak acak dan sulit ditebak oleh manusia</li>
+            </ul>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Dibuat dengan <i class="fas fa-heart" style="color:#ff6b9d;"></i> | Aplikasi Enkripsi & Dekripsi Meow Translator</p>
+    </footer>
+
+    <script>
+        // Elemen DOM
+        const inputText = document.getElementById('inputText');
+        const outputText = document.getElementById('outputText');
+        const encryptBtn = document.getElementById('encryptBtn');
+        const decryptBtn = document.getElementById('decryptBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        
+        // Tabel konversi untuk pola meow
+        const meowPatterns = [
+            "meow", "MEOW", "m30w", "Me0W", "mEoW", "mE0w", 
+            "meOW", "MEOw", "mEOw", "MEoW", "mEOW", "me0w",
+            "M30W", "M3oW", "m3Ow", "M3Ow", "m3OW", "M3oW"
+        ];
+        
+        // Fungsi untuk mengacak pola meow berdasarkan nilai biner
+        function getMeowPattern(binaryStr) {
+            let pattern = "";
+            for (let i = 0; i < binaryStr.length; i++) {
+                const bit = binaryStr[i];
+                const index = (i * 3 + parseInt(bit, 10)) % meowPatterns.length;
+                pattern += meowPatterns[index];
+                if (i < binaryStr.length - 1) pattern += ":";
+            }
+            return pattern;
+        }
+        
+        // Fungsi untuk mendapatkan nilai biner dari pola meow
+        function getBinaryFromMeow(meowStr) {
+            const meowArray = meowStr.split(":");
+            let binaryStr = "";
+            
+            for (let meow of meowArray) {
+                // Normalisasi pola meow untuk perbandingan (case-insensitive dan substitusi angka)
+                const normalizedMeow = meow.toLowerCase().replace(/0/g, 'o').replace(/3/g, 'e');
+                
+                // Tentukan bit berdasarkan pola
+                if (normalizedMeow === "meow") {
+                    binaryStr += "0";
+                } else {
+                    binaryStr += "1";
+                }
+            }
+            
+            return binaryStr;
+        }
+        
+        // Fungsi enkripsi: teks -> meow code
+        function encryptToMeow(text) {
+            let result = "";
+            
+            for (let i = 0; i < text.length; i++) {
+                // Dapatkan kode ASCII karakter
+                const charCode = text.charCodeAt(i);
+                
+                // Konversi ke biner 8-bit
+                const binary = charCode.toString(2).padStart(8, '0');
+                
+                // Konversi biner ke pola meow
+                const meowCode = getMeowPattern(binary);
+                
+                // Tambahkan ke hasil dengan pemisah khusus
+                if (i > 0) result += "|";
+                result += meowCode;
+            }
+            
+            return result;
+        }
+        
+        // Fungsi dekripsi: meow code -> teks
+        function decryptFromMeow(meowCode) {
+            try {
+                // Pisahkan kode untuk setiap karakter
+                const charCodes = meowCode.split("|");
+                let result = "";
+                
+                for (let charMeow of charCodes) {
+                    // Dapatkan biner dari pola meow
+                    const binary = getBinaryFromMeow(charMeow);
+                    
+                    // Konversi biner ke desimal
+                    const charCode = parseInt(binary, 2);
+                    
+                    // Konversi ke karakter
+                    result += String.fromCharCode(charCode);
+                }
+                
+                return result;
+            } catch (error) {
+                return "Error: Kode Meow tidak valid!";
+            }
+        }
+        
+        // Event listener untuk tombol enkripsi
+        encryptBtn.addEventListener('click', () => {
+            const text = inputText.value.trim();
+            if (text === "") {
+                outputText.value = "Masukkan teks terlebih dahulu!";
+                return;
+            }
+            
+            const encrypted = encryptToMeow(text);
+            outputText.value = encrypted;
+        });
+        
+        // Event listener untuk tombol dekripsi
+        decryptBtn.addEventListener('click', () => {
+            const text = inputText.value.trim();
+            if (text === "") {
+                outputText.value = "Masukkan kode Meow terlebih dahulu!";
+                return;
+            }
+            
+            const decrypted = decryptFromMeow(text);
+            outputText.value = decrypted;
+        });
+        
+        // Event listener untuk tombol bersihkan
+        clearBtn.addEventListener('click', () => {
+            inputText.value = "";
+            outputText.value = "";
+            inputText.focus();
+        });
+        
+        // Event listener untuk tombol salin
+        copyBtn.addEventListener('click', () => {
+            if (outputText.value.trim() === "") return;
+            
+            outputText.select();
+            outputText.setSelectionRange(0, 99999); // Untuk perangkat mobile
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    const originalText = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+                    
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalText;
+                    }, 2000);
+                }
+            } catch (err) {
+                console.log('Gagal menyalin teks: ', err);
+            }
+        });
+        
+        // Contoh enkripsi saat halaman dimuat
+        window.addEventListener('load', () => {
+            const exampleText = "hello world";
+            const encryptedExample = encryptToMeow(exampleText);
+            outputText.value = `Contoh: "${exampleText}" dienkripsi menjadi:\n${encryptedExample}`;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Presiden Indonesia & USA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .tab-active-usa { border-bottom: 4px solid #002868; color: #002868; }
+        .tab-active-ina { border-bottom: 4px solid #EF4444; color: #EF4444; }
+
+        .custom-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+    <!-- Header -->
+    <header id="mainHeader" class="py-16 px-4 text-center text-white transition-all duration-500 bg-[#002868] shadow-lg">
+        <h1 id="headerTitle" class="text-3xl md:text-5xl font-extrabold mb-3">Presiden Amerika Serikat</h1>
+        <p id="headerDesc" class="text-sm md:text-lg opacity-80">Daftar lengkap pemimpin negara terpilih</p>
+    </header>
+
+    <!-- Navigasi Tab -->
+    <nav class="sticky top-0 z-50 bg-white shadow-sm">
+        <div class="max-w-3xl mx-auto flex justify-around">
+            <button onclick="switchTab('usa')" id="tab-usa" class="flex-1 py-5 font-bold transition-all duration-300 tab-active-usa">
+                🇺🇸 USA
+            </button>
+            <button onclick="switchTab('ina')" id="tab-ina" class="flex-1 py-5 font-bold text-slate-400 transition-all duration-300">
+                🇮🇩 INDONESIA
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto p-5 md:p-10">
+        <!-- Search -->
+        <div class="mb-10">
+            <input type="text" id="searchInput" oninput="filterData()" placeholder="Cari nama presiden..." 
+                class="w-full p-4 rounded-xl border border-slate-200 shadow-sm focus:ring-2 focus:ring-blue-500 outline-none text-lg">
+        </div>
+
+        <!-- Table Container -->
+        <div class="bg-white rounded-2xl custom-shadow overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-50 border-b border-slate-100">
+                        <tr>
+                            <th class="p-5 font-bold text-slate-500 uppercase text-xs">No</th>
+                            <th class="p-5 font-bold text-slate-500 uppercase text-xs">Nama Presiden</th>
+                            <th class="p-5 font-bold text-slate-500 uppercase text-xs">Masa Jabatan</th>
+                            <th class="p-5 font-bold text-slate-500 uppercase text-xs">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderList" class="divide-y divide-slate-100">
+                        <!-- JS injected -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center py-12 text-slate-400 text-sm">
+        Sumber data: Wikipedia Indonesia
+    </footer>
+
+    <script>
+        const data = {
+            usa: [
+                { no: 1, name: "George Washington", term: "1789–1797" },
+                { no: 2, name: "John Adams", term: "1797–1801" },
+                { no: 3, name: "Thomas Jefferson", term: "1801–1809" },
+                { no: 4, name: "James Madison", term: "1809–1817" },
+                { no: 5, name: "James Monroe", term: "1817–1825" },
+                { no: 6, name: "John Quincy Adams", term: "1825–1829" },
+                { no: 7, name: "Andrew Jackson", term: "1829–1837" },
+                { no: 8, name: "Martin Van Buren", term: "1837–1841" },
+                { no: 9, name: "William Henry Harrison", term: "1841" },
+                { no: 10, name: "John Tyler", term: "1841–1845" },
+                { no: 11, name: "James K. Polk", term: "1845–1849" },
+                { no: 12, name: "Zachary Taylor", term: "1849–1850" },
+                { no: 13, name: "Millard Fillmore", term: "1850–1853" },
+                { no: 14, name: "Franklin Pierce", term: "1853–1857" },
+                { no: 15, name: "James Buchanan", term: "1857–1861" },
+                { no: 16, name: "Abraham Lincoln", term: "1861–1865" },
+                { no: 17, name: "Andrew Johnson", term: "1865–1869" },
+                { no: 18, name: "Ulysses S. Grant", term: "1869–1877" },
+                { no: 19, name: "Rutherford B. Hayes", term: "1877–1881" },
+                { no: 20, name: "James A. Garfield", term: "1881" },
+                { no: 21, name: "Chester A. Arthur", term: "1881–1885" },
+                { no: 22, name: "Grover Cleveland", term: "1885–1889" },
+                { no: 23, name: "Benjamin Harrison", term: "1889–1893" },
+                { no: 24, name: "Grover Cleveland", term: "1893–1897" },
+                { no: 25, name: "William McKinley", term: "1897–1901" },
+                { no: 26, name: "Theodore Roosevelt", term: "1901–1909" },
+                { no: 27, name: "William Howard Taft", term: "1909–1913" },
+                { no: 28, name: "Woodrow Wilson", term: "1913–1921" },
+                { no: 29, name: "Warren G. Harding", term: "1921–1923" },
+                { no: 30, name: "Calvin Coolidge", term: "1923–1929" },
+                { no: 31, name: "Herbert Hoover", term: "1929–1933" },
+                { no: 32, name: "Franklin D. Roosevelt", term: "1933–1945" },
+                { no: 33, name: "Harry S. Truman", term: "1945–1953" },
+                { no: 34, name: "Dwight D. Eisenhower", term: "1953–1961" },
+                { no: 35, name: "John F. Kennedy", term: "1961–1963" },
+                { no: 36, name: "Lyndon B. Johnson", term: "1963–1969" },
+                { no: 37, name: "Richard Nixon", term: "1969–1974" },
+                { no: 38, name: "Gerald Ford", term: "1974–1977" },
+                { no: 39, name: "Jimmy Carter", term: "1977–1981" },
+                { no: 40, name: "Ronald Reagan", term: "1981–1989" },
+                { no: 41, name: "George H. W. Bush", term: "1989–1993" },
+                { no: 42, name: "Bill Clinton", term: "1993–2001" },
+                { no: 43, name: "George W. Bush", term: "2001–2009" },
+                { no: 44, name: "Barack Obama", term: "2009–2017" },
+                { no: 45, name: "Donald Trump", term: "2017–2021" },
+                { no: 46, name: "Joe Biden", term: "2021–2025" },
+                { no: 47, name: "Donald Trump", term: "2025–Sekarang" }
+            ],
+            ina: [
+                { no: 1, name: "Soekarno", term: "1945–1967" },
+                { no: 2, name: "Soeharto", term: "1967–1998" },
+                { no: 3, name: "B. J. Habibie", term: "1998–1999" },
+                { no: 4, name: "Abdurrahman Wahid", term: "1999–2001" },
+                { no: 5, name: "Megawati Soekarnoputri", term: "2001–2004" },
+                { no: 6, name: "Susilo Bambang Yudhoyono", term: "2004–2014" },
+                { no: 7, name: "Joko Widodo", term: "2014–2024" },
+                { no: 8, name: "Prabowo Subianto", term: "2024–Sekarang" }
+            ]
+        };
+
+        let activeTab = 'usa';
+
+        function switchTab(tab) {
+            activeTab = tab;
+            const header = document.getElementById('mainHeader');
+            const title = document.getElementById('headerTitle');
+            const desc = document.getElementById('headerDesc');
+            const tabUsa = document.getElementById('tab-usa');
+            const tabIna = document.getElementById('tab-ina');
+
+            if (tab === 'usa') {
+                header.style.backgroundColor = "#002868";
+                title.innerText = "Presiden Amerika Serikat";
+                desc.innerText = "Daftar lengkap pemimpin negara terpilih";
+                tabUsa.className = "flex-1 py-5 font-bold transition-all duration-300 tab-active-usa";
+                tabIna.className = "flex-1 py-5 font-bold text-slate-400 transition-all duration-300";
+            } else {
+                header.style.backgroundColor = "#EF4444";
+                title.innerText = "Presiden Republik Indonesia";
+                desc.innerText = "Daftar lengkap kepala negara Republik Indonesia";
+                tabIna.className = "flex-1 py-5 font-bold transition-all duration-300 tab-active-ina";
+                tabUsa.className = "flex-1 py-5 font-bold text-slate-400 transition-all duration-300";
+            }
+
+            renderData(data[tab]);
+        }
+
+        function renderData(items) {
+            const list = document.getElementById('leaderList');
+            list.innerHTML = "";
+
+            items.forEach(item => {
+                const wikiName = item.name.replace(/ /g, "_");
+                const row = document.createElement('tr');
+                row.className = "hover:bg-slate-50 transition-colors";
+                row.innerHTML = `
+                    <td class="p-5 font-bold text-slate-300">${item.no}</td>
+                    <td class="p-5 font-semibold text-slate-700">${item.name}</td>
+                    <td class="p-5 text-slate-500">${item.term}</td>
+                    <td class="p-5">
+                        <a href="https://id.wikipedia.org/wiki/${wikiName}" target="_blank" 
+                           class="inline-block px-4 py-2 bg-slate-100 text-slate-600 text-xs font-bold rounded-lg hover:bg-slate-200 transition-all">
+                           WIKIPEDIA
+                        </a>
+                    </td>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        function filterData() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = data[activeTab].filter(item => 
+                item.name.toLowerCase().includes(query)
+            );
+            renderData(filtered);
+        }
+
+        window.onload = () => switchTab('usa');
+    </script>
+</body>
+</html>
+

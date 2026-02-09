@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kisah Penyaliban: Perspektif Alkitab & Al-Qur'an</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent1: #e74c3c;
+            --accent2: #27ae60;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --text-light: #7f8c8d;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .tab-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .tab-header {
+            display: flex;
+            background-color: var(--light);
+            border-bottom: 2px solid #ddd;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1.2rem 1rem;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .tab-btn i {
+            font-size: 1.2rem;
+        }
+
+        .tab-btn.active {
+            background-color: white;
+            color: var(--primary);
+            border-bottom: 3px solid;
+            position: relative;
+            top: 1px;
+        }
+
+        .tab-btn:nth-child(1).active {
+            color: var(--accent1);
+            border-bottom-color: var(--accent1);
+        }
+
+        .tab-btn:nth-child(2).active {
+            color: var(--accent2);
+            border-bottom-color: var(--accent2);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 2.5rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .content-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .content-icon {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .alkitab .content-icon {
+            background: var(--accent1);
+        }
+
+        .quran .content-icon {
+            background: var(--accent2);
+        }
+
+        .content-title h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .content-title p {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .timeline {
+            margin: 2.5rem 0;
+        }
+
+        .timeline-item {
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+            border-left: 3px solid;
+            position: relative;
+        }
+
+        .alkitab .timeline-item {
+            border-left-color: var(--accent1);
+        }
+
+        .quran .timeline-item {
+            border-left-color: var(--accent2);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            left: -9px;
+            top: 0;
+        }
+
+        .alkitab .timeline-item::before {
+            background-color: var(--accent1);
+        }
+
+        .quran .timeline-item::before {
+            background-color: var(--accent2);
+        }
+
+        .timeline-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content {
+            margin-bottom: 0.8rem;
+        }
+
+        .verse {
+            background-color: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 4px solid;
+            font-style: italic;
+        }
+
+        .alkitab .verse {
+            border-left-color: var(--accent1);
+            background-color: rgba(231, 76, 60, 0.05);
+        }
+
+        .quran .verse {
+            border-left-color: var(--accent2);
+            background-color: rgba(39, 174, 96, 0.05);
+        }
+
+        .verse-ref {
+            display: block;
+            text-align: right;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            font-style: normal;
+            font-size: 0.9rem;
+        }
+
+        .comparison-table {
+            margin-top: 3rem;
+            overflow-x: auto;
+        }
+
+        .comparison-table h3 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--light);
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .alkitab-row td:first-child {
+            border-left: 4px solid var(--accent1);
+        }
+
+        .quran-row td:first-child {
+            border-left: 4px solid var(--accent2);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: var(--primary);
+            color: white;
+            margin-top: 2rem;
+        }
+
+        footer p {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .note {
+            background-color: #fff8e1;
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            border-left: 4px solid #ffc107;
+        }
+
+        .note h4 {
+            color: #e65100;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .tab-btn {
+                font-size: 0.9rem;
+                padding: 1rem 0.5rem;
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .tab-btn i {
+                font-size: 1rem;
+            }
+            
+            .tab-content {
+                padding: 1.5rem;
+            }
+            
+            .content-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .content-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+            
+            th, td {
+                padding: 0.8rem 0.5rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-cross"></i> Kisah Penyaliban Yesus/Isa <i class="fas fa-star-and-crescent"></i></h1>
+        <p>Perbandingan perspektif Alkitab (Kristen) dan Al-Qur'an (Islam) mengenai kisah penyaliban Yesus Kristus / Nabi Isa alaihissalam</p>
+    </header>
+
+    <div class="container">
+        <div class="tab-container">
+            <div class="tab-header">
+                <button class="tab-btn active" data-tab="alkitab">
+                    <i class="fas fa-bible"></i> Perspektif Alkitab
+                </button>
+                <button class="tab-btn" data-tab="quran">
+                    <i class="fas fa-book-quran"></i> Perspektif Al-Qur'an
+                </button>
+            </div>
+            
+            <!-- Tab Alkitab -->
+            <div id="alkitab" class="tab-content alkitab active">
+                <div class="content-header">
+                    <div class="content-icon">
+                        <i class="fas fa-cross"></i>
+                    </div>
+                    <div class="content-title">
+                        <h2>Kisah Penyaliban Yesus Kristus Menurut Alkitab</h2>
+                        <p>Narasi berdasarkan Injil Matius, Markus, Lukas, dan Yohanes</p>
+                    </div>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Pengadilan dan Penghukuman</div>
+                        <div class="timeline-content">Setelah ditangkap di Taman Getsemani, Yesus diadili di hadapan Imam Besar Kayafas dan Sanhedrin, kemudian dibawa ke hadapan Gubernur Romawi Pontius Pilatus. Pilatus menjatuhkan hukuman salib meskipin mengetahui Yesus tidak bersalah.</div>
+                        <div class="verse">
+                            "Lalu mereka semua berkata: 'Kalau begitu, apakah Engkau ini Anak Allah?' Jawab Yesus: 'Kamu sendiri mengatakan, bahwa Akulah Anak Allah.' Lalu kata mereka: 'Untuk apa kita perlu kesaksian lagi? Kita telah mendengarnya dari mulut-Nya sendiri.'"
+                            <span class="verse-ref">Lukas 22:70-71</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-title">Penyaliban di Golgota</div>
+                        <div class="timeline-content">Yesus dipaksa memikul salib-Nya sendiri ke tempat yang disebut Golgota (Tempat Tengkorak). Di sana Ia disalibkan di antara dua penyamun.</div>
+                        <div class="verse">
+                            "Dan ketika mereka sampai di tempat yang bernama Golgota, yang berarti: Tempat Tengkorak, mereka memberi Dia minum anggur bercampur empedu, tetapi setelah mengecapnya, Ia tidak mau meminumnya. Setelah mereka menyalibkan Dia, mereka membagi-bagi pakaian-Nya dengan membuang undi."
+                            <span class="verse-ref">Matius 27:33-35</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-title">Kematian dan Makna Teologis</div>
+                        <div class="timeline-content">Setelah menderita di kayu salib selama sekitar enam jam, Yesus menyerahkan nyawa-Nya. Kematian-Nya dianggap sebagai korban penebusan dosa umat manusia.</div>
+                        <div class="verse">
+                            "Yesus berseru pula dengan suara nyaring lalu menyerahkan nyawa-Nya. Dan lihatlah, tabir Bait Suci terbelah dua dari atas sampai ke bawah dan terjadilah gempa bumi, dan bukit-batu terbelah."
+                            <span class="verse-ref">Matius 27:50-51</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-title">Kebangkitan</div>
+                        <div class="timeline-content">Pada hari ketiga setelah kematian-Nya, Yesus bangkit dari antara orang mati, menggenapi nubuat dan menegaskan kemenangan atas maut.</div>
+                        <div class="verse">
+                            "Tetapi malaikat itu berkata kepada perempuan-perempuan itu: 'Janganlah kamu takut; sebab aku tahu kamu mencari Yesus yang disalibkan itu. Ia tidak ada di sini, sebab Ia telah bangkit, sama seperti yang telah dikatakan-Nya.'"
+                            <span class="verse-ref">Matius 28:5-6</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="note">
+                    <h4><i class="fas fa-info-circle"></i> Catatan Teologis Kristen</h4>
+                    <p>Penyaliban Yesus dalam teologi Kristen merupakan puncak dari rencana keselamatan Allah. Kematian Yesus di kayu salib dipandang sebagai pengorbanan yang sempurna untuk menebus dosa umat manusia, menggantikan hukuman yang seharusnya diterima oleh manusia yang berdosa. Kebangkitan-Nya pada hari ketiga menegaskan kemenangan atas maut dan menjadi dasar iman Kristen.</p>
+                </div>
+            </div>
+            
+            <!-- Tab Al-Qur'an -->
+            <div id="quran" class="tab-content quran">
+                <div class="content-header">
+                    <div class="content-icon">
+                        <i class="fas fa-star-and-crescent"></i>
+                    </div>
+                    <div class="content-title">
+                        <h2>Kisah Nabi Isa alaihissalam Menurut Al-Qur'an</h2>
+                        <p>Narasi berdasarkan Surah An-Nisa', Ali 'Imran, Al-Ma'idah, dan Maryam</p>
+                    </div>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Isa AS sebagai Nabi dan Rasul</div>
+                        <div class="timeline-content">Al-Qur'an menegaskan bahwa Isa (Yesus) adalah salah seorang nabi dan rasul Allah yang terkemuka, dilahirkan secara ajaib dari Perawan Maryam tanpa ayah, tetapi bukan anak Tuhan.</div>
+                        <div class="verse">
+                            "Isa putra Maryam itu hanyalah seorang Rasul yang sesungguhnya telah berlalu sebelumnya beberapa rasul, dan ibunya seorang yang sangat benar, kedua-duanya biasa memakan makanan. Perhatikan bagaimana Kami menjelaskan kepada mereka tanda-tanda kekuasaan (Kami), kemudian perhatikanlah bagaimana mereka berpaling."
+                            <span class="verse-ref">QS Al-Ma'idah (5): 75</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-title">Penyelamatan dari Penyaliban</div>
+                        <div class="timeline-content">Al-Qur'an menegaskan bahwa Nabi Isa AS tidak dibunuh dan tidak disalib. Allah menyelamatkannya dengan mengangkatnya ke langit dan menjadikan orang lain diserupakan dengan beliau.</div>
+                        <div class="verse">
+                            "dan karena ucapan mereka: 'Sesungguhnya kami telah membunuh Al-Masih, Isa putra Maryam, Rasul Allah', padahal mereka tidak membunuhnya dan tidak (pula) menyalibnya, tetapi (yang mereka bunuh ialah) orang yang diserupakan dengan Isa bagi mereka."
+                            <span class="verse-ref">QS An-Nisa' (4): 157</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-title">Pengangkatan ke Langit</div>
+                        <div class="timeline-content">Allah mengangkat Nabi Isa AS ke sisi-Nya, menyelamatkannya dari rencana pembunuhan musuh-musuhnya.</div>
+                        <div class="verse">
+                            "tetapi (yang sebenarnya), Allah telah mengangkat Isa kepada-Nya. Dan adalah Allah Maha Perkasa lagi Maha Bijaksana."
+                            <span class="verse-ref">QS An-Nisa' (4): 158</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-title">Kedatangan Kembali di Akhir Zaman</div>
+                        <div class="timeline-content">Menurut keyakinan Islam, Nabi Isa AS akan turun kembali ke bumi di akhir zaman sebagai tanda Kiamat besar, mematahkan salib, membunuh Dajjal, dan menegakkan keadilan.</div>
+                        <div class="verse">
+                            "Dan sesungguhnya Isa itu benar-benar memberikan pengetahuan tentang hari kiamat. Karena itu janganlah kamu ragu-ragu tentang kiamat itu dan ikutilah Aku. Inilah jalan yang lurus."
+                            <span class="verse-ref">QS Az-Zukhruf (43): 61</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="note">
+                    <h4><i class="fas fa-info-circle"></i> Catatan Teologis Islam</h4>
+                    <p>Dalam Islam, kisah penyaliban dipandang sebagai kesalahan identitas dan bukti kekuasaan Allah menyelamatkan nabi-Nya. Pengangkatan Nabi Isa AS ke langit menunjukkan kemuliaan seorang nabi di sisi Allah. Keyakinan bahwa Nabi Isa AS akan turun kembali di akhir zaman untuk membenarkan ajaran tauhid dan mematahkan salib merupakan bagian penting dari eskatologi Islam.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tabel Perbandingan -->
+        <div class="comparison-table">
+            <h3><i class="fas fa-balance-scale"></i> Perbandingan Pandangan</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspek</th>
+                        <th>Alkitab (Kristen)</th>
+                        <th>Al-Qur'an (Islam)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="alkitab-row">
+                        <td><strong>Status Yesus/Isa</strong></td>
+                        <td>Tuhan dan Anak Allah, Juru Selamat</td>
+                        <td>Nabi dan Rasul Allah, hamba Allah</td>
+                    </tr>
+                    <tr class="quran-row">
+                        <td><strong>Peristiwa Penyaliban</strong></td>
+                        <td>Terjadi. Yesus benar-benar disalibkan sampai mati</td>
+                        <td>Tidak terjadi. Orang yang disalib adalah orang lain yang diserupakan</td>
+                    </tr>
+                    <tr class="alkitab-row">
+                        <td><strong>Akhir Kisah</strong></td>
+                        <td>Mati di kayu salib, dikuburkan, lalu bangkit pada hari ketiga</td>
+                        <td>Diselamatkan & diangkat hidup-hidup ke langit oleh Allah</td>
+                    </tr>
+                    <tr class="quran-row">
+                        <td><strong>Makna Teologis</strong></td>
+                        <td>Korban penebusan dosa, bukti kasih Allah, kemenangan atas maut</td>
+                        <td>Bukti kekuasaan Allah menyelamatkan nabi-Nya, kekeliruan musuh-musuhnya</td>
+                    </tr>
+                    <tr class="alkitab-row">
+                        <td><strong>Status Saat Ini</strong></td>
+                        <td>Sudah bangkit, naik ke surga, duduk di sebelah kanan Allah</td>
+                        <td>Hidup di langit, akan diturunkan kembali di akhir zaman</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Disclaimer:</strong> Website ini dibuat untuk tujuan edukasi dan perbandingan studi agama. Setiap 

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yogi Ario - Premium Pens & Stationery</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --accent: #f39c12;
+            --light: #ecf0f1;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary) 0%, #34495e 100%);
+            padding: 1rem 0;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white !important;
+            letter-spacing: 1px;
+        }
+        
+        .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--accent) !important;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #34495e 100%);
+            color: white;
+            padding: 100px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M10 10h80v80H10z" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="2"/></svg>');
+            opacity: 0.1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+            animation: fadeInUp 1s 0.2s backwards;
+        }
+
+        /* Buttons */
+        .btn-primary-custom {
+            background: var(--secondary);
+            border: none;
+            padding: 12px 35px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+            animation: fadeInUp 1s 0.4s backwards;
+        }
+        
+        .btn-primary-custom:hover {
+            background: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(231, 76, 60, 0.3);
+        }
+
+        /* Product Cards */
+        .product-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            height: 100%;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-image.blue {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .product-image.red {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .product-image.black {
+            background: linear-gradient(135deg, #4b4b4b 0%, #1a1a1a 100%);
+        }
+        
+        .product-image.green {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        
+        .product-image.gold {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+        }
+        
+        .pen-illustration {
+            width: 180px;
+            height: 180px;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .pen-body {
+            width: 20px;
+            height: 140px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .pen-tip {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 30px solid #2c3e50;
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .pen-clip {
+            width: 4px;
+            height: 60px;
+            background: rgba(44, 62, 80, 0.6);
+            position: absolute;
+            top: 20px;
+            right: -2px;
+            border-radius: 2px;
+        }
+        
+        .pen-cap {
+            width: 20px;
+            height: 40px;
+            background: rgba(44, 62, 80, 0.8);
+            border-radius: 10px 10px 0 0;
+            position: absolute;
+            top: -10px;
+            left: 0;
+        }
+
+        .product-card .card-body {
+            padding: 1.5rem;
+        }
+        
+        .product-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+        
+        .btn-add-cart {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .btn-add-cart:hover {
+            background: var(--secondary);
+            transform: scale(1.05);
+        }
+
+        /* Features Section */
+        .features {
+            background: var(--light);
+            padding: 80px 0;
+        }
+        
+        .feature-box {
+            text-align: center;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 40px 0 20px;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translate(-50%, -50%) rotate(-45deg) translateY(0);
+            }
+            50% {
+                transform: translate(-50%, -50%) rotate(-45deg) translateY(-10px);
+            }
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 50px;
+            text-align: center;
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        /* Badge */
+        .badge-new {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--secondary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-pen-nib"></i> Yogi Ario</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#products">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> <span class="badge bg-danger">0</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 hero-content">
+                    <h1>Premium Writing Experience</h1>
+                    <p>Temukan koleksi pulpen premium terbaik dari Yogi Ario. Kualitas tinggi, desain elegan, dan performa yang sempurna untuk setiap tulisan Anda.</p>
+                    <a href="#products" class="btn btn-primary-custom btn-lg">Belanja Sekarang <i class="fas fa-arrow-right ms-2"></i></a>
+                </div>
+                <div class="col-lg-6 text-center mt-5 mt-lg-0">
+                    <div class="hero-pen-display">
+                        <i class="fas fa-pen-fancy" style="font-size: 15rem; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="py-5" id="products">
+        <div class="container">
+            <h2 class="section-title">Koleksi Pulpen Premium</h2>
+            <div class="row g-4">
+                <!-- Product 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card product-card">
+                        <span class="badge-new">NEW</span>
+                        <div class="product-image">
+                            <div class="pen-illustration">
+                                <div class="pen-body">
+                                    <div class="pen-cap"></div>
+                                    <div class="pen-clip"></div>
+                                    <div class="pen-tip"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="product-title">Executive Black</h5>
+                            <p class="text-muted">Pulpen premium dengan body hitam mengkilap dan grip ergonomis</p>
+                            <div class="product-price">Rp 125.000</div>
+                            <button class="btn btn-add-cart"><i class="fas fa-cart-plus me-2"></i>Tambah ke Keranjang</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card product-card">
+                        <div class="product-image blue">
+                            <div class="pen-illustration">
+                                <div class="pen-body">
+                                    <div class="pen-cap"></div>
+                                    <div class="pen-clip"></div>
+                                    <div class="pen-tip"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="product-title">Ocean Blue</h5>
+                            <p class="text-muted">Pulpen dengan tinta gel halus, warna biru ocean yang elegan</p>
+                            <div class="product-price">Rp 95.000</div>
+                            <button class="btn btn-add-cart"><i class="fas fa-cart-plus me-2"></i>Tambah ke Keranjang</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card product-card">
+                        <span class="badge-new">BEST SELLER</span>
+                        <div class="product-image red">
+                            <div class="pen-illustration">
+                                <div class="pen-body">
+                                    <div class="pen-cap"></div>
+                                    <div class="pen-clip"></div>
+                                    <div class="pen-tip"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="product-title">Crimson Red</h5>
+                            <p class="text-muted">Pulpen ballpoint dengan tinta merah, cocok untuk signing</p>
+                            <div class="product-price">Rp 89.000</div>
+                            <button class="btn btn-add-cart"><i class="fas fa-cart-plus me-2"></i>Tambah ke Keranjang</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card product-card">
+                        <div class="product-image green">
+                            <div class="pen-illustration">
+                                <div class="pen-body">
+                                    <div class="pen-cap"></div>
+                                    <div class="pen-clip"></div>
+                                    <div class="pen-tip"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="product-title">Forest Green</h5>
+                            <p class="text-muted">Eco-friendly pen dengan material ramah lingkungan</p>
+                            <div class="product-price">Rp 110.000</div>
+                            <button class="btn btn-add-cart"><i class="fas fa-cart-plus me-2"></i>Tambah ke Keranjang</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card product-card">
+                        <div class="product-image gold">
+                            <div class="pen-illustration">
+                                <div class="pen-body">
+                                    <div class="pen-cap"></div>
+                                    <div class="pen-clip"></div>
+                                    <div class="pen-tip"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="product-title">Royal Gold</h5>
+                            <p class="text-muted">Pulpen mewah dengan aksen gold, sempurna untuk hadiah</p>
+                            <div class="product-price">Rp 175.000</div>
+                            <button class="btn btn-add-cart"><i class="fas fa-cart-plus me-2"></i>Tambah ke Keranjang</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card product-card">
+                        <div class="product-image black">
+                            <div class="pen-illustration">
+                                <div class="pen-body">
+                                    <div class="pen-cap"></div>
+                                    <div class="pen-clip"></div>
+                                    <div class="pen-tip"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="product-title">Carbon Black Pro</h5>
+                            <p class="text-muted">Professional pen dengan teknologi quick-dry ink</p>
+                            <div class="product-price">Rp 145.000</div>
+                            <button class="btn btn-add-cart"><i class="fas fa-cart-plus me-2"></i>Tambah ke Keranjang</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Mengapa Memilih Yogi Ario?</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <div class="feature-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h4>Kualitas Premium</h4>
+                        <p>Semua produk kami dipilih dengan standar kualitas tertinggi untuk pengalaman menulis terbaik</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <div class="feature-icon">
+                            <i class="fas fa-shipping-fast"></i>
+                        </div>
+                        <h4>Pengiriman Cepat</h4>
+                        <p>Gratis ongkir untuk pembelian diatas Rp 200.000 ke seluruh Indonesia</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Garansi Produk</h4>
+                        <p>Garansi 1 tahun untuk semua produk pulpen premium kami</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </sectio

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotional Weather Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .emotion-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .7; transform: scale(1.05); }
+        }
+        
+        .weather-gradient {
+            background: linear-gradient(135deg, var(--color-start), var(--color-end));
+            transition: all 1.5s ease-in-out;
+        }
+        
+        .glow {
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+        
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        const EmotionalWeather = () => {
+            const emotions = [
+                { 
+                    name: 'Bahagia', 
+                    icon: '☀️', 
+                    weather: 'Cerah',
+                    colors: { start: '#FFD93D', end: '#FF6B9D' },
+                    particles: { color: '#FFE66D', count: 50, size: 8 },
+                    description: 'Langit cerah penuh kehangatan'
+                },
+                { 
+                    name: 'Sedih', 
+                    icon: '🌧️', 
+                    weather: 'Hujan',
+                    colors: { start: '#4A5568', end: '#2D3748' },
+                    particles: { color: '#81A4CD', count: 100, size: 4 },
+                    description: 'Hujan membasahi jiwa'
+                },
+                { 
+                    name: 'Marah', 
+                    icon: '⛈️', 
+                    weather: 'Badai',
+                    colors: { start: '#E53E3E', end: '#9B2C2C' },
+                    particles: { color: '#FBD38D', count: 80, size: 6 },
+                    description: 'Petir menggelegar di hati'
+                },
+                { 
+                    name: 'Tenang', 
+                    icon: '🌙', 
+                    weather: 'Malam',
+                    colors: { start: '#2C5364', end: '#0F2027' },
+                    particles: { color: '#F7FAFC', count: 40, size: 3 },
+                    description: 'Ketenangan malam yang damai'
+                },
+                { 
+                    name: 'Antusias', 
+                    icon: '🌈', 
+                    weather: 'Pelangi',
+                    colors: { start: '#FF6B9D', end: '#C06C84' },
+                    particles: { color: '#A8E6CF', count: 60, size: 7 },
+                    description: 'Warna-warni semangat'
+                },
+                { 
+                    name: 'Cemas', 
+                    icon: '🌫️', 
+                    weather: 'Kabut',
+                    colors: { start: '#B8C6DB', end: '#F5F7FA' },
+                    particles: { color: '#CBD5E0', count: 70, size: 10 },
+                    description: 'Kabut menghalangi pandangan'
+                },
+                { 
+                    name: 'Nostalgia', 
+                    icon: '🌅', 
+                    weather: 'Senja',
+                    colors: { start: '#FF8C42', end: '#FFA07A' },
+                    particles: { color: '#FFD700', count: 45, size: 5 },
+                    description: 'Senja penuh kenangan'
+                },
+                { 
+                    name: 'Inspirasi', 
+                    icon: '✨', 
+                    weather: 'Aurora',
+                    colors: { start: '#667EEA', end: '#764BA2' },
+                    particles: { color: '#B794F4', count: 90, size: 6 },
+                    description: 'Cahaya inspirasi memenuhi jiwa'
+                }
+            ];
+
+            const [currentEmotion, setCurrentEmotion] = useState(emotions[0]);
+            const [intensity, setIntensity] = useState(50);
+            const [customMessage, setCustomMessage] = useState('');
+            const [showMessage, setShowMessage] = useState(false);
+            const canvasRef = useRef(null);
+
+            useEffect(() => {
+                const canvas = canvasRef.current;
+                if (!canvas) return;
+
+                const ctx = canvas.getContext('2d');
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+
+                const particles = [];
+                const particleCount = Math.floor(currentEmotion.particles.count * (intensity / 50));
+
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * canvas.width;
+                        this.y = Math.random() * canvas.height;
+                        this.size = Math.random() * currentEmotion.particles.size;
+                        this.speedX = Math.random() * 2 - 1;
+                        this.speedY = Math.random() * 2 + 1;
+                        this.opacity = Math.random() * 0.5 + 0.5;
+                    }
+
+                    update() {
+                        this.x += this.speedX * (intensity / 50);
+                        this.y += this.speedY * (intensity / 50);
+
+                        if (this.y > canvas.height) {
+                            this.y = -10;
+                            this.x = Math.random() * canvas.width;
+                        }
+                        if (this.x < 0 || this.x > canvas.width) {
+                            this.speedX *= -1;
+                        }
+                    }
+
+                    draw() {
+                        ctx.fillStyle = currentEmotion.particles.color;
+                        ctx.globalAlpha = this.opacity;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.globalAlpha = 1;
+                    }
+                }
+
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push(new Particle());
+                }
+
+                const animate = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    particles.forEach(particle => {
+                        particle.update();
+                        particle.draw();
+                    });
+                    requestAnimationFrame(animate);
+                };
+
+                animate();
+
+                const handleResize = () => {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                };
+
+                window.addEventListener('resize', handleResize);
+
+                return () => {
+                    window.removeEventListener('resize', handleResize);
+                };
+            }, [currentEmotion, intensity]);
+
+            const handleEmotionChange = (emotion) => {
+                setCurrentEmotion(emotion);
+                setShowMessage(false);
+            };
+
+            const generateMessage = () => {
+                const messages = [
+                    `Cuacamu hari ini: ${currentEmotion.weather} dengan intensitas ${intensity}%`,
+                    `${currentEmotion.description} - kekuatan emosi ${intensity}/100`,
+                    `Prakiraan jiwa: ${currentEmotion.weather}. Tetap jaga keseimbangan!`,
+                    `Emosi ${currentEmotion.name} menghadirkan ${currentEmotion.weather} dalam hidupmu`,
+                ];
+                setCustomMessage(messages[Math.floor(Math.random() * messages.length)]);
+                setShowMessage(true);
+            };
+
+            return (
+                <div 
+                    className="weather-gradient relative w-screen h-screen flex items-center justify-center transition-all duration-1000"
+                    style={{
+                        '--color-start': currentEmotion.colors.start,
+                        '--color-end': currentEmotion.colors.end
+                    }}
+                >
+                    <canvas ref={canvasRef}></canvas>
+                    
+                    <div className="relative z-10 text-center text-white p-8 max-w-4xl">
+                        <h1 className="text-6xl font-bold mb-4 emotion-pulse">
+                            {currentEmotion.icon} {currentEmotion.weather}
+                        </h1>
+                        
+                        <p className="text-2xl mb-8 opacity-90">
+                            {currentEmotion.description}
+                        </p>
+
+                        <div className="bg-white bg-opacity-20 backdrop-blur-md rounded-3xl p-8 mb-6 glow">
+                            <h2 className="text-xl font-semibold mb-6">Pilih Emosimu</h2>
+                            <div className="grid grid-cols-4 gap-4 mb-8">
+                                {emotions.map((emotion, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => handleEmotionChange(emotion)}
+                                        className={`p-4 rounded-2xl transition-all transform hover:scale-110 ${
+                                            currentEmotion.name === emotion.name
+                                                ? 'bg-white bg-opacity-40 scale-110'
+                                                : 'bg-white bg-opacity-10 hover:bg-opacity-20'
+                                        }`}
+                                    >
+                                        <div className="text-4xl mb-2">{emotion.icon}</div>
+                                        <div className="text-sm font-medium">{emotion.name}</div>
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="mb-6">
+                                <label className="block text-lg font-semibold mb-3">
+                                    Intensitas Emosi: {intensity}%
+                                </label>
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    value={intensity}
+                                    onChange={(e) => setIntensity(Number(e.target.value))}
+                                    className="w-full h-3 bg-white bg-opacity-30 rounded-lg appearance-none cursor-pointer"
+                                />
+                            </div>
+
+                            <button
+                                onClick={generateMessage}
+                                className="bg-white text-gray-800 px-8 py-4 rounded-full font-bold text-lg hover:bg-opacity-90 transition-all transform hover:scale-105 shadow-lg"
+                            >
+                                🌤️ Generate Prakiraan Jiwa
+                            </button>
+
+                            {showMessage && (
+                                <div className="mt-6 p-6 bg-white bg-opacity-30 rounded-2xl animate-pulse">
+                                    <p className="text-xl font-medium">{customMessage}</p>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="text-sm opacity-75">
+                            Website unik yang mengubah emosi menjadi visualisasi cuaca interaktif
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<EmotionalWeather />, document.getElementById('root'));
+    </script>
+</body>
+</html>

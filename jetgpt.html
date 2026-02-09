@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yogi Ario</title>  <!-- Bootstrap 5 -->  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">  <!-- Google Font -->  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0b0e14;
+      color: #ffffff;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: transparent;
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      font-size: 1.5rem;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background: radial-gradient(circle at top left, #ff7a18, transparent 40%),
+                  radial-gradient(circle at bottom right, #5f2c82, transparent 40%);
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .hero span {
+      background: linear-gradient(90deg, #ff7a18, #ffb347);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: #cfd3dc;
+      max-width: 600px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #ff7a18, #ffb347);
+      border: none;
+      font-weight: 600;
+    }
+
+    /* Section */
+    section {
+      padding: 80px 0;
+    }
+
+    .card {
+      background: #131722;
+      border: none;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    footer {
+      background: #0b0e14;
+      border-top: 1px solid #222;
+    }
+  </style></head>
+<body><!-- Navbar --><nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">Yogi Ario</a>
+  </div>
+</nav><!-- Hero --><section class="hero">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <h1>Membangun <span>Teknologi</span><br>Dengan Ide & Inovasi</h1>
+        <p class="lead mt-4">Website personal & brand digital Yogi Ario. Terinspirasi dari desain modern JetBrains: berani, bersih, dan fokus pada inovasi.</p>
+        <div class="mt-4">
+          <a href="#produk" class="btn btn-primary btn-lg me-3">Mulai Sekarang</a>
+          <a href="#fitur" class="btn btn-outline-light btn-lg">Pelajari Lebih Lanjut</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- Fitur --><section id="fitur">
+  <div class="container">
+    <h2 class="fw-bold mb-5">Kenapa <span style="color:#ff7a18">Yogi Ario</span>?</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card p-4 h-100">
+          <h5 class="fw-bold">Modern Design</h5>
+          <p class="text-secondary">Tampilan terinspirasi dari JetBrains dengan nuansa profesional & futuristik.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 h-100">
+          <h5 class="fw-bold">Developer Friendly</h5>
+          <p class="text-secondary">Dibangun dengan HTML, CSS, Bootstrap 5 — mudah dikembangkan.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 h-100">
+          <h5 class="fw-bold">Brand Personal</h5>
+          <p class="text-secondary">Cocok untuk portofolio, startup, produk, atau komunitas teknologi.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- Produk / Showcase --><section id="produk" style="background:#0f1320">
+  <div class="container">
+    <h2 class="fw-bold mb-5">Apa yang Saya Bangun</h2>
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="card p-4 h-100">
+          <h5 class="fw-bold">Web Development</h5>
+          <p class="text-secondary">Website modern, responsif, dan scalable.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card p-4 h-100">
+          <h5 class="fw-bold">IoT & Software</h5>
+          <p class="text-secondary">ESP32, sistem pintar, dan aplikasi berbasis kebutuhan nyata.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- Footer --><footer class="py-4 text-center">
+  <div class="container">
+    <p class="mb-0 text-secondary">© 2026 Yogi Ario. Inspired by modern tech design.</p>
+  </div>
+</footer></body>
+</html>

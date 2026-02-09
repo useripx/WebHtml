@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Facebook</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --facebook-blue: #1877f2;
+            --facebook-green: #42b72a;
+            --facebook-dark: #1c1e21;
+            --facebook-gray: #f0f2f5;
+        }
+        
+        body {
+            background-color: var(--facebook-gray);
+            font-family: Helvetica, Arial, sans-serif;
+            color: var(--facebook-dark);
+            line-height: 1.34;
+        }
+        
+        .fb-header {
+            background-color: white;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .fb-logo {
+            color: var(--facebook-blue);
+            font-size: 2.8rem;
+            font-weight: bold;
+        }
+        
+        .fb-logo i {
+            margin-right: 5px;
+        }
+        
+        .login-container {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 80px 0;
+        }
+        
+        .login-left h2 {
+            font-size: 1.75rem;
+            font-weight: normal;
+            line-height: 1.2;
+        }
+        
+        .login-left img {
+            max-width: 100%;
+        }
+        
+        .login-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+        }
+        
+        .form-control:focus {
+            border-color: var(--facebook-blue);
+            box-shadow: 0 0 0 0.2rem rgba(24, 119, 242, 0.25);
+        }
+        
+        .btn-login {
+            background-color: var(--facebook-blue);
+            border: none;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: bold;
+            padding: 10px;
+            width: 100%;
+        }
+        
+        .btn-login:hover {
+            background-color: #166fe5;
+        }
+        
+        .forgot-link {
+            color: var(--facebook-blue);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+        
+        .divider {
+            border-bottom: 1px solid #dadde1;
+            margin: 20px 0;
+        }
+        
+        .btn-create {
+            background-color: var(--facebook-green);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 12px 16px;
+            margin-top: 10px;
+        }
+        
+        .btn-create:hover {
+            background-color: #36a420;
+        }
+        
+        .create-page {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .create-page a {
+            color: var(--facebook-dark);
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .create-page a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer {
+            background-color: white;
+            padding: 20px 0;
+            margin-top: 30px;
+            border-top: 1px solid #dddfe2;
+            color: #8a8d91;
+            font-size: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: #8a8d91;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .language-selector {
+            margin-top: 10px;
+        }
+        
+        .language-selector select {
+            border: 1px solid #ccd0d5;
+            border-radius: 2px;
+            padding: 5px;
+            color: #1c1e21;
+            background-color: white;
+        }
+        
+        .copyright {
+            margin-top: 20px;
+            color: #8a8d91;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .login-left {
+                text-align: center;
+                margin-bottom: 40px;
+            }
+            
+            .login-container {
+                padding: 40px 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .fb-logo {
+                font-size: 2rem;
+            }
+            
+            .login-left h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header dengan logo -->
+    <header class="fb-header py-3">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="fb-logo">
+                        <i class="fab fa-facebook-square"></i>facebook
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Konten utama login -->
+    <main class="login-container">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Bagian kiri dengan deskripsi -->
+                <div class="col-lg-6 login-left">
+                    <h2>Facebook membantu Anda terhubung dan berbagi dengan orang-orang dalam kehidupan Anda.</h2>
+                    <div class="mt-4">
+                        <img src="https://static.xx.fbcdn.net/rsrc.php/v3/y6/r/QeB8jZ7y7_G.png" alt="Facebook connections illustration">
+                    </div>
+                </div>
+                
+                <!-- Bagian kanan dengan form login -->
+                <div class="col-lg-6">
+                    <div class="login-card">
+                        <form id="loginForm">
+                            <div class="mb-3">
+                                <input type="text" class="form-control form-control-lg" id="email" placeholder="Email atau nomor telepon" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" class="form-control form-control-lg" id="password" placeholder="Kata sandi" required>
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-login">Masuk</button>
+                            </div>
+                            <div class="text-center mb-3">
+                                <a href="#" class="forgot-link">Lupa kata sandi?</a>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="text-center">
+                                <a href="#" class="btn btn-create">Buat Akun Baru</a>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="create-page mt-4">
+                        <p><a href="#">Buat Halaman</a> untuk selebriti, merek, atau bisnis.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">Bahasa Indonesia</a>
+                <a href="#">English (UK)</a>
+                <a href="#">Bahasa Melayu</a>
+                <a href="#">日本語</a>
+                <a href="#">Español</a>
+                <a href="#">Português (Brasil)</a>
+                <a href="#">Français (France)</a>
+                <a href="#">Deutsch</a>
+                <a href="#">Italiano</a>
+                <a href="#">العربية</a>
+                <a href="#">हिन्दी</a>
+                <a href="#"><i class="fas fa-plus"></i></a>
+            </div>
+            
+            <div class="divider mt-3"></div>
+            
+            <div class="footer-links mt-3">
+                <a href="#">Daftar</a>
+                <a href="#">Masuk</a>
+                <a href="#">Messenger</a>
+                <a href="#">Facebook Lite</a>
+                <a href="#">Video</a>
+                <a href="#">Tempat</a>
+                <a href="#">Permainan</a>
+                <a href="#">Marketplace</a>
+                <a href="#">Meta Pay</a>
+                <a href="#">Oculus</a>
+                <a href="#">Portal</a>
+                <a href="#">Instagram</a>
+                <a href="#">Bulletin</a>
+                <a href="#">Penggalangan dana</a>
+                <a href="#">Layanan</a>
+                <a href="#">Pusat Informasi Pemilih</a>
+                <a href="#">Kebijakan Privasi</a>
+                <a href="#">Pusat Privasi</a>
+                <a href="#">Grup</a>
+                <a href="#">Tentang</a>
+                <a href="#">Buat Iklan</a>
+                <a href="#">Buat Halaman</a>
+                <a href="#">Developer</a>
+                <a href="#">Karier</a>
+                <a href="#">Cookie</a>
+                <a href="#">Pilihan Iklan</a>
+                <a href="#">Syarat</a>
+                <a href="#">Bantuan</a>
+                <a href="#">Pengaturan unggahan kontak dan non-pengguna</a>
+            </div>
+            
+            <div class="language-selector">
+                <select class="form-select-sm">
+                    <option>Bahasa Indonesia</option>
+                    <option>English (UK)</option>
+                    <option>Bahasa Melayu</option>
+                    <option>日本語</option>
+                </select>
+            </div>
+            
+            <div class="copyright">
+                Meta &copy; 2023
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS dengan Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script untuk validasi form -->
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Validasi sederhana
+            if (email.trim() === '' || password.trim() === '') {
+                alert('Harap isi semua bidang!');
+                return;
+            }
+            
+            // Simulasi login berhasil
+            alert('Login berhasil! (ini hanya simulasi)\nEmail: ' + email + '\nPassword: ' + password);
+            
+            // Reset form
+            document.getElementById('loginForm').reset();
+        });
+        
+        // Tambahkan event listener untuk tombol "Lupa kata sandi"
+        document.querySelector('.forgot-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            alert('Fitur "Lupa Kata Sandi" belum diimplementasikan. Ini hanyalah tampilan UI.');
+        });
+        
+        // Tambahkan event listener untuk tombol "Buat Akun Baru"
+        document.querySelector('.btn-create').addEventListener('click', function(event) {
+            event.preventDefault();
+            alert('Fitur "Buat Akun Baru" belum diimplementasikan. Ini hanyalah tampilan UI.');
+        });
+    </script>
+</body>
+</html>

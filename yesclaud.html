@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penyaliban Yesus/Isa: Perspektif Alkitab & Al-Qur'an</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .tab-button {
+            flex: 1;
+            padding: 20px;
+            background: #f5f5f5;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            color: #555;
+        }
+        
+        .tab-button:hover {
+            background: #e0e0e0;
+        }
+        
+        .tab-button.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            margin-bottom: -3px;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 40px;
+            animation: fadeIn 0.5s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section {
+            margin-bottom: 35px;
+            padding: 25px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        
+        .section h3 {
+            color: #764ba2;
+            margin: 20px 0 10px 0;
+            font-size: 1.3em;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+            text-align: justify;
+            color: #333;
+        }
+        
+        .verse {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #764ba2;
+            font-style: italic;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .verse-ref {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #667eea;
+            font-style: normal;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .list {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+        
+        .list li {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .comparison-box {
+            padding: 20px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-box h4 {
+            margin-bottom: 15px;
+            color: #667eea;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .tab-button {
+                font-size: 1em;
+                padding: 15px 10px;
+            }
+            
+            .tab-content {
+                padding: 20px;
+            }
+            
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🕊️ Kisah Penyaliban Yesus/Isa Al-Masih 🕊️</h1>
+            <p>Perbandingan Perspektif Alkitab Kristen dan Al-Qur'an</p>
+        </header>
+        
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'alkitab')">📖 Versi Alkitab</button>
+            <button class="tab-button" onclick="openTab(event, 'quran')">📗 Versi Al-Qur'an</button>
+        </div>
+        
+        <div id="alkitab" class="tab-content active">
+            <div class="section">
+                <h2>Penangkapan di Taman Getsemani</h2>
+                <p>Setelah Perjamuan Terakhir, Yesus pergi ke Taman Getsemani bersama murid-murid-Nya untuk berdoa. Di sana Ia berdoa dengan sangat sungguh-sungguh sampai keringat-Nya seperti titik-titik darah. Yudas Iskariot, salah satu dari dua belas murid-Nya, datang bersama pasukan dan menunjukkan Yesus dengan sebuah ciuman. Yesus pun ditangkap.</p>
+                <div class="verse">
+                    "Ketika Yesus sedang berbicara, datanglah Yudas, seorang dari kedua belas murid itu, bersama-sama dengan orang banyak yang membawa pedang dan pentung, disuruh oleh imam-imam kepala dan tua-tua bangsa Yahudi."
+                    <span class="verse-ref">— Matius 26:47</span>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Pengadilan di Hadapan Mahkamah Agama Yahudi</h2>
+                <p>Yesus dibawa ke hadapan Kayafas, imam besar, dan Mahkamah Agama (Sanhedrin). Mereka mencari kesaksian palsu untuk menghukum Yesus mati. Ketika ditanya apakah Ia adalah Mesias, Anak Allah, Yesus menjawab "Ya".</p>
+                <div class="verse">
+                    "Lalu kata Imam Besar itu kepada-Nya: 'Demi Allah yang hidup, katakanlah kepada kami, apakah Engkau Mesias, Anak Allah, atau tidak.' Jawab Yesus: 'Engkau telah mengatakannya.'"
+                    <span class="verse-ref">— Matius 26:63-64</span>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Pengadilan di Hadapan Pilatus</h2>
+                <p>Para pemimpin Yahudi membawa Yesus ke hadapan Pilatus, gubernur Romawi, karena tidak memiliki wewenang untuk menjalankan hukuman mati. Pilatus tidak menemukan kesalahan pada Yesus, tetapi karena tekanan orang banyak yang berteriak "Salibkan Dia!", Pilatus menyerahkan Yesus untuk disalibkan.</p>
+                <div class="verse">
+                    "Pilatus berkata kepada mereka: 'Jika begitu, apakah yang harus kuperbuat dengan Yesus, yang disebut Kristus?' Mereka semua berseru: 'Salibkan Dia!'"
+                    <span class="verse-ref">— Matius 27:22</span>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Penyaliban di Golgota</h2>
+                <p>Yesus dipaksa memikul salib-Nya menuju Golgota (tempat tengkorak). Di sana Ia disalibkan bersama dua penjahat, satu di sebelah kanan dan satu di sebelah kiri.</p>
+                <div class="verse">
+                    "Pada jam ketiga mereka menyalibkan Dia... Di atas kepala-Nya terpasang tulisan yang menyebut alasan mengapa Ia dihukum, bunyinya: 'Inilah Yesus, Raja orang Yahudi.'"
+                    <span class="verse-ref">— Markus 15:25, Matius 27:37</span>
+                </div>
+                
+                <h3>Tujuh Ucapan di Kayu Salib:</h3>
+                <ul class="list">
+                    <li>"Bapa, ampunilah mereka, sebab mereka tidak tahu apa yang mereka perbuat" (Lukas 23:34)</li>
+                    <li>"Aku berkata kepadamu, sesungguhnya hari ini juga engkau akan ada bersama-sama dengan Aku di dalam Firdaus" (Lukas 23:43)</li>
+                    <li>"Ibu, inilah anakmu" dan "Inilah ibumu" (Yohanes 19:26-27)</li>
+                    <li>"Allahku, Allahku, mengapa Engkau meninggalkan Aku?" (Matius 27:46)</li>
+                    <li>"Aku haus" (Yohanes 19:28)</li>
+                    <li>"Sudah selesai" (Yohanes 19:30)</li>
+                    <li>"Ya Bapa, ke dalam tangan-Mu Kuserahkan nyawa-Ku" (Lukas 23:46)</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>Peristiwa Supernatural</h2>
+                <p>Dari jam dua belas sampai jam tiga, kegelapan meliputi seluruh daerah. Ketika Yesus menyerahkan nyawa-Nya, tabir Bait Suci terbelah dua dari atas sampai ke bawah, terjadi gempa bumi, bukit-bukit batu terbelah, dan kubur-kubur terbuka.</p>
+                <div class="verse">
+                    "Dan lihatlah, tabir Bait Suci terbelah dua dari atas sampai ke bawah dan terjadilah gempa bumi, dan bukit-bukit batu terbelah, dan kuburan-kuburan terbuka..."
+                    <span class="verse-ref">— Matius 27:51-52</span>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Kematian dan Penguburan</h2>
+                <p>Untuk memastikan Yesus telah mati, seorang prajurit menikam lambung-Nya dengan tombak, dan keluarlah darah dan air. Yusuf dari Arimatea meminta izin kepada Pilatus untuk mengambil jenazah Yesus dan menguburkan-Nya di kubur batu yang baru.</p>
+                <div class="verse">
+                    "Tetapi seorang dari antara prajurit itu menikam lambung-Nya dengan tombak, dan segera mengalir keluar darah dan air."
+                    <span class="verse-ref">— Yohanes 19:34</span>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <h3>Makna Teologis dalam Kristen</h3>
+                <p>Menurut teologi Kristen, kematian Yesus di kayu salib adalah penggenapan nubuat Perjanjian Lama dan merupakan pengorbanan yang sempurna untuk menebus dosa umat manusia. Yesus, yang tidak berdosa, mati menggantikan manusia yang berdosa agar mereka dapat diperdamaikan dengan Allah.</p>
+                <div class="verse">
+                    "Karena begitu besar kasih Allah akan dunia ini, sehingga Ia telah mengaruniakan Anak-Nya yang tunggal, supaya setiap orang yang percaya kepada-Nya tidak binasa, melainkan beroleh hidup yang kekal."
+                    <span class="verse-ref">— Yohanes 3:16</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="quran" class="tab-content">
+            <div class="section">
+                <h2>Pandangan Al-Qur'an: Isa Tidak Disalibkan</h2>
+                <p>Al-Qur'an memiliki pandangan yang sangat berbeda dengan Alkitab mengenai peristiwa penyaliban. Al-Qur'an dengan tegas menyatakan bahwa Nabi Isa AS tidak disalibkan dan tidak dibunuh.</p>
+                <div class="verse">
+                    "Dan karena ucapan mereka: 'Sesungguhnya kami telah membunuh Al-Masih, Isa putra Maryam, Rasul Allah', padahal mereka tidak membunuhnya dan tidak (pula) menyalibnya, tetapi (yang mereka bunuh ialah) orang yang diserupakan dengan Isa bagi mereka."
+                    <span class="verse-ref">— Surah An-Nisa (4:157)</span>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Teori Penyerupaan (Syubbiha Lahum)</h2>
+                <p>Menurut mayoritas ulama Islam, seseorang lain diserupakan dengan Nabi Isa, sehingga orang-orang yang hendak membunuhnya mengira bahwa mereka telah menyalibkan Isa, padahal bukan dia.</p>
+                
+                <h3>Pendapat Ulama tentang Siapa yang Diserupakan:</h3>
+                <ul class="list">
+                    <li><strong>Yudas Iskariot</strong> - pengkhianat yang berubah wajah menjadi seperti Isa</li>
+                    <li><strong>Salah seorang murid</strong> - yang rela menggantikan dengan sukarela</li>
+                    <li><strong>Seorang tentara</strong> - yang ditunjuk oleh penguasa</li>
+                    <li><strong>Musuh Isa</strong> - yang diserupakan Allah sebagai hukuman</li>
+                </ul>
+                
+                <div class="verse">
+                    "Sesungguhnya orang-orang yang berselisih paham tentang (pembunuhan) Isa, benar-benar dalam keragu-raguan tentang yang dibunuh itu. Mereka tidak mempunyai keyakinan tentang siapa yang dibunuh itu, kecuali mengikuti persangkaan belaka..."
+                    <span class="verse-ref">— Surah An-Nisa (4:157)</span>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Allah Mengangkat Isa ke Langit</h2>
+                <p>Al-Qur'an menyatakan bahwa Allah mengangkat Nabi Isa ke hadirat-Nya. Ia tidak mati di kayu salib, tetapi diangkat dalam keadaan hidup sebagai bentuk perlindungan dan penyelamatan dari musuh-musuhnya.</p>
+                <div class="verse">
+                    "Tetapi (yang sebenarnya), Allah telah mengangkat Isa kepada-Nya. Dan adalah Allah Maha Perkasa lagi Maha Bijaksana."
+                    <span class="verse-ref">— Surah An-Nisa (4:158)</span>
+                </div>
+                <div class="verse">
+                    "(Ingatlah), ketika Allah berfirman: 'Hai Isa, sesungguhnya Aku akan menyampaikan kamu kepada akhir ajalmu dan mengangkat kamu kepada-Ku serta membersihkan kamu dari orang-orang yang kafir...'"
+                    <span class="verse-ref">— Surah Ali Imran (3:55)</span>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Rencana Orang-Orang Kafir Digagalkan</h2>
+                <p>Al-Qur'an menjelaskan bahwa orang-orang kafir merencanakan untuk membunuh Isa, namun Allah membalas tipu daya mereka dengan rencana yang lebih baik.</p>
+                <div class="verse">
+                    "Dan mereka membuat tipu daya, dan Allah membalas tipu daya mereka itu. Dan Allah sebaik-baik pembalas tipu daya."
+                    <span class="verse-ref">— Surah Ali Imran (3:54)</span>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Kedudukan Isa dalam Islam</h2>
+                <ul class="list">
+                    <li><strong>Nabi dan Rasul yang Mulia</strong> - Salah satu dari lima rasul ulul azmi (yang memiliki keteguhan hati tinggi)</li>
+                    <li><strong>Al-Masih</strong> - Gelar kehormatan yang diberikan Allah</li>
+                    <li><strong>Lahir dari Perawan Maryam</strong> - Kelahiran mukjizat tanpa ayah</li>
+                    <li><strong>Pembawa Mukjizat</strong> - Menyembuhkan orang buta dan kusta, menghidupkan orang mati dengan izin Allah</li>
+                    <li><strong>Akan Turun Kembali</strong> - Menurut hadits, Isa akan turun kembali menjelang hari kiamat</li>
+                </ul>
+                <div class="verse">
+                    "Dia (Isa) berkata: 'Sesungguhnya aku ini hamba Allah, Dia memberiku Al-Kitab (Injil) dan Dia menjadikan aku seorang nabi.'"
+                    <span class="verse-ref">— Surah Maryam (19:30)</span>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <h3>Hikmah dan Tujuan Penyelamatan Isa</h3>
+                <p>Menurut Islam, Allah menyelamatkan Nabi Isa AS untuk:</p>
+                <ul class="list">
+                    <li>Melindungi rasul-Nya dari kejahatan musuh-musuh-Nya</li>
+                    <li>Menunjukkan kekuasaan Allah yang tidak dapat digagalkan</li>
+                    <li>Menguji keimanan umat manusia</li>
+                    <li>Membuktikan bahwa Allah tidak membiarkan rasul-Nya dihina</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>Perbedaan Pandangan tentang Sifat Isa</h2>
+                <p>Islam mengajarkan bahwa Isa adalah nabi dan hamba Allah yang mulia, bukan Tuhan atau Anak Tuhan:</p>
+                <div class="verse">
+                    "Wahai Ahli Kitab, janganlah kamu melampaui batas dalam agamamu, dan janganlah kamu mengatakan terhadap Allah kecuali yang benar. Sesungguhnya Al-Masih, Isa putra Maryam itu, adalah utusan Allah dan (yang diciptakan dengan) kalimat-Nya yang disampaikan-Nya kepada Maryam, dan (dengan tiupan) roh dari-Nya. Maka berimanlah kamu kepada Allah dan rasul-rasul-Nya dan janganlah kamu mengatakan: '(Tuhan itu) tiga', berhentilah (dari ucapan itu). (Itu) lebih baik bagimu. Sesungguhnya Allah Tuhan Yang Maha Esa, Maha Suci Allah dari mempunyai anak..."
+                    <span class="verse-ref">— Surah An-Nisa (4:171)</span>
+                </div>
+            </div>
+        </div>
+        
+        <div style="padding: 40px; background: #f0f0f0;">
+            <h2 style="text-align: center; color: #667eea; margin-bottom: 30px;">Perbandingan Kedua Perspektif</h2>
+            <div class="comparison">
+                <div class="comparison-box">
+                    <h4>📖 Alkitab Kristen</h4>
+                    <ul class="list">
+                        <li>Yesus disalibkan dan mati di kayu salib</li>
+                        <li>Kematian-Nya adalah pengorbanan untuk menebus dosa manusia</li>
+                        <li>Yesus adalah Anak Allah / Tuhan yang menjelma</li>
+                        <li>Bangkit dari kematian pada hari ketiga</li>
+                        <li>Penyaliban adalah inti dari keselamatan dalam Kristen</li>
+                    </ul>
+                </div>
+                <div class="comparison-box">
+                    <h4>📗 Al-Qur'an Islam</h4>
+                    <ul class="list">
+                        <li>Isa tidak disalibkan dan tidak dibunuh</li>
+                        <li>Seseorang lain diserupakan dengan Isa</li>
+                        <li>Isa adalah nabi dan hamba Allah, bukan Tuhan</li>
+                        <li>Allah mengangkat Isa ke langit dalam keadaan hidup</li>
+                        <li>Tidak ada konsep penebusan dosa melalui kematian Isa</li>
+                    </ul>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 20px; color: #666; font-style: italic;">
+                Ini adalah perbedaan fundamental antara teologi Islam dan Kristen mengenai peristiwa yang sama, dan menjadi salah satu perbedaan doktrin utama antara kedua agama.
+            </p>
+        </div>
+        
+        <footer>
+            <p>Website ini dibuat untuk tujuan edukasi dan perbandingan studi agama.</p>
+            <p>Selalu hormati perbedaan keyakinan dan pandangan setiap agama. 🕊️</p>
+        </footer>
+    </div>
+    
+    <script>
+        function openTab(evt, tabName) {
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            
+            const tabButtons = document.getElementsByClassName('tab-button');
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+            
+            document.getElementById(tabName).class

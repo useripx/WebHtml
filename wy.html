@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CetakKlik & EduCenter - Solusi Terpadu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .gradient-brand {
+            background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .tab-btn.active {
+            border-bottom: 3px solid #2563eb;
+            color: #2563eb;
+        }
+
+        /* Floating WhatsApp Button Animation */
+        .whatsapp-float {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <!-- Header & Navigasi -->
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+                        SOLUSI<span class="text-slate-800">TERPADU</span>
+                    </span>
+                </div>
+                
+                <!-- Search Bar (Pengganti Tombol Order WA) -->
+                <div class="hidden md:flex flex-1 max-w-md mx-8">
+                    <div class="relative w-full">
+                        <input type="text" id="searchInput" placeholder="Cari layanan (ex: coding, print, pulsa...)" 
+                            class="w-full bg-slate-100 border-none rounded-xl py-2.5 pl-11 pr-4 focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all outline-none text-sm">
+                        <div class="absolute left-4 top-3 text-slate-400">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden md:flex space-x-8 items-center font-semibold">
+                    <a href="#layanan" class="text-slate-600 hover:text-blue-600 transition text-sm">Layanan</a>
+                    <a href="#edukasi" class="text-slate-600 hover:text-blue-600 transition text-sm">Pusat Les</a>
+                    <a href="#pulsa" class="text-slate-600 hover:text-blue-600 transition text-sm">Pulsa</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button class="text-slate-600 p-2"><i class="fas fa-bars text-xl"></i></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/6281234567890" target="_blank" 
+       class="fixed bottom-8 right-8 z-[60] bg-green-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-2xl whatsapp-float hover:bg-green-600 transition-all group">
+        <i class="fab fa-whatsapp"></i>
+        <span class="absolute right-20 bg-white text-slate-800 text-sm font-bold px-4 py-2 rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            Chat Admin Sekarang
+        </span>
+    </a>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 gradient-brand text-white overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-4 relative z-10">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <div class="inline-block px-4 py-1.5 bg-blue-500/20 rounded-full border border-blue-400/30 text-blue-200 text-sm font-medium">
+                        Satu Tempat untuk Berbagai Solusi
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
+                        Cetak Dokumen hingga <br> <span class="text-blue-400">Belajar Coding</span>
+                    </h1>
+                    <p class="text-lg text-slate-300 max-w-lg">
+                        Layanan profesional untuk fotocopy, pembuatan website, hingga bimbingan belajar masa depan.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#layanan" class="bg-white text-blue-900 px-8 py-4 rounded-xl font-bold hover:bg-blue-50 transition">Layanan Jasa</a>
+                        <a href="#edukasi" class="bg-blue-600/30 border border-blue-400/50 px-8 py-4 rounded-xl font-bold hover:bg-blue-600 transition">Pusat Les</a>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="bg-white/10 p-8 rounded-3xl backdrop-blur-sm border border-white/20">
+                        <div class="grid grid-cols-2 gap-4 text-center">
+                            <div class="p-6 bg-white/10 rounded-2xl"><i class="fas fa-print text-3xl mb-3"></i><p>Print & Copy</p></div>
+                            <div class="p-6 bg-white/10 rounded-2xl"><i class="fas fa-code text-3xl mb-3"></i><p>Web & Coding</p></div>
+                            <div class="p-6 bg-white/10 rounded-2xl"><i class="fas fa-mobile-alt text-3xl mb-3"></i><p>Pulsa & Data</p></div>
+                            <div class="p-6 bg-white/10 rounded-2xl"><i class="fas fa-graduation-cap text-3xl mb-3"></i><p>Les SD & Bimbel</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Jasa & Produk -->
+    <section id="layanan" class="py-24 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Layanan Unggulan</h2>
+                <div class="w-16 h-1 bg-blue-600 mx-auto"></div>
+            </div>
+
+            <div id="serviceContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Percetakan -->
+                <div class="service-item bg-white p-6 rounded-2xl border border-slate-200 service-card transition-all" data-name="print fotocopy jilid cetak">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-2xl mb-4">
+                        <i class="fas fa-copy"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Print & Fotocopy</h3>
+                    <p class="text-slate-500 text-sm">Print warna, jilid skripsi, dan fotocopy dokumen.</p>
+                </div>
+
+                <!-- Web Development -->
+                <div class="service-item bg-white p-6 rounded-2xl border border-slate-200 service-card transition-all" data-name="website development bikin web desain">
+                    <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center text-2xl mb-4">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Jasa Website</h3>
+                    <p class="text-slate-500 text-sm">Pembuatan website profil usaha dan landing page.</p>
+                </div>
+
+                <!-- Pulsa & Data -->
+                <div id="pulsa" class="service-item bg-white p-6 rounded-2xl border border-slate-200 service-card transition-all" data-name="pulsa kuota data token listrik">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center text-2xl mb-4">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Pulsa & Paket Data</h3>
+                    <p class="text-slate-500 text-sm">Top up pulsa, kuota internet, dan token listrik.</p>
+                </div>
+
+                <!-- Coding -->
+                <div class="service-item bg-white p-6 rounded-2xl border border-slate-200 service-card transition-all" data-name="coding les kursus belajar pemrograman kuliah">
+                    <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center text-2xl mb-4">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Les Coding</h3>
+                    <p class="text-slate-500 text-sm">Persiapan masuk kuliah IT untuk pemula.</p>
+                </div>
+            </div>
+            
+            <div id="noResults" class="hidden text-center py-20">
+                <i class="fas fa-search text-5xl text-slate-200 mb-4"></i>
+                <p class="text-slate-500">Layanan tidak ditemukan. Coba kata kunci lain.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Edukasi -->
+    <section id="edukasi" class="py-24 bg-slate-100 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold mb-6 italic">Pusat Bimbingan Belajar</h2>
+                    <p class="text-slate-600 mb-8 leading-relaxed">
+                        Metode belajar yang menyenangkan dan terukur untuk prestasi siswa.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex space-x-6 border-b border-slate-300">
+                            <button onclick="openTab('codingTab')" class="tab-btn active pb-3 font-bold transition">Coding Pemula</button>
+                            <button onclick="openTab('sdTab')" class="tab-btn pb-3 font-bold transition">Mapel SD</button>
+                        </div>
+
+                        <div id="codingTab" class="tab-content active py-6">
+                            <h4 class="text-xl font-bold mb-3 text-blue-600">Persiapan Kuliah IT</h4>
+                            <p class="text-slate-600 text-sm mb-4">Kurikulum dari nol hingga mahir logika pemrograman dasar.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-white px-3 py-1 rounded-full text-xs border border-slate-200">HTML/CSS</span>
+                                <span class="bg-white px-3 py-1 rounded-full text-xs border border-slate-200">Logic & Algorithm</span>
+                                <span class="bg-white px-3 py-1 rounded-full text-xs border border-slate-200">Python Dasar</span>
+                            </div>
+                        </div>
+
+                        <div id="sdTab" class="tab-content py-6">
+                            <h4 class="text-xl font-bold mb-3 text-indigo-600">Bimbel SD Terpadu</h4>
+                            <p class="text-slate-600 text-sm mb-4">Matematika, IPA, dan Bahasa Inggris untuk semua tingkatan SD.</p>
+                            <ul class="space-y-2 text-sm text-slate-700">
+                                <li><i class="fas fa-check text-green-500 mr-2"></i> Bantuan Tugas Sekolah</li>
+                                <li><i class="fas fa-check text-green-500 mr-2"></i> Persiapan Ujian Tengah Semester</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="aspect-video bg-blue-600 rounded-3xl shadow-2xl flex items-center justify-center text-white">
+                    <div class="text-center">
+                        <i class="fas fa-graduation-cap text-7xl mb-4 opacity-50"></i>
+                        <p class="font-bold">Investasi Terbaik untuk Pendidikan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-500 text-sm">&copy; 2025 Solusi Terpadu. Jl. Percetakan Raya No. 10.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Pencarian Layanan Sederhana
+        const searchInput = document.getElementById('searchInput');
+        const serviceItems = document.querySelectorAll('.service-item');
+        const noResults = document.getElementById('noResults');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase();
+            let hasResults = false;
+
+            serviceItems.forEach(item => {
+                const keywords = item.getAttribute('data-name').toLowerCase();
+                const title = item.querySelector('h3').innerText.toLowerCase();
+                
+                if (keywords.includes(term) || title.includes(term)) {
+                    item.style.display = 'block';
+                    hasResults = true;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            noResults.classList.toggle('hidden', hasResults);
+        });
+
+        // Tab System
+        function openTab(tabName) {
+            const contents = document.getElementsByClassName('tab-content');
+            for (let content of contents) content.classList.remove('active');
+            
+            const buttons = document.getElementsByClassName('tab-btn');
+            for (let btn of buttons) btn.classList.remove('active');
+            
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>
+

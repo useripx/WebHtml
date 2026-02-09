@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emotional Volume — Bukan Suara</title>  <!-- Tailwind CSS -->  <script src="https://cdn.tailwindcss.com"></script>  <!-- Vue 3 -->  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>  <style>
+    body {
+      background: radial-gradient(circle at center, #020617, #000);
+      overflow: hidden;
+    }
+
+    .wave {
+      position: absolute;
+      border-radius: 9999px;
+      border: 1px solid rgba(255,255,255,0.15);
+      animation: expand linear infinite;
+    }
+
+    @keyframes expand {
+      from {
+        transform: scale(0.2);
+        opacity: 0.8;
+      }
+      to {
+        transform: scale(1.4);
+        opacity: 0;
+      }
+    }
+  </style></head>
+<body class="text-slate-200"><div id="app" class="relative min-h-screen flex items-center justify-center">  <!-- Panel Utama -->  <div class="z-10 text-center max-w-md px-6">
+    <h1 class="text-3xl tracking-widest font-light mb-4">
+      EMOTIONAL VOLUME
+    </h1>
+    <p class="text-sm opacity-60 mb-8">
+      Ini bukan pengatur suara.<br>
+      Ini pengatur seberapa keras sesuatu terasa.
+    </p><!-- Kontrol Aneh -->
+<div class="flex flex-col items-center gap-6">
+
+  <div class="text-xs opacity-50">
+    Intensitas Rasa
+  </div>
+
+  <div class="text-4xl font-mono">
+    {{ intensityLabel }}
+  </div>
+
+  <!-- Gesture Area -->
+  <div
+    @mousedown="pressing = true"
+    @mouseup="release"
+    @mouseleave="release"
+    class="w-40 h-40 rounded-full bg-white/5 backdrop-blur flex items-center justify-center cursor-pointer select-none">
+    <span class="text-xs opacity-60">Tahan</span>
+  </div>
+
+  <p class="text-xs opacity-40 max-w-xs">
+    Semakin lama kamu menahan, bukan suara yang naik — tapi beban makna.
+  </p>
+</div>
+
+  </div>  <!-- Gelombang Emosi -->  <div v-for="w in waves" :key="w.id"
+       class="wave"
+       :style="w.style"></div></div><script>
+const { createApp } = Vue
+
+createApp({
+  data() {
+    return {
+      pressing: false,
+      intensity: 0,
+      waves: [],
+      id: 0
+    }
+  },
+  computed: {
+    intensityLabel() {
+      if (this.intensity < 3) return 'Hening'
+      if (this.intensity < 6) return 'Terasa'
+      if (this.intensity < 9) return 'Menekan'
+      return 'Terlalu Dalam'
+    }
+  },
+  mounted() {
+    setInterval(this.tick, 300)
+  },
+  methods: {
+    tick() {
+      if (this.pressing && this.intensity < 10) {
+        this.intensity += 0.5
+        this.spawnWave()
+      }
+    },
+    release() {
+      this.pressing = false
+      this.intensity *= 0.6
+    },
+    spawnWave() {
+      const size = 120 + this.intensity * 30
+      const duration = 2 + this.intensity * 0.4
+
+      const wave = {
+        id: this.id++,
+        style: {
+          width: size + 'px',
+          height: size + 'px',
+          animationDuration: duration + 's'
+        }
+      }
+
+      this.waves.push(wave)
+      setTimeout(() => this.waves.shift(), duration * 1000)
+    }
+  }
+}).mount('#app')
+</script></body>
+</html>

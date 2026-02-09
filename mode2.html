@@ -1,0 +1,102 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Living Website — Tidak Pernah Sama</title>  <!-- Tailwind CDN -->  <script src="https://cdn.tailwindcss.com"></script>  <!-- Vue 3 CDN -->  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>  <style>
+    /* Efek visual yang jarang dipakai */
+    body {
+      background: radial-gradient(circle at var(--x,50%) var(--y,50%), #0f172a, #020617);
+      transition: background 0.2s linear;
+    }
+  </style></head>
+<body class="text-slate-200 min-h-screen overflow-hidden"><div id="app" class="relative min-h-screen">  <!-- Header hidup -->  <header class="p-6 text-center">
+    <h1 class="text-4xl font-bold tracking-widest animate-pulse">
+      {{ title }}
+    </h1>
+    <p class="text-sm opacity-70 mt-2">Website ini berubah berdasarkan waktu & interaksi kamu</p>
+  </header>  <!-- Zona Interaksi Unik -->  <main class="flex flex-col items-center justify-center gap-8 mt-16"><div class="text-center">
+  <p class="text-xl">Sekarang jam:</p>
+  <p class="text-3xl font-mono text-cyan-400">{{ time }}</p>
+</div>
+
+<!-- Tombol yang "hidup" -->
+<button
+  @mouseenter="shiftMood"
+  @click="addThought"
+  class="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-500 text-black font-semibold shadow-lg hover:scale-110 transition">
+  Sentuh Aku
+</button>
+
+<!-- Pikiran Acak -->
+<div class="w-full max-w-xl">
+  <p class="text-center mb-2 opacity-70">Jejak pikiran website:</p>
+  <ul class="space-y-2">
+    <li v-for="(t,i) in thoughts" :key="i"
+        class="bg-white/5 backdrop-blur rounded-lg p-3 text-sm">
+      {{ t }}
+    </li>
+  </ul>
+</div>
+
+  </main>  <!-- Elemen mengambang eksperimental -->  <div v-for="n in 12" :key="n"
+       class="absolute w-2 h-2 rounded-full bg-cyan-400/40"
+       :style="floatStyle(n)">
+  </div></div><script>
+const { createApp } = Vue
+
+createApp({
+  data() {
+    return {
+      title: 'LIVING INTERFACE',
+      time: '',
+      thoughts: [],
+      moods: [
+        'Website sedang penasaran…',
+        'Website merasa diperhatikan',
+        'Website sedang berpikir',
+        'Website sedikit gelisah',
+        'Website senang kamu di sini'
+      ]
+    }
+  },
+  mounted() {
+    this.updateTime()
+    setInterval(this.updateTime, 1000)
+
+    // Background mengikuti gerakan mouse (jarang dipakai)
+    window.addEventListener('mousemove', e => {
+      document.body.style.setProperty('--x', e.clientX + 'px')
+      document.body.style.setProperty('--y', e.clientY + 'px')
+    })
+  },
+  methods: {
+    updateTime() {
+      const now = new Date()
+      this.time = now.toLocaleTimeString('id-ID')
+
+      const hour = now.getHours()
+      if (hour >= 18 || hour < 5) this.title = 'NIGHT AWARENESS'
+      else if (hour >= 5 && hour < 11) this.title = 'MORNING CURIOSITY'
+      else this.title = 'ACTIVE CONSCIOUSNESS'
+    },
+    shiftMood() {
+      this.thoughts.unshift(
+        this.moods[Math.floor(Math.random() * this.moods.length)]
+      )
+      if (this.thoughts.length > 5) this.thoughts.pop()
+    },
+    addThought() {
+      this.thoughts.unshift('Interaksi tercatat pada ' + this.time)
+      if (this.thoughts.length > 5) this.thoughts.pop()
+    },
+    floatStyle(n) {
+      return {
+        left: Math.random() * 100 + '%',
+        top: Math.random() * 100 + '%',
+        animation: `pulse ${2 + Math.random() * 4}s infinite`
+      }
+    }
+  }
+}).mount('#app')
+</script></body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yogik.us - Hotspot Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2a5bd7;
+            --primary-dark: #1a4bc7;
+            --secondary: #00c9a7;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--dark);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-header h1 {
+            color: var(--primary);
+            font-size: 2.8rem;
+            margin-bottom: 5px;
+        }
+
+        .logo-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .logo-header .highlight {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .info-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .info-section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .info-section p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .features {
+            list-style: none;
+        }
+
+        .features li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .features i {
+            margin-right: 12px;
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+
+        .login-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-title h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .login-title p {
+            color: var(--gray);
+        }
+
+        .login-box {
+            background: var(--light);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .login-method {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .login-method p {
+            text-align: center;
+            margin-bottom: 25px;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+
+        .login-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(42, 91, 215, 0.3);
+        }
+
+        .login-btn i {
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+
+        .login-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(42, 91, 215, 0.4);
+        }
+
+        .alternative-login {
+            margin-top: 20px;
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            color: var(--gray);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #28a745;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .dashboard-preview {
+            margin-top: 40px;
+            text-align: center;
+            display: none;
+        }
+
+        .dashboard-preview h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .dashboard-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            width: 120px;
+            text-align: center;
+        }
+
+        .dashboard-card i {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .dashboard-card p {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .footer {
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .info-section, .login-section {
+                padding: 30px;
+            }
+            
+            .logo-header h1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* Success page styles */
+        .success-container {
+            display: none;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            animation: bounce 1s;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 60%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            80% { transform: translateY(-10px); }
+        }
+
+        .success-container h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .success-container p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .user-info {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .user-info h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            width: 150px;
+            color: var(--dark);
+        }
+
+        .back-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .back-btn i {
+            margin-right: 10px;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Page -->
+        <div id="loginPage">
+            <div class="logo-header">
+                <h1>Yogik.us</h1>
+                <p>Hotspot MikroTik Modern & <span class="highlight">Cepat</span></p>
+            </div>
+
+            <div class="main-content">
+                <div class="info-section">
+                    <h2>Akses Internet Cepat & Stabil</h2>
+                    <p>Nikmati pengalaman internet terbaik dengan jaringan MikroTik yang handal. Hotspot Yogik.us memberikan kecepatan tinggi untuk semua kebutuhan online Anda.</p>
+                    
+                    <ul class="features">
+                        <li><i class="fas fa-bolt"></i> Kecepatan hingga 100 Mbps</li>
+                        <li><i class="fas fa-shield-alt"></i> Keamanan jaringan terjamin</li>
+                        <li><i class="fas fa-users"></i> Dukungan multi-user stabil</li>
+                        <li><i class="fas fa-infinity"></i> Unlimited access 24/7</li>
+                        <li><i class="fas fa-wifi"></i> Coverage area luas</li>
+                    </ul>
+                </div>
+
+                <div class="login-section">
+                    <div class="login-title">
+                        <h2>Login Hotspot</h2>
+                        <p>Masuk ke jaringan Yogik.us untuk mengakses internet</p>
+                    </div>
+
+                    <div class="login-box">
+                        <div class="login-method">
+                            <p>Klik tombol di bawah ini untuk login ke jaringan hotspot Yogik.us. Anda akan diarahkan ke dashboard setelah login berhasil.</p>
+                            
+                            <button id="loginBtn" class="login-btn">
+                                <i class="fas fa-sign-in-alt"></i> Login ke Hotspot
+                            </button>
+                            
+                            <div class="status-indicator">
+                                <div class="status-dot"></div>
+                                <span>Hotspot aktif dan siap digunakan</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-preview" id="dashboardPreview">
+                        <h3>Dashboard Akses Anda</h3>
+                        <div class="dashboard-cards">
+                            <div class="dashboard-card">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <p>Monitoring</p>
+                            </div>
+                            <div class="dashboard-card">
+                                <i class="fas fa-chart-line"></i>
+                                <p>Statistik</p>
+                            </div>
+                            <div class="dashboard-card">
+                                <i class="fas fa-user-clock"></i>
+                                <p>Durasi</p>
+                            </div>
+                            <div class="dashboard-card">
+                                <i class="fas fa-download"></i>
+                                <p>Bandwidth</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>Hotspot MikroTik oleh <a href="https://yogik.us" target="_blank">Yogik.us</a> | &copy; 2023 All rights reserved</p>
+                <p>Teknologi RouterOS | Kecepatan optimal dijamin</p>
+            </div>
+        </div>
+
+        <!-- Success Page (akan ditampilkan setelah login) -->
+        <div id="successPage" class="success-container">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            
+            <h1>Login Berhasil!</h1>
+            <p>Anda sekarang terhubung ke hotspot Yogik.us</p>
+            
+            <div class="user-info">
+                <h3>Informasi Koneksi</h3>
+                <div class="info-row">
+                    <div class="info-label">Hotspot:</div>
+                    <div class="info-value">Yogik.us</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Status:</div>
+                    <div class="info-value">Terhubung <span style="color: #28a745; margin-left: 5px;">●</span></div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">IP Address:</div>
+                    <div class="info-value">192.168.88.105</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Kecepatan:</div>
+                    <div class="info-value">100 Mbps</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Durasi:</div>
+                    <div class="info-value">0:00:15</div>
+                </div>
+            </div>
+            
+            <p>Anda sekarang dapat mengakses internet. Sesi aktif hingga 24 jam.</p>
+            
+            <button id="backBtn" class="back-btn">
+                <i class="fas fa-redo"></i> Kembali ke Halaman Login
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginBtn = document.getElementById('loginBtn');
+            const backBtn = document.getElementById('backBtn');
+            const loginPage = document.getElementById('loginPage');
+            const successPage = document.getElementById('successPage');
+            const dashboardPreview = document.getElementById('dashboardPreview');
+            
+            // Simulasi login dengan klik
+            loginBtn.addEventListener('click', function() {
+                // Tampilkan loading state
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses login...';
+                loginBtn.disabled = true;
+                
+                // Simulasi proses login (3 detik)
+                setTimeout(function() {
+                    // Sembunyikan halaman login, tampilkan halaman sukses
+                    loginPage.style.display = 'none';
+                    successPage.style.display = 'block';
+                    
+                    // Simulasi redirect ke dashboard MikroTik (opsional)
+                    console.log('Redirect ke dashboard MikroTik...');
+                    // window.location.href = 'https://yogik.us/dashboard'; // Uncomment untuk redirect sebenarnya
+                }, 2000);
+            });
+            
+            // Preview dashboard sebelum login (efek hover)
+            loginBtn.addEventListener('mouseover', function() {
+                dashboardPreview.style.display = 'block';
+            });
+            
+            loginBtn.addEventListener('mouseout', function() {
+                dashboardPreview.style.display = 'none';
+            });
+            
+            // Tombol kembali ke halaman login
+            backBtn.addEventListener('click', function() {
+                successPage.style.display = 'none';
+                loginPage.style.display = 'block';
+                
+                // Reset tombol login
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login ke Hotspot';
+                loginBtn.disabled = false;
+            });
+            
+            // Simulasi informasi koneksi yang update
+            let durationSeconds = 15;
+            setInterval(function() {
+                if (successPage.style.display === 'block') {
+                    durationSeconds++;
+                    const hours = Math.floor(durationSeconds / 3600);
+                    const minutes = Math.floor((durationSeconds % 3600) / 60);
+                    const seconds = durationSeconds % 60;
+                    
+                    document.querySelector('.info-row:nth-child(5) .info-value').textContent = 
+                        `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlueShop | Belanja Serba Biru</title>
+    <style>
+        /* CSS: Tampilan Serba Biru */
+        :root {
+            --primary-blue: #0056b3;
+            --light-blue: #e7f1ff;
+            --dark-blue: #003d80;
+            --bg-gray: #f4f4f4;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: var(--bg-gray);
+        }
+
+        /* Header / Navbar */
+        header {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-bar {
+            flex-grow: 1;
+            margin: 0 20px;
+            padding: 8px;
+            border-radius: 4px;
+            border: none;
+        }
+
+        /* Container Produk */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        /* Card Produk */
+        .card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid #ddd;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-blue);
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 200px;
+            background-color: var(--light-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-weight: bold;
+        }
+
+        .info {
+            padding: 12px;
+        }
+
+        .title {
+            font-size: 0.9rem;
+            height: 40px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .price {
+            color: var(--primary-blue);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* Loading Indicator */
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--primary-blue);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 style="margin:0; font-size: 1.5rem;">BlueShop</h1>
+    <input type="text" class="search-bar" placeholder="Cari barang random di sini...">
+    <div class="cart">🛒 Keranjang</div>
+</header>
+
+<div class="container">
+    <div class="product-grid" id="product-grid">
+        </div>
+    <div id="loading" class="loading">Memuat barang keren lainnya...</div>
+</div>
+
+<script>
+    const grid = document.getElementById('product-grid');
+    const loading = document.getElementById('loading');
+
+    // Data Random untuk Judul
+    const kataBenda = ["Laptop", "Kemeja", "Sepatu", "Botol", "Headset", "Jam Tangan", "Tas", "Kamera", "Meja", "Smartphone"];
+    const kataSifat = ["Keren", "Elegan", "Murah", "Premium", "Viral", "Minimalis", "Gaming", "Estetik"];
+
+    function generateRandomProduct() {
+        const judul = kataBenda[Math.floor(Math.random() * kataBenda.length)] + " " + 
+                      kataSifat[Math.floor(Math.random() * kataSifat.length)];
+        const harga = Math.floor(Math.random() * 900 + 10) * 1000;
+        
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <div class="image-placeholder">Blue Image</div>
+            <div class="info">
+                <div class="title">${judul}</div>
+                <div class="price">Rp ${harga.toLocaleString('id-ID')}</div>
+            </div>
+        `;
+        return card;
+    }
+
+    // Fungsi untuk menambah batch produk
+    function loadProducts(count = 10) {
+        for (let i = 0; i < count; i++) {
+            grid.appendChild(generateRandomProduct());
+        }
+    }
+
+    // Infinite Scroll Logic
+    window.addEventListener('scroll', () => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+            // Beri sedikit delay seolah-olah loading dari server
+            loadProducts(5);
+        }
+    });
+
+    // Load produk awal
+    loadProducts(12);
+</script>
+
+</body>
+</html>

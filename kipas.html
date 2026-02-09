@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kipas Angin Interaktif Pro</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .fan-frame {
+            width: 220px;
+            height: 220px;
+            border: 10px solid #2c3e50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: #fff;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        /* Bagian yang berputar */
+        #blades {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: animation-duration 0.5s ease-in-out; /* Transisi halus saat ganti speed */
+            animation: rotate linear infinite;
+            animation-play-state: paused;
+        }
+
+        .blade {
+            position: absolute;
+            width: 170px;
+            height: 45px;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            border-radius: 50% 20% 50% 20%;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .blade1 { transform: rotate(0deg); }
+        .blade2 { transform: rotate(120deg); }
+        .blade3 { transform: rotate(240deg); }
+
+        .center-hub {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #34495e, #2c3e50);
+            border-radius: 50%;
+            z-index: 10;
+            border: 2px solid #bdc3c7;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .controls {
+            margin-top: 50px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        button {
+            width: 60px;
+            height: 60px;
+            margin: 0 10px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+        }
+
+        button:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .btn-on { background: #27ae60; }
+        .btn-off { background: #c0392b; }
+        .btn-speed { background: #7f8c8d; }
+        
+        /* Highlight tombol aktif */
+        button.active {
+            outline: 4px solid #3498db;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+
+    <h2 style="color: #2c3e50;">Smart Fan Control</h2>
+
+    <div class="fan-frame">
+        <div id="blades">
+            <div class="blade blade1"></div>
+            <div class="blade blade2"></div>
+            <div class="blade blade3"></div>
+        </div>
+        <div class="center-hub"></div>
+    </div>
+
+    <div class="controls">
+        <button id="btn-on" class="btn-on" onclick="changeSpeed('2s', this)">ON</button>
+        <button id="btn-off" class="btn-off" onclick="stopFan(this)">OFF</button>
+        <button class="btn-speed" onclick="changeSpeed('0.8s', this)">1</button>
+        <button class="btn-speed" onclick="changeSpeed('0.4s', this)">2</button>
+        <button class="btn-speed" onclick="changeSpeed('0.2s', this)">3</button>
+    </div>
+
+    <script>
+        const fan = document.getElementById('blades');
+        const buttons = document.querySelectorAll('button');
+
+        function changeSpeed(duration, element) {
+            // Hapus status aktif dari tombol lain
+            buttons.forEach(btn => btn.classList.remove('active'));
+            // Tambah status aktif ke tombol yang diklik
+            element.classList.add('active');
+
+            fan.style.animationPlayState = 'running';
+            fan.style.animationDuration = duration;
+        }
+
+        function stopFan(element) {
+            buttons.forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            fan.style.animationPlayState = 'paused';
+        }
+
+        // Set awal ke posisi OFF
+        window.onload = () => stopFan(document.getElementById('btn-off'));
+    </script>
+
+</body>
+</html>

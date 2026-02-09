@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entropy - Anti-Static Web</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; overflow: hidden; background: #0f172a; cursor: crosshair; }
+        .physics-card {
+            user-select: none;
+            touch-action: none;
+            transition: transform 0.1s linear;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app" class="relative w-screen h-screen overflow-hidden text-white font-sans">
+    
+    <div class="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
+        <h1 class="text-[20vw] font-black uppercase tracking-tighter">Entropy</h1>
+    </div>
+
+    <div class="absolute top-5 left-5 z-50 bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/20">
+        <h2 class="text-xs uppercase tracking-widest font-bold opacity-50">Physics Engine Active</h2>
+        <p class="text-2xl font-mono">Gravity: {{ gravity.toFixed(2) }} m/s²</p>
+        <button @click="resetPositions" class="mt-2 text-[10px] bg-white text-black px-2 py-1 uppercase font-bold hover:bg-cyan-400 transition">Reset Universe</button>
+    </div>
+
+    <div 
+        v-for="(item, index) in items" 
+        :key="item.id"
+        :style="{ 
+            transform: `translate(${item.x}px, ${item.y}px) rotate(${item.rotation}deg)`,
+            backgroundColor: item.color 
+        }"
+        @mousedown="startDrag($event, index)"
+        class="physics-card absolute px-8 py-4 rounded-2xl shadow-2xl cursor-grab active:cursor-grabbing flex flex-col items-start min-w-[200px]"
+    >
+        <span class="text-[10px] uppercase font-bold opacity-70">ID: 0{{index + 1}}</span>
+        <span class="text-xl font-bold">{{ item.title }}</span>
+        <p class="text-xs mt-2 opacity-80">{{ item.desc }}</p>
+    </div>
+
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-center pointer-events-none opacity-40">
+        <p class="text-sm">Klik dan lempar elemen ke atas. Mereka akan jatuh karena gravitasi.</p>
+    </div>
+</div>
+
+<script>
+const { createApp, ref, onMounted } = Vue;
+
+createApp({
+    setup() {
+        const gravity = ref(0.5);
+        const friction = 0.98;
+        const bounce = 0.7;
+
+        const items = ref([
+            { id: 1, title: 'Layanan Kami', desc: 'Hancur berkeping-keping.', x: 100, y: 50, vx: 2, vy: 0, rotation: 5, color: '#3b82f6' },
+            { id: 2, title: 'Tentang', desc: 'Tidak ada struktur statis.', x: 400, y: 100, vx: -3, vy: 0, rotation: -10, color: '#ef4444' },
+            { id: 3, title: 'Portofolio', desc: 'Karya dalam kekacauan.', x: 700, y: 80, vx: 1, vy: 0, rotation: 15, color: '#10b981' },
+            { id: 4, title: 'Kontak', desc: 'Hubungi di ruang hampa.', x: 250, y: 200, vx: 5, vy: 0, rotation: -5, color: '#f59e0b' },
+            { id: 5, title: 'Visi Kami', desc: 'Melawan gravitasi web.', x: 550, y: 150, vx: -2, vy: 0, rotation: 0, color: '#8b5cf6' }
+        ]);
+
+        let draggingIdx = null;
+
+        const startDrag = (e, index) => {
+            draggingIdx = index;
+            items.value[index].vx = 0;
+            items.value[index].vy = 0;
+            
+            const onMouseMove = (moveEvent) => {
+                if (draggingIdx !== null) {
+                    items.value[draggingIdx].x += moveEvent.movementX;
+                    items.value[draggingIdx].y += moveEvent.movementY;
+                    items.value[draggingIdx].vx = moveEvent.movementX * 2;
+                    items.value[draggingIdx].vy = moveEvent.movementY * 2;
+                }
+            };
+
+            const onMouseUp = () => {
+                draggingIdx = null;
+                window.removeEventListener('mousemove', onMouseMove);
+                window.removeEventListener('mouseup', onMouseUp);
+            };
+
+            window.addEventListener('mousemove', onMouseMove);
+            window.addEventListener('mouseup', onMouseUp);
+        };
+
+        const updatePhysics = () => {
+            items.value.forEach((item, i) => {
+                if (draggingIdx === i) return;
+
+                // Apply Physics
+                item.vy += gravity.value;
+                item.vx *= friction;
+                item.x += item.vx;
+                item.y += item.vy;
+
+                // Floor Collision
+                const ground = window.innerHeight - 100;
+                if (item.y > ground) {
+                    item.y = ground;
+                    item.vy *= -bounce;
+                    item.rotation += item.vx * 2; // Spin on impact
+                }
+
+                // Wall Collision
+                if (item.x < 0 || item.x > window.innerWidth - 200) {
+                    item.vx *= -1;
+                }
+            });
+            requestAnimationFrame(updatePhysics);
+        };
+
+        const resetPositions = () => {
+            items.value.forEach(item => {
+                item.y = -200;
+                item.vy = 0;
+                item.x = Math.random() * (window.innerWidth - 200);
+            });
+        };
+
+        onMounted(() => {
+            updatePhysics();
+        });
+
+        return { items, gravity, startDrag, resetPositions };
+    }
+}).mount('#app');
+</script>
+
+</body>
+</html>

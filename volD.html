@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VolumeSphere - Kontrol Volume Dimensi Baru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Quicksand', sans-serif;
+        }
+        .title-font {
+            font-family: 'Rajdhani', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #f0f0f0;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+        .mood-indicator {
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .pulse-slow {
+            animation: pulse 3s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        .glow-effect {
+            box-shadow: 0 0 25px rgba(100, 200, 255, 0.3);
+        }
+        .mood-gradient {
+            background: linear-gradient(45deg, #ff6b6b, #ffd166, #06d6a0, #118ab2, #9d4edd);
+        }
+        .volume-orb {
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), transparent 70%);
+        }
+        .breathe-animation {
+            animation: breathe 4s ease-in-out infinite;
+        }
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .shake-animation {
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div id="app" class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-12">
+            <div class="flex items-center mb-6 md:mb-0">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center mr-4 float-animation">
+                    <i class="fas fa-volume-off text-white text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="title-font text-4xl font-bold">Volume<span class="text-cyan-300">Sphere</span></h1>
+                    <p class="text-cyan-200">Kontrol Volume dengan Cara yang Belum Pernah Ada</p>
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl font-bold mb-2">{{ currentVolume }}<span class="text-xl text-cyan-300">vu</span></div>
+                <div class="text-sm opacity-80">Volume Unik Saat Ini</div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-6xl mx-auto">
+            <!-- Volume Orb Visualization -->
+            <section class="glass-card p-8 mb-12 text-center">
+                <h2 class="title-font text-3xl font-bold mb-6">Volume Orb Interaktif</h2>
+                <p class="text-lg mb-8 max-w-3xl mx-auto opacity-90">
+                    Volume tidak diatur dengan slider biasa, tetapi dengan <span class="text-cyan-300 font-bold">emosi, gerakan, dan kondisi sekitar</span>.
+                    Sentuh, tiup, atau berinteraksi dengan orb di bawah ini.
+                </p>
+                
+                <!-- Volume Orb -->
+                <div class="relative flex justify-center items-center my-12">
+                    <div class="absolute w-96 h-96 rounded-full opacity-20 bg-gradient-to-r from-purple-600 to-blue-500 blur-2xl"></div>
+                    <div 
+                        class="relative w-72 h-72 rounded-full volume-orb flex items-center justify-center cursor-pointer glow-effect breathe-animation"
+                        :style="{ 
+                            background: `radial-gradient(circle at 30% 30%, ${orbColor}, transparent 70%)`,
+                            transform: `scale(${orbScale})`,
+                            boxShadow: `0 0 60px ${orbGlowColor}`
+                        }"
+                        @click="randomVolumeChange"
+                        @mouseover="orbHover = true"
+                        @mouseleave="orbHover = false"
+                    >
+                        <div class="text-center">
+                            <div class="text-6xl font-bold mb-2">{{ currentVolume }}</div>
+                            <div class="text-xl opacity-80">vu</div>
+                            <div class="mt-4 text-sm">{{ volumeDescription }}</div>
+                        </div>
+                        
+                        <!-- Orb Particles -->
+                        <div v-for="particle in orbParticles" :key="particle.id"
+                             class="absolute w-4 h-4 rounded-full"
+                             :style="{
+                                 left: particle.x + '%',
+                                 top: particle.y + '%',
+                                 background: particle.color,
+                                 opacity: particle.opacity,
+                                 transform: `scale(${particle.scale})`
+                             }"></div>
+                    </div>
+                </div>
+                
+                <!-- Volume Status -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="glass-card p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-cyan-900/50 flex items-center justify-center mr-3">
+                                <i class="fas fa-heart text-cyan-400"></i>
+                            </div>
+                            <h3 class="font-bold text-lg">Volume Emosional</h3>
+                        </div>
+                        <p class="text-sm opacity-90">Volume berdasarkan mood saat ini: <span class="font-bold text-cyan-300">{{ emotionalState }}</span></p>
+                        <div class="h-2 bg-gray-800 rounded-full mt-3 overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-pink-500 to-rose-600" :style="{width: emotionalIntensity + '%'}"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-purple-900/50 flex items-center justify-center mr-3">
+                                <i class="fas fa-wind text-purple-400"></i>
+                            </div>
+                            <h3 class="font-bold text-lg">Volume Atmosfer</h3>
+                        </div>
+                        <p class="text-sm opacity-90">Dipengaruhi oleh cuaca virtual: <span class="font-bold text-cyan-300">{{ virtualWeather }}</span></p>
+                        <div class="h-2 bg-gray-800 rounded-full mt-3 overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-blue-500 to-cyan-600" :style="{width: weatherIntensity + '%'}"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-emerald-900/50 flex items-center justify-center mr-3">
+                                <i class="fas fa-magic text-emerald-400"></i>
+                            </div>
+                            <h3 class="font-bold text-lg">Volume Ajaib</h3>
+                        </div>
+                        <p class="text-sm opacity-90">Kekuatan sihir terkumpul: <span class="font-bold text-cyan-300">{{ magicPower }}/100</span></p>
+                        <div class="h-2 bg-gray-800 rounded-full mt-3 overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-emerald-500 to-green-600" :style="{width: magicPower + '%'}"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Unusual Volume Controls -->
+            <section class="mb-16">
+                <h2 class="title-font text-3xl font-bold mb-8 text-center">Kontrol Volume "Tidak Biasa"</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Mood Based Control -->
+                    <div class="glass-card p-6 hover:glow-effect transition cursor-pointer"
+                         @click="setVolumeByMood">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-smile-beam text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3 text-center">Berdasarkan Mood</h3>
+                        <p class="text-sm opacity-90 mb-4 text-center">Volume menyesuaikan dengan emosi yang dipilih</p>
+                        <div class="flex flex-wrap justify-center gap-2">
+                            <span v-for="mood in moods" :key="mood.name"
+                                  class="px-3 py-1 rounded-full text-xs cursor-pointer transition"
+                                  :class="activeMood === mood.name ? 'bg-pink-700 text-white' : 'bg-gray-800'"
+                                  @click.stop="selectMood(mood)">
+                                {{ mood.name }}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Gesture Control -->
+                    <div class="glass-card p-6 hover:glow-effect transition cursor-pointer"
+                         @click="activateGestureControl">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-hand-sparkles text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3 text-center">Kontrol Gerakan</h3>
+                        <p class="text-sm opacity-90 mb-4 text-center">Atur volume dengan gerakan tangan di depan kamera</p>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold mb-2">{{ gestureVolume }}%</div>
+                            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-blue-500 to-cyan-600" :style="{width: gestureVolume + '%'}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Weather Control -->
+                    <div class="glass-card p-6 hover:glow-effect transition cursor-pointer"
+                         @click="changeVirtualWeather">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-cloud-sun-rain text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3 text-center">Kontrol Cuaca</h3>
+                        <p class="text-sm opacity-90 mb-4 text-center">Volume berubah berdasarkan cuaca virtual</p>
+                        <div class="text-center">
+                            <div class="text-lg font-bold mb-1">{{ virtualWeather }}</div>
+                            <div class="text-sm opacity-80">{{ weatherEffect }}</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Time Based Control -->
+                    <div class="glass-card p-6 hover:glow-effect transition cursor-pointer"
+                         @click="setVolumeByTime">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-hourglass-half text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3 text-center">Berdasarkan Waktu</h3>
+                        <p class="text-sm opacity-90 mb-4 text-center">Volume berubah sesuai waktu dalam sehari</p>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold mb-2">{{ currentTime }}</div>
+                            <div class="text-sm opacity-80">Volume otomatis: {{ timeBasedVolume }}vu</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Physical Interaction Section -->
+            <section class="glass-card p-8 mb-16">
+                <h2 class="title-font text-3xl font-bold mb-8 text-center">Interaksi Fisik dengan Volume</h2>
+                
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Blow Control -->
+                    <div class="lg:w-1/2">
+                        <div class="bg-gray-900/50 rounded-2xl p-6 h-full">
+                            <div class="flex items-center mb-6">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mr-4">
+                                    <i class="fas fa-wind text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-xl">Kontrol Tiupan</h3>
+                                    <p class="text-sm opacity-80">Tiup mikrofon untuk mengatur volume</p>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mb-8">
+                                <div class="text-5xl font-bold mb-2">{{ blowVolume }}<span class="text-xl">vu</span></div>
+                                <div class="text-sm opacity-80">Kekuatan tiupan saat ini</div>
+                            </div>
+                            
+                            <div class="relative h-32 bg-gray-800 rounded-xl overflow-hidden mb-6">
+                                <!-- Breath visualization -->
+                                <div v-for="breath in breathVisualization" :key="breath.id"
+                                     class="absolute rounded-full bg-gradient-to-t from-cyan-500/60 to-transparent"
+                                     :style="{
+                                         width: breath.size + 'px',
+                                         height: breath.size + 'px',
+                                         left: breath.x + '%',
+                                         bottom: '0',
+                                         opacity: breath.opacity
+                                     }"></div>
+                                
+                                <!-- Breath indicator -->
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="text-center">
+                                        <i class="fas fa-wind text-4xl mb-2 opacity-50" :class="blowing ? 'text-cyan-400' : ''"></i>
+                                        <p v-if="!blowing" class="text-sm">Tiup mikrofon untuk mencoba</p>
+                                        <p v-else class="text-sm font-bold text-cyan-400">Terdeteksi tiupan!</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button @click="toggleBlowControl" class="w-full py-3 rounded-xl font-bold transition"
+                                    :class="blowControlActive ? 'bg-gradient-to-r from-cyan-700 to-blue-800' : 'bg-gradient-to-r from-cyan-600 to-blue-700'">
+                                {{ blowControlActive ? 'Nonaktifkan' : 'Aktifkan' }} Kontrol Tiupan
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Shake Control -->
+                    <div class="lg:w-1/2">
+                        <div class="bg-gray-900/50 rounded-2xl p-6 h-full">
+                            <div class="flex items-center mb-6">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center mr-4">
+                                    <i class="fas fa-mobile-alt text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-xl">Kontrol Goyangan</h3>
+                                    <p class="text-sm opacity-80">Goyangkan perangkat untuk mengatur volume</p>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mb-8">
+                                <div class="text-5xl font-bold mb-2">{{ shakeVolume }}<span class="text-xl">vu</span></div>
+                                <div class="text-sm opacity-80">Intensitas goyangan</div>
+                            </div>
+                            
+                            <div class="relative h-32 bg-gray-800 rounded-xl overflow-hidden mb-6 flex items-center justify-center">
+                                <!-- Phone visualization -->
+                                <div class="relative w-20 h-36 bg-gradient-to-b from-gray-700 to-gray-900 rounded-xl border border-gray-600 flex items-center justify-center"
+                                     :class="shaking ? 'shake-animation' : ''">
+                                    <div class="absolute top-2 w-12 h-1 bg-gray-600 rounded-full"></div>
+                                    <div class="absolute bottom-2 w-10 h-10 rounded-full bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center">
+                                        <i class="fas fa-volume-up text-white"></i>
+                                    </div>
+                                    <div class="text-xs text-center px-2">Goyangkan saya!</div>
+                                </div>
+                                
+                                <!-- Shake indicators -->
+                                <div v-for="indicator in shakeIndicators" :key="indicator.id"
+                                     class="absolute w-2 h-2 rounded-full bg-purple-500"
+                                     :style="{
+                                         left: indicator.x + '%',
+                                         top: indicator.y + '%',
+                                         opacity: indicator.opacity
+                         

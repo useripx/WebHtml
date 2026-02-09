@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error 404: System Failure - BSOD</title>
+    <style>
+        /* --- GAYA CSS DASAR TERMINAL --- */
+        body {
+            background-color: #000000;
+            color: #00FF00; /* Neon Hijau */
+            font-family: 'Consolas', 'Courier New', monospace;
+            padding: 20px;
+            margin: 0;
+            font-size: 14px;
+            transition: transform 0.05s ease-out; /* Untuk efek Jitter */
+        }
+        pre, ul {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        /* Style untuk Baris Input */
+        #input-line {
+            display: flex;
+            align-items: center;
+        }
+        #prompt {
+            color: #00FF00;
+            margin-right: 5px;
+            white-space: pre; 
+        }
+        #command-input {
+            background: transparent;
+            border: none;
+            color: #FFFFFF; 
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            caret-color: #00FF00; 
+            outline: none; 
+            width: 100%;
+        }
+        /* Progress Bar Style */
+        #download-progress-container {
+            border: 1px solid #00FF00;
+            height: 18px;
+            width: 90%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        #download-progress-bar {
+            height: 100%;
+            background-color: #008800;
+            width: 0%;
+        }
+        #progress-text {
+            text-align: center;
+            color: #FFFFFF;
+            position: relative;
+            top: -18px;
+        }
+        /* --- EFEK GLITCH & BSOD VISUAL --- */
+        .glitch-text {
+            color: #FF0000 !important; /* Teks Merah Menyala */
+            text-shadow: 0 0 5px #FF0000;
+        }
+        #bsod-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0000AA; /* Biru Windows Klasik */
+            color: #FFFFFF;
+            font-family: 'Consolas', 'Courier New', monospace;
+            padding: 50px;
+            box-sizing: border-box;
+            display: none; /* Tersembunyi secara default */
+            z-index: 9999;
+        }
+        #bsod-content {
+            white-space: pre;
+            line-height: 1.5;
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+
+    <pre id="typing-area"></pre>
+
+    <div id="download-section">
+        <pre id="status-title" style="display: none;">*** STATUS DOWNLOAD ***</pre>
+        <pre id="download-status"></pre>
+        <div id="download-progress-container">
+            <div id="download-progress-bar"></div>
+            <div id="progress-text">0% (Connecting...)</div>
+        </div>
+    </div>
+    
+    <div id="interactive-section" style="display: none;">
+        <pre id="response-output"></pre>
+        <div id="input-line">
+            <span id="prompt">C:\></span>
+            <input type="text" id="command-input">
+        </div>
+    </div>
+
+    <div id="bsod-screen">
+        <pre id="bsod-content">
+A problem has been detected and Windows has been shut down to prevent damage
+to your computer.
+
+UNMOUNTABLE_BOOT_VOLUME
+
+<span style="color: #FFCC00;">Kendala ERROR ini wajar segera hubungi owner@yogiario.my.id</span>
+
+Technical information:
+
+*** STOP: 0x000000ED (0x8150D890, 0xE10279F0, 0xF84915C0, 0x00000000)
+If this is the first time you've seen this Stop error screen,
+restart your computer. If this screen appears again, follow these steps:
+Check to make sure any new hardware or software is properly installed.
+
+Beginning dump of physical memory
+Dump complete.
+Contact your system administrator or technical support group for further assistance.
+(Redirecting in <span id="bsod-countdown">15</span> seconds to attempt reboot...)
+        </pre>
+    </div>
+
+    <script>
+        // --- JAVASCRIPT ---
+
+        const terminalOutput = document.getElementById('typing-area');
+        const downloadSection = document.getElementById('download-section'); // DIJAMIN ADA
+        const interactiveSection = document.getElementById('interactive-section');
+        const commandInput = document.getElementById('command-input');
+        const responseOutput = document.getElementById('response-output');
+        const statusTitle = document.getElementById('status-title');
+        const progressBar = document.getElementById('download-progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const downloadStatus = document.getElementById('download-status');
+        const bodyElement = document.body;
+        const bsodScreen = document.getElementById('bsod-screen');
+        const bsodCountdown = document.getElementById('bsod-countdown');
+
+        // --- Variabel Waktu dan Kecepatan ---
+        
+        // Tahap 1: DOWNLOAD (5s - 100s)
+        const DOWNLOAD_MIN = 5000; 
+        const DOWNLOAD_MAX = 100000; 
+        const downloadDuration = Math.floor(Math.random() * (DOWNLOAD_MAX - DOWNLOAD_MIN + 1)) + DOWNLOAD_MIN;
+        
+        // Tahap 2: INSTALLATION (10s - 30s)
+        const INSTALL_MIN = 10000;
+        const INSTALL_MAX = 30000;
+        const installDuration = Math.floor(Math.random() * (INSTALL_MAX - INSTALL_MIN + 1)) + INSTALL_MIN;
+
+        const BSOD_DURATION = 15000; // 15 detik
+        let bsodInterval;
+
+        let currentStage = 'typing';
+        let stageStartTime = Date.now();
+        let currentInterval;
+        let isComplete = false;
+        
+        // Daftar file untuk DOWNLOAD (nama file besar)
+        const downloadFiles = ["WIN_CORE.DAT", "SYSTEM_IMAGE.ISO", "REPOSITORY.ZIP", "BOOT_RES.PAK", "install.wim", "xoreX1.rpf", "yogi.a"];
+        
+        // Daftar file untuk INSTALASI (nama file kecil/driver)
+        const installFiles = ["KERNEL32.DLL", "NTOSKRNL.EXE", "USER32.DLL", "CMD.EXE", "SVCHOST.EXE", "EXPLORER.EXE", "WINLOGON.EXE", "win32.bat", "yogi.a", "go.lang", "app3e.dll", "claude.for"];
+
+
+        // --- Teks Otomatis Awal ---
+        const textToType = [
+            "C:\\> Initiating Emergency Recovery Protocol...",
+            "WARNING: Required Target Component Not Found (404).",
+            "WFS-I: Forcing download from https://www.yogiario.my.id/app/internal...",
+            "",
+            "*** PROCESS STATUS: DOWNLOADING CORE SYSTEM FILES ***"
+        ];
+        
+        let lineIndex = 0;
+        let charIndex = 0;
+        const typingSpeed = 40; 
+
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            return `${minutes}m ${seconds}s`;
+        }
+
+        // --- 0. FUNGSI TYPING AWAL ---
+        function typeLine() {
+            if (lineIndex < textToType.length) {
+                const currentLine = textToType[lineIndex];
+                
+                if (charIndex < currentLine.length) {
+                    terminalOutput.innerHTML += currentLine.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeLine, typingSpeed);
+                } 
+                else {
+                    terminalOutput.innerHTML += '\n';
+                    lineIndex++;
+                    charIndex = 0;
+                    setTimeout(typeLine, typingSpeed * 10); 
+                }
+            } else {
+                startDownloadSimulation();
+                interactiveSection.style.display = 'block';
+                commandInput.focus();
+            }
+        }
+
+        // --- 1. SIMULASI DOWNLOAD (Waktu Acak) ---
+        function startDownloadSimulation() {
+            currentStage = 'download';
+            stageStartTime = Date.now();
+            statusTitle.style.display = 'block';
+            statusTitle.innerHTML = '*** STATUS DOWNLOAD ***';
+            
+            progressBar.style.backgroundColor = '#008800'; 
+            progressBar.style.transition = 'width 0.5s linear';
+            
+            // Interval update setiap 500ms
+            currentInterval = setInterval(updateDownload, 500); 
+            updateDownload(); 
+        }
+        
+        function updateDownload() {
+            const elapsedTime = Date.now() - stageStartTime;
+            let progress = Math.min(100, (elapsedTime / downloadDuration) * 100);
+            
+            progressBar.style.width = progress + '%';
+            bodyElement.style.transform = 'none'; // Pastikan Jitter Mati saat Download
+            
+            let timeRemaining = downloadDuration - elapsedTime;
+            let currentFile = downloadFiles[Math.floor(Math.random() * downloadFiles.length)];
+
+            if (timeRemaining < 0) {
+                // DOWNLOAD SELESAI -> Pindah ke Instalasi
+                clearInterval(currentInterval);
+                downloadStatus.innerHTML = `DOWNLOAD: **COMPLETE** (Duration: ${formatTime(downloadDuration)}). Initializing installation...`;
+                progressText.innerHTML = `100% (VERIFIED)`;
+                setTimeout(startInstallationSimulation, 1000); // Jeda 1 detik
+            } else {
+                // DOWNLOAD BERJALAN
+                downloadStatus.innerHTML = `DOWNLOADING: ${currentFile} (${formatTime(elapsedTime)} elapsed)`;
+                progressText.innerHTML = `${progress.toFixed(2)}% (Time remaining: ${formatTime(timeRemaining)})`;
+            }
+        }
+
+        // --- 2. SIMULASI INSTALASI (Cepat/Glitchy) ---
+        function startInstallationSimulation() {
+            currentStage = 'installation';
+            stageStartTime = Date.now();
+            statusTitle.innerHTML = '*** STATUS INSTALASI FILE SISTEM ***';
+            
+            progressBar.style.transition = 'none'; 
+            
+            // Interval update sangat cepat (50ms)
+            currentInterval = setInterval(updateInstallation, 50); 
+            updateInstallation(); 
+        }
+        
+        function updateInstallation() {
+            const elapsedTime = Date.now() - stageStartTime;
+            let progress = Math.min(100, (elapsedTime / installDuration) * 100);
+            
+            progressBar.style.width = progress + '%';
+            
+            let timeRemaining = installDuration - elapsedTime;
+            
+            // Logika GLITCH
+            let isGlitch = Math.random() < 0.3; 
+            let currentFile = installFiles[Math.floor(Math.random() * installFiles.length)];
+            let randomPID = Math.floor(Math.random() * 9999);
+            
+            // Jitter/Goyangan Ringan
+            if (isGlitch) {
+                bodyElement.style.transform = `translateX(${Math.random() * 5 - 3}px) translateY(${Math.random() * 5 - 3}px)`;
+                progressBar.style.backgroundColor = '#FF0000'; // Flash Merah
+            } else {
+                bodyElement.style.transform = 'none';
+                progressBar.style.backgroundColor = '#008800'; // Kembali ke hijau
+            }
+
+            if (timeRemaining < 0) {
+                // INSTALASI SELESAI (Gagal) -> Tampilkan BSOD
+                isComplete = true;
+                clearInterval(currentInterval);
+                showBSOD();
+            } else {
+                // INSTALASI BERJALAN
+                downloadStatus.className = isGlitch ? 'glitch-text' : '';
+                downloadStatus.innerHTML = `WFS-I: Installing Component ${currentFile}... (PID: ${randomPID})`;
+                progressText.innerHTML = `${progress.toFixed(2)}% (Processing module: ${currentFile})`;
+            }
+        }
+        
+        // --- 3. FUNGSI BSOD GLITCH & COUNTDOWN ---
+        function updateBSOD() {
+            const timeElapsed = Date.now() - stageStartTime;
+            const timeRemaining = Math.max(0, BSOD_DURATION - timeElapsed);
+            const secondsRemaining = Math.ceil(timeRemaining / 1000);
+            
+            bsodCountdown.textContent = secondsRemaining;
+
+            // Efek Glitch Teks dan Jitter pada BSOD
+            const isGlitch = Math.random() < 0.5; // Lebih sering terjadi glitch
+            if (isGlitch) {
+                bodyElement.style.transform = `translateX(${Math.random() * 5 - 2.5}px) translateY(${Math.random() * 5 - 2.5}px)`; // Jitter lebih besar
+                // Flashing teks BSOD (Warna teks berubah ke merah sesekali)
+                bsodScreen.style.color = Math.random() < 0.1 ? '#FF0000' : '#FFFFFF'; 
+            } else {
+                bodyElement.style.transform = 'none';
+                bsodScreen.style.color = '#FFFFFF';
+            }
+        }
+
+        function showBSOD() {
+            // Sembunyikan semua konten terminal (PENTING: JANGAN gunakan innerHTML = '' )
+            terminalOutput.style.display = 'none';
+            downloadSection.style.display = 'none';
+            interactiveSection.style.display = 'none';
+            
+            // Terapkan gaya BSOD pada body
+            bodyElement.style.backgroundColor = '#0000AA';
+            bodyElement.style.color = '#FFFFFF';
+            bodyElement.style.transform = 'none';
+            
+            // Tampilkan layar BSOD overlay
+            bsodScreen.style.display = 'block';
+            stageStartTime = Date.now(); // Reset waktu mulai untuk BSOD
+            
+            // Mulai Interval Glitch dan Countdown (Update setiap 100ms)
+            bsodInterval = setInterval(updateBSOD, 100); 
+
+            // Redirect setelah 15 detik
+            setTimeout(() => {
+                clearInterval(bsodInterval);
+                window.location.href = '/'; // Mengarahkan ke homepage
+            }, BSOD_DURATION); 
+        }
+
+
+        // --- Penanganan Perintah Pengguna ---
+
+        function executeCommand() {
+            let fullCommand = commandInput.value.trim();
+            let command = fullCommand.split(' ')[0].toUpperCase();
+            let args = fullCommand.split(' ').slice(1).join(' ');
+            let result = '';
+
+            responseOutput.innerHTML += 'C:\\>' + fullCommand + '\n';
+            
+            // Jika sudah selesai (BSOD akan muncul), jangan izinkan perintah apapun kecuali 'RETRY'
+            if (isComplete) {
+                result = 'SYSTEM CORRUPTED. REBOOT REQUIRED. Use RETRY.';
+                if (command === 'RETRY') {
+                    clearInterval(currentInterval);
+                    window.location.reload();
+                } else {
+                    responseOutput.innerHTML += result + '\n';
+                    commandInput.value = '';
+                    commandInput.focus();
+                    return;
+                }
+            }
+
+            switch (command) {
+                case 'EXIT':
+                case 'HOME':
+                    result = 'Shutting down terminal. Redirecting to Homepage...';
+                    setTimeout(() => { window.location.href = '/'; }, 1000);
+                    break;
+                case 'RETRY':
+                    result = 'Restarting WFS-I simulation (New time allocated)...';
+                    clearInterval(currentInterval);
+                    window.location.reload(); 
+                    break;
+                case 'PING':
+                    let target = args || 'www.google.com';
+                    result = `Pinging ${target}...\n` +
+                             `Request timed out.\n` +
+                             `Reply from 127.0.0.1: Destination host unreachable.\n` +
+                             `Ping statistics for ${target}:\n` +
+                             `    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss).`;
+                    break;
+                case 'LS':
+                case 'DIR':
+                    result = ' Volume in drive C has no label.\n Directory of C:\\\n\n' +
+                             '01/01/2025  12:00 PM    <DIR>          Users\n' +
+                             '01/01/2025  12:00 PM    <DIR>          Program Files\n' +
+                             '01/01/2025  12:00 PM    <DIR>          Windows\n' +
+                             '01/01/2025  08:00 PM         4,096,000 BOOT_RES.PAK\n' +
+                             '01/01/2025  08:00 PM         8,192,000 SYSTEM_IMAGE.ISO\n' +
+                             '       2 File(s)   12,288,000 bytes\n' +
+                             '       3 Dir(s)  0 bytes free.';
+                    break;
+                case 'HELP':
+                    result = 'PERINTAH YANG TERSEDIA:\n' +
+                             '  EXIT / HOME: Kembali ke halaman utama.\n' +
+                             '  RETRY: Mengulang seluruh proses (download & install).\n' +
+                             '  PING [target]: Tes koneksi (simulasi gagal).\n' +
+                             '  LS / DIR: Menampilkan file di direktori (simulasi).\n' +
+                             '  CLEAR: Membersihkan layar terminal.';
+                    break;
+                case 'CLEAR':
+                    terminalOutput.innerHTML = '';
+                    responseOutput.innerHTML = '';
+                    break;
+                default:
+                    result = 'ERROR: Perintah "' + fullCommand + '" tidak dikenal. Ketik HELP.';
+            }
+
+            responseOutput.innerHTML += result + '\n';
+            
+            commandInput.value = '';
+            commandInput.focus();
+        }
+
+        // Event listener untuk tombol 'Enter'
+        commandInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); 
+                executeCommand();
+            }
+        });
+
+        // Mulai proses pengetikan saat halaman dimuat
+        window.onload = typeLine;
+    </script>
+
+</body>
+</html>

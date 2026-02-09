@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Data Rain - Website Hujan Digital</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; overflow: hidden; background: #0f172a; font-family: 'monospace', sans-serif; cursor: crosshair; }
+        .data-drop {
+            position: absolute;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            animation: fall linear forwards;
+            pointer-events: auto; /* Allow clicks */
+        }
+
+        @keyframes fall {
+            from { transform: translateY(-50px); opacity: 0.2; }
+            to { transform: translateY(100vh); opacity: 0.9; }
+        }
+
+        .ripple {
+            position: absolute;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: expand-ripple 1s forwards;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes expand-ripple {
+            from { transform: scale(0); opacity: 1; }
+            to { transform: scale(2); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="app" class="relative w-screen h-screen overflow-hidden text-gray-300 font-mono">
+    
+    <div class="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
+        <h1 class="text-[15vw] font-black uppercase tracking-tighter text-cyan-500 transform -rotate-12">DATA RAIN</h1>
+    </div>
+
+    <div class="absolute top-5 left-5 z-50 bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/20">
+        <h2 class="text-xs uppercase tracking-widest font-bold opacity-50">Sistem Hujan Digital</h2>
+        <p class="text-xl font-mono text-cyan-400">Drops: {{ drops.length }}</p>
+        <button @click="toggleRain" class="mt-2 text-[10px] bg-white text-black px-2 py-1 uppercase font-bold hover:bg-cyan-400 transition">
+            {{ isRaining ? 'Berhenti Hujan' : 'Mulai Hujan' }}
+        </button>
+        <button @click="clearDrops" class="ml-2 mt-2 text-[10px] bg-white text-black px-2 py-1 uppercase font-bold hover:bg-red-400 transition">
+            Bersihkan Layar
+        </button>
+    </div>
+
+    <div v-if="selectedDrop" class="absolute bottom-5 right-5 z-50 bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/20 max-w-sm">
+        <h3 class="text-xs uppercase tracking-widest font-bold opacity-50">Fragment Data Terpilih</h3>
+        <p class="text-lg font-mono text-emerald-400">{{ selectedDrop.text }}</p>
+        <p class="text-xs mt-2 opacity-70">Posisi: ({{ selectedDrop.x.toFixed(0)}}, {{ selectedDrop.y.toFixed(0)}})</p>
+        <button @click="selectedDrop = null" class="mt-2 text-[10px] bg-white text-black px-2 py-1 uppercase font-bold hover:bg-gray-400 transition">Tutup</button>
+    </div>
+
+    <div 
+        v-for="drop in drops" 
+        :key="drop.id"
+        class="data-drop transition-colors duration-200"
+        :style="{ 
+            left: `${drop.x}px`, 
+            top: `${drop.y}px`, 
+            animationDuration: `${drop.speed}s`,
+            color: drop.color,
+            fontSize: `${drop.size}rem`
+        }"
+        @animationend="removeDrop(drop.id)"
+        @click="selectDrop(drop)"
+        @mouseover="hoverDrop(drop, true)"
+        @mouseleave="hoverDrop(drop, false)"
+    >
+        {{ drop.text }}
+    </div>
+
+    <div 
+        v-for="ripple in ripples" 
+        :key="ripple.id"
+        class="ripple"
+        :style="{ left: `${ripple.x}px`, top: `${ripple.y}px` }"
+        @animationend="removeRipple(ripple.id)"
+    ></div>
+
+</div>
+
+<script>
+const { createApp, ref, onMounted, onUnmounted } = Vue;
+
+const generateRandomChar = () => {
+    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+{}[]|:;<,>.?/~`';
+    return chars[Math.floor(Math.random() * chars.length)];
+};
+
+createApp({
+    setup() {
+        const drops = ref([]);
+        const ripples = ref([]);
+        const isRaining = ref(true);
+        let dropInterval = null;
+        let dropIdCounter = 0;
+        let rippleIdCounter = 0;
+        const selectedDrop = ref(null);
+
+        const spawnDrop = () => {
+            if (!isRaining.value) return;
+
+            const textLength = Math.floor(Math.random() * 5) + 3; // 3-7 characters
+            let text = '';
+            for (let i = 0; i < textLength; i++) {
+                text += generateRandomChar();
+            }
+
+            const x = Math.random() * window.innerWidth;
+            const y = -Math.random() * 200; // Start slightly off-screen
+            const speed = Math.random() * 5 + 5; // 5-10 seconds to fall
+            const color = `hsl(${Math.random() * 360}, 100%, 70%)`; // Dynamic color
+            const size = Math.random() * 0.5 + 0.8; // 0.8rem - 1.3rem
+
+            drops.value.push({ id: dropIdCounter++, text, x, y, speed, color, size });
+        };
+
+        const removeDrop = (id) => {
+            // Remove drop and create a ripple effect at the bottom
+            const index = drops.value.findIndex(d => d.id === id);
+            if (index !== -1) {
+                const drop = drops.value[index];
+                ripples.value.push({ 
+                    id: rippleIdCounter++, 
+                    x: drop.x + (drop.text.length * drop.size * 0.5 * 10), // Approximate center of text
+                    y: window.innerHeight - 20 
+                });
+                drops.value.splice(index, 1);
+            }
+        };
+
+        const removeRipple = (id) => {
+            const index = ripples.value.findIndex(r => r.id === id);
+            if (index !== -1) {
+                ripples.value.splice(index, 1);
+            }
+        };
+
+        const toggleRain = () => {
+            isRaining.value = !isRaining.value;
+            if (isRaining.value) {
+                startRain();
+            } else {
+                clearInterval(dropInterval);
+            }
+        };
+
+        const clearDrops = () => {
+            drops.value = [];
+            ripples.value = [];
+        };
+
+        const startRain = () => {
+            if (dropInterval) clearInterval(dropInterval);
+            dropInterval = setInterval(spawnDrop, 100); // Spawn a drop every 100ms
+        };
+
+        const selectDrop = (drop) => {
+            selectedDrop.value = drop;
+        };
+
+        const hoverDrop = (drop, isHovering) => {
+            // You can add visual effects on hover here if you like
+            // For now, let's just change its opacity slightly
+            const element = document.querySelector(`[data-key="${drop.id}"]`); // Requires adding data-key to template
+            if (element) {
+                 element.style.opacity = isHovering ? 1 : 0.7;
+            }
+        };
+
+        onMounted(() => {
+            startRain();
+        });
+
+        onUnmounted(() => {
+            clearInterval(dropInterval);
+        });
+
+        return {
+            drops,
+            ripples,
+            isRaining,
+            selectedDrop,
+            toggleRain,
+            clearDrops,
+            removeDrop,
+            removeRipple,
+            selectDrop,
+            hoverDrop
+        };
+    }
+}).mount('#app');
+</script>
+
+</body>
+</html>
